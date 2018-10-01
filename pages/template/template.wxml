@@ -1,0 +1,156 @@
+<template name="popDialog">
+  <view class='pop' hidden='{{!dialogShow}}'>
+    <view class='story'>
+      <text>{{dialogText}}</text>
+    </view>
+    <view class='btn-2' bindtap='dialogOK'>{{dialogBtn}}</view>
+  </view>
+</template>
+<template name="popEvent">
+  <view class='pop' style='display:none;'>
+    <view class='story'>
+      <text>有人向你兜售一些读起来很刺激的书籍和看着就让人脸红心跳加速的图册，你要买几本吗？</text>
+    </view>
+    <view class='btn-2'>要</view>
+    <view class='btn-2'>不 要</view>
+  </view>
+</template>
+
+<template name="popPlan">
+  <view class='pop pop2' hidden='{{!planShow}}'>
+    <view class='pop2-title clearfix'>
+      <image src='../../img/btn-2.png' title="这里的图标是btn-1到btn-6"></image>
+      <text>日常消遣</text>
+      <view class='off' bindtap='closePlan'>
+        <image src='../../img/off.png'></image>
+      </view>
+    </view>
+    <view class='pop-main'>
+      <view class='tip'>
+          <view class='tip-inner'>
+              <image src='../../img/t.png' mode='widthFix'></image>
+              <text>每次消耗 1 个小时</text>
+          </view>
+      </view>
+      <view class='feed {{userState.hours===0||planCallLimit===0?"disable":""}}' wx:for='{{planItems}}' wx:key='id' bindtap='callPlan' data-id='{{item.id}}'>
+          <view>{{item.remarks}}</view>
+          <view>{{item.title}}</view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<template name="popJob">
+  <view class='pop pop2' hidden='{{!jobShow}}'>
+    <view class='pop2-title clearfix'>
+      <image src='../../img/btn-1.png' title="这里的图标是btn-1到btn-6"></image>
+      <text>找工作</text>
+      <view class='off' bindtap='closeJob'>
+        <image src='../../img/off.png'></image>
+      </view>
+    </view>
+    <view class='pop-main'>
+      <view class='tip'>
+          <view class='tip-inner'>
+              <image src='../../img/t.png' mode='widthFix'></image>
+              <text>每次消耗 1 个小时，每日限 1 次</text>
+          </view>
+      </view>
+      <view class='feed2 clearfix' wx:for='{{jobItems}}' wx:key='id'>
+        <view class='feed2-left'>
+          <view class='job'>{{item.title}}</view>
+          <view class='money'>每日工资{{item.price}}元</view>
+          <view>{{item.remarks}}</view>
+        </view>
+        <view class='job-btn  {{jobApplyLimit===0?"disable":""}}' bindtap='applyJob' data-id='{{item.id}}'></view>
+      </view>
+
+
+      <!-- <view class='feed2 clearfix'>
+        <view class='feed2-left'>
+          <view class='job'>司机</view>
+          <view class='money'>每日工资500元</view>
+          <view>快递员指的是使用快递专用工具、设和应用软件系统，从事国内、国际及港澳台地区的快件揽收等工作的人员。</view>
+        </view>
+        <view class='job-btn'></view>
+      </view>
+      <view class='feed2 clearfix'>
+        <view class='feed2-left'>
+          <view class='job'>司机</view>
+          <view class='money'>每日工资500元</view>
+          <view>快递员指的是使用快递专用工具、设和应用软件系统，从事国内、国际及港澳台地区的快件揽收等工作的人员。</view>
+        </view>
+        <view class='job-btn disable'></view>
+      </view> -->
+    </view>
+  </view>
+</template>
+
+
+
+<template name="popHouse">
+  <view class='pop pop2' hidden='{{!houseShow}}'>
+    <view class='pop2-title clearfix'>
+      <image src='../../img/btn-4.png' title="这里的图标是btn-1到btn-6"></image>
+      <text>购房置业</text>
+      <view class='off' bindtap='closeHouse'>
+        <image src='../../img/off.png'></image>
+      </view>
+    </view>
+    <view class='pop-main'>
+      <view class='tip'>
+          <view class='tip-inner'>
+              <image src='../../img/t.png' mode='widthFix'></image>
+              <text>每次消耗 1 个小时，每日限 1 次</text>
+          </view>
+      </view>
+      <view class='feed2 clearfix' wx:for='{{houseItems}}' wx:key='id'>
+          <view class='feed2-left'>
+              <view class='job'>{{item.title}}</view>
+              <view class='money'>购买价格：{{item.buyPrice}}</view>
+              <view class='money money2'>出售价格：{{item.sellPrice}}</view>
+              <view>
+                  <text>{{item.remarks}}</text>
+                  <text>拥有：0</text>
+              </view>
+          </view>
+          <view class='btn-mini1'>购 买</view>
+          <view class='btn-mini2 disable'>出 售</view>
+      </view>
+    </view>
+  </view>
+</template>
+
+
+<template name="popCar">
+  <view class='pop pop2' hidden='{{!carShow}}'>
+    <view class='pop2-title clearfix'>
+      <image src='../../img/btn-4.png' title="这里的图标是btn-1到btn-6"></image>
+      <text>座驾排场</text>
+      <view class='off' bindtap='closeCar'>
+        <image src='../../img/off.png'></image>
+      </view>
+    </view>
+    <view class='pop-main'>
+      <view class='tip'>
+          <view class='tip-inner'>
+              <image src='../../img/t.png' mode='widthFix'></image>
+              <text>每次消耗 1 个小时，每日限 1 次</text>
+          </view>
+      </view>
+      <view class='feed2 clearfix' wx:for='{{carItems}}' wx:key='id'>
+          <view class='feed2-left'>
+              <view class='job'>{{item.title}}</view>
+              <view class='money'>购买价格：{{item.buyPrice}}</view>
+              <view class='money money2'>出售价格：{{item.sellPrice}}</view>
+              <view>
+                  <text>{{item.remarks}}</text>
+                  <text>拥有：0</text>
+              </view>
+          </view>
+          <view class='btn-mini1'>购 买</view>
+          <view class='btn-mini2 disable'>出 售</view>
+      </view>
+    </view>
+  </view>
+</template>
