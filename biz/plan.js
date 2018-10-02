@@ -14,7 +14,7 @@ export default {
   },
   applyPlan: function (e) {
     const that = this
-    if (that.data.userState.planLimit === 1 && !that.data.submitFlag) {
+    if (that.data.userState.planLimit == 1 && that.data.submitFlag) {
       return false
     } else {
       that.setData({ submitFlag: true })

@@ -1,5 +1,5 @@
 var isEnableBtn=function(hour,limitCount){
-  return (hour===0||limitCount===1)?false:true
+  return (hour==0||limitCount==1)?false:true
 }
 
 module.exports={
