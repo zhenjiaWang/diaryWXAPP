@@ -6,6 +6,7 @@ import house from './house.js'
 const { wxGet, parseUserState } = require('../utils/common.js')
 
 const commonData = {
+  submitFlag: false,
   maskShow: false,
   dialogShow:false,
   dialogText:'',

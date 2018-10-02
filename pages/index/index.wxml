@@ -1,5 +1,5 @@
 <import src="../template/template.wxml" />
-
+<wxs src="../../utils/tools.wxs" module="tools" />
 <view class='game-main'>
   <view class='top-title'>
     <image class='icon-1' src='../../img/icon-1.png' mode="widthFix"></image>
@@ -7,7 +7,7 @@
     <image class='icon-2' src='../../img/line-bg.png' mode="widthFix"></image>
     <image class='icon-1' src='../../img/icon-2.png' mode="widthFix"></image>
     <text class='num-box'>今日还剩<text class='num-big'><text class='num{{item}}' wx:for='{{userState["hoursArray"]}}' wx:key='*this'></text></text>小时</text>
-    <text class='next-day'></text>
+    <text class='next-day {{userState.hours>0?"disable":""}}'></text>
   </view>
   <view class='game-info clearfix'>
     <view class='pull-left'>
@@ -192,31 +192,31 @@
           <image src="../../img/title-right.png" mode="widthFix"></image>
         </view>
         <view class='right-inner'>
-          <view class='btn-box clearfix {{userState.hours===0||jobApplyLimit===0?"disable":""}}' bindtap='actionJob'>
+          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.jobLimit)?"":"disable"}}' bindtap='actionJob'>
             <image src='../../img/btn-1.png'></image>
             <text>找份工作</text>
           </view>
-          <view class='btn-box clearfix {{userState.hours===0?"disable":""}}' bindtap='actionPlan'>
+          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,0)?"":"disable"}}' bindtap='actionPlan'>
             <image src='../../img/btn-2.png'></image>
             <text>日常消遣</text>
           </view>
-          <view class='btn-box clearfix'>
+          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.financialLimit)?"":"disable"}}'>
             <image src='../../img/btn-3.png'></image>
             <text>理财有道</text>
           </view>
-          <view class='btn-box clearfix'>
+          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.luckLimit)?"":"disable"}}'>
             <image src='../../img/btn-4.png'></image>
             <text>时来运转</text>
           </view>
-          <view class='btn-box clearfix' bindtap='actionHouse'>
+          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.houseLimit)?"":"disable"}}' bindtap='actionHouse'>
             <image src='../../img/btn-5.png'></image>
             <text>购房置业</text>
           </view>
-          <view class='btn-box clearfix' bindtap='actionCar'>
+          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.carLimit)?"":"disable"}}' bindtap='actionCar'>
             <image src='../../img/btn-6.png'></image>
             <text>座驾排场</text>
           </view>
-          <view class='btn-box clearfix'>
+          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.coupleLimit)?"":"disable"}}'>
             <image src='../../img/btn-6.png'></image>
             <text>食色性也</text>
           </view>
