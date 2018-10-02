@@ -1,34 +1,35 @@
-const { wxPost } = require('../utils/common.js')
+const { wxPost, isEnableBtn } = require('../utils/common.js')
 export default {
   data: {
     planShow: false,
-    planItems: [],
-    planCallLimit: 1
+    planItems: []
   },
   actionPlan: function () {
-    this.setData({ planShow: true, maskShow: true })
+    if (isEnableBtn(this.data.userState.hour, 0)) {
+      this.setData({ planShow: true, maskShow: true })
+    }
   },
   closePlan: function () {
     this.setData({ planShow: false, maskShow: false })
   },
-  callPlan: function (e) {
+  applyPlan: function (e) {
     const that = this
-    if (that.data.userState.hours === 0 || that.data.planCallLimit===0) {
+    if (that.data.userState.planLimit === 1 && !that.data.submitFlag) {
       return false
     } else {
-      that.setData({ planCallLimit: 0 })
+      that.setData({ submitFlag: true })
       let planId = e.currentTarget.dataset.id
       console.info(planId)
       if (planId) {
         wxPost(
-          '/user/callPlan',
+          '/user/applyPlan',
           {
             userId: that.data.userId,
             planId: planId
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.setData({ planCallLimit:1,planShow: false, dialogShow: true, dialogText: data.text })
+              that.setData({ submitFlag:false,planShow: false, dialogShow: true, dialogText: data.text })
             }
             console.info(data)
           }

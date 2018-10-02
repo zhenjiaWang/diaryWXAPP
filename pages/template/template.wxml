@@ -1,3 +1,4 @@
+<wxs src="../../utils/tools.wxs" module="tools" />
 <template name="popDialog">
   <view class='pop' hidden='{{!dialogShow}}'>
     <view class='story'>
@@ -32,7 +33,7 @@
               <text>每次消耗 1 个小时</text>
           </view>
       </view>
-      <view class='feed {{userState.hours===0||planCallLimit===0?"disable":""}}' wx:for='{{planItems}}' wx:key='id' bindtap='callPlan' data-id='{{item.id}}'>
+      <view class='feed {{tools.isEnableBtn(userState.hours,0)?"":"disable"}}' wx:for='{{planItems}}' wx:key='id' bindtap='applyPlan' data-id='{{item.id}}'>
           <view>{{item.remarks}}</view>
           <view>{{item.title}}</view>
       </view>
@@ -62,7 +63,7 @@
           <view class='money'>每日工资{{item.price}}元</view>
           <view>{{item.remarks}}</view>
         </view>
-        <view class='job-btn  {{jobApplyLimit===0?"disable":""}}' bindtap='applyJob' data-id='{{item.id}}'></view>
+        <view class='job-btn  {{tools.isEnableBtn(userState.hours,userState.jobLimit)?"":"disable"}}' bindtap='applyJob' data-id='{{item.id}}'></view>
       </view>
 
 
