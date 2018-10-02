@@ -7,7 +7,7 @@
     <image class='icon-2' src='../../img/line-bg.png' mode="widthFix"></image>
     <image class='icon-1' src='../../img/icon-2.png' mode="widthFix"></image>
     <text class='num-box'>今日还剩<text class='num-big'><text class='num{{item}}' wx:for='{{userState["hoursArray"]}}' wx:key='*this'></text></text>小时</text>
-    <text class='next-day'></text>
+    <text class='next-day {{userState.hours>0?"disable":""}}'></text>
   </view>
   <view class='game-info clearfix'>
     <view class='pull-left'>
