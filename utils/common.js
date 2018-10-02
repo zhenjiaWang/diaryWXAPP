@@ -59,3 +59,7 @@ exports.parseUserState = (data,that) =>{
     })
   }
 }
+
+exports.isEnableBtn = (hour, limitCount) =>{
+  return (hour === 0 || limitCount === 1) ? false : true
+}

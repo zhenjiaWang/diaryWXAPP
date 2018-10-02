@@ -1,22 +1,23 @@
-const { wxPost } = require('../utils/common.js')
+const { wxPost, isEnableBtn } = require('../utils/common.js')
 export default {
   data: {
     jobShow: false,
-    jobItems: [],
-    jobApplyLimit:1
+    jobItems: []
   },
   actionJob: function () {
-    this.setData({ jobShow: true, maskShow: true })
+    if (isEnableBtn(this.data.userState.hour,this.data.userState.jobLimit)) {
+      this.setData({ jobShow: true, maskShow: true })
+    }
   },
   closeJob: function () {
     this.setData({ jobShow: false, maskShow: false })
   },
   applyJob: function (e) {
     const that = this
-    if (that.data.jobApplyLimit===0){
+    if (that.data.userState.jobLimit === 1 && !that.data.submitFlag){
       return false
     }else{
-      that.setData({ jobApplyLimit: 0 })
+      that.setData({ submitFlag: true })
       let jobId = e.currentTarget.dataset.id
       if(jobId){
         wxPost(
@@ -27,7 +28,7 @@ export default {
           },
           ({ data }) => {
             if(data.errorCode>=0){
-              that.setData({ jobShow: false, dialogShow: true, dialogText: data.text })
+              that.setData({ submitFlag:false,jobShow: false, dialogShow: true, dialogText: data.text })
             }
             console.info(data)
           }
