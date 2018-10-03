@@ -1,7 +1,13 @@
 <wxs src="../../utils/tools.wxs" module="tools" />
+<template name="popNight">
+  <view class='night {{nightClass}}'>
+    <view class='text-center'>{{nightText}}</view>
+  </view>
+</template>
 <template name="popDialog">
   <view class='pop' hidden='{{!dialogShow}}'>
-    <view class='story'>
+    <view class='story' style='height:350rpx;'>
+      <view class='text-center'><image src='../../img/jieguo.png' mode='widthFix'></image></view>
       <text>{{dialogText}}</text>
     </view>
     <view class='btn-2' bindtap='dialogOK'>{{dialogBtn}}</view>
@@ -63,26 +69,39 @@
           <view class='money'>每日工资{{item.price}}元</view>
           <view>{{item.remarks}}</view>
         </view>
-        <view class='job-btn  {{tools.isEnableBtn(userState.hours,userState.jobLimit)?"":"disable"}}' bindtap='applyJob' data-id='{{item.id}}'></view>
+        <view wx:if='{{userState.myJobId===item.id}}' class='job-btn in-job disable' ></view>
+        <view wx:else class='job-btn  {{tools.isEnableBtn(userState.hours,userState.jobLimit)?"":"disable"}}' bindtap='applyJob' data-id='{{item.id}}'></view>
       </view>
+    </view>
+  </view>
+</template>
 
-
-      <!-- <view class='feed2 clearfix'>
-        <view class='feed2-left'>
-          <view class='job'>司机</view>
-          <view class='money'>每日工资500元</view>
-          <view>快递员指的是使用快递专用工具、设和应用软件系统，从事国内、国际及港澳台地区的快件揽收等工作的人员。</view>
-        </view>
-        <view class='job-btn'></view>
+<template name="popMyJob">
+  <view class='pop pop2' hidden='{{!myJobShow}}'>
+    <view class='pop2-title clearfix'>
+      <image src='../../img/btn-1.png'></image>
+      <text>我的工作</text>
+      <view class='off' bindtap='closeMyJob'>
+        <image src='../../img/off.png'></image>
       </view>
-      <view class='feed2 clearfix'>
-        <view class='feed2-left'>
-          <view class='job'>司机</view>
-          <view class='money'>每日工资500元</view>
-          <view>快递员指的是使用快递专用工具、设和应用软件系统，从事国内、国际及港澳台地区的快件揽收等工作的人员。</view>
+    </view>
+    <view class='pop-main'>
+      <view class='tip'>
+          <view class='tip-inner'>
+              <image src='../../img/t.png' mode='widthFix'></image>
+              <text>在职期间,每天会带来金钱收入</text>
+          </view>
+      </view>
+      <block wx:for='{{jobItems}}' wx:key='id'>
+        <view class='feed2 clearfix' wx:if='{{userState.myJobId===item.id}}'>
+          <view class='feed2-left'>
+            <view class='job'>{{item.title}}</view>
+            <view class='money'>每日工资{{item.price}}元</view>
+            <view>{{item.remarks}}</view>
+          </view>
+          <view  class='job-btn in-job disable'></view>
         </view>
-        <view class='job-btn disable'></view>
-      </view> -->
+      </block>
     </view>
   </view>
 </template>

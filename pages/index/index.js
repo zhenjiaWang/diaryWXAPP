@@ -1,6 +1,6 @@
 //index.js
 //获取应用实例
-const { wxGet, wxPost, parseUserState} = require('../../utils/common.js')
+const { wxGet, wxPost, parseUserState, isEnableBtn} = require('../../utils/common.js')
 import biz from '../../biz/biz.js'
 const app = getApp()
 
@@ -54,6 +54,26 @@ const options={
         parseUserState(data,that)
       }
     )
+  },
+  nextDay:function(){
+    const that = this
+    if (that.data.userState.hour = 1 && that.data.submitFlag) {
+      return false
+    } else {
+      that.setData({ submitFlag: true })
+      wxPost(
+        '/user/nextDay',
+        {
+          userId: that.data.userId
+        },
+        ({ data }) => {
+          if (data.errorCode >= 0) {
+            that.setData({ submitFlag: false,  dialogShow: true, dialogText: data.text })
+          }
+          console.info(data)
+        }
+      )
+    }
   }
 }
 

@@ -7,7 +7,7 @@
     <image class='icon-2' src='../../img/line-bg.png' mode="widthFix"></image>
     <image class='icon-1' src='../../img/icon-2.png' mode="widthFix"></image>
     <text class='num-box'>今日还剩<text class='num-big'><text class='num{{item}}' wx:for='{{userState["hoursArray"]}}' wx:key='*this'></text></text>小时</text>
-    <text class='next-day {{userState.hours>0?"disable":""}}'></text>
+    <text hidden='{{userState.days>0}}' class='next-day {{userState.hours>0?"disable":""}}' bindtap='nextDay'></text>
   </view>
   <view class='game-info clearfix'>
     <view class='pull-left'>
@@ -176,7 +176,7 @@
                               <text class='pull-left'>工</text>
               <text class='pull-right'>作</text>
               </text>
-              <view class='menu-btn'>
+              <view class='menu-btn' bindtap='showMyJob'>
                 <image src='../../img/icon-menu.png'></image>
               </view>
             </view>
@@ -216,7 +216,7 @@
             <image src='../../img/btn-6.png'></image>
             <text>座驾排场</text>
           </view>
-          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.coupleLimit)?"":"disable"}}'>
+          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.coupleLimit)?"":"disable"}}' bindtap='actionCouple'>
             <image src='../../img/btn-6.png'></image>
             <text>食色性也</text>
           </view>
@@ -227,11 +227,15 @@
 </view>
 <!-- 随机事件弹出begin -->
 <view class='mask' hidden='{{!maskShow}}'></view>
+<template is='popNight' data='{{nightClass,nightText}}'></template>
 <template is='popDialog' data='{{dialogShow,dialogText,dialogBtn}}'></template>
-<template is='popJob' data='{{jobShow,jobItems,jobApplyLimit}}'></template>
-<template is='popPlan' data='{{planShow,planItems,planCallLimit}}'></template>
-<template is='popHouse' data='{{houseShow,houseItems}}'></template>
-<template is='popCar' data='{{carShow,carItems}}'></template>
+<template is='popJob' data='{{jobShow,jobItems,userState}}'></template>
+<template is='popPlan' data='{{planShow,planItems,userState}}'></template>
+<template is='popHouse' data='{{houseShow,houseItems,userState}}'></template>
+<template is='popCar' data='{{carShow,carItems,userState}}'></template>
+
+<template is='popMyJob' data='{{myJobShow,jobItems,userState}}'></template>
+
 <!-- 随机事件弹出over -->
 <!-- 今日安排弹出begin -->
 

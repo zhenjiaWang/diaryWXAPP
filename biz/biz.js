@@ -2,10 +2,13 @@ import job from './job.js'
 import plan from './plan.js'
 import car from './car.js'
 import house from './house.js'
+import couple from './couple.js'
 
 const { wxGet, parseUserState } = require('../utils/common.js')
 
 const commonData = {
+  nightClass:'',
+  nightText:'',
   submitFlag: false,
   maskShow: false,
   dialogShow:false,
@@ -37,4 +40,4 @@ function storeMixin(options) {
   return result;
 }
 
-export default storeMixin({ job, plan,car,house })
+export default storeMixin({ job, plan,car,house,couple })
