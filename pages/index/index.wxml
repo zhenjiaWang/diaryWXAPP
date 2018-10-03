@@ -143,18 +143,19 @@
           </view>
         </view> -->
         <block wx:if='{{attrList.length > 0}}'>
+          
           <view class='one'>
             <view class='one-inner clearfix'>
-              <text>我的车产</text>
-              <view class='menu-btn'>
+              <text>我的房产</text>
+              <view class='menu-btn' bindtap='showMyHouse'>
                 <image src='../../img/icon-menu.png'></image>
               </view>
             </view>
           </view>
           <view class='one'>
             <view class='one-inner clearfix'>
-              <text>我的房产</text>
-              <view class='menu-btn'>
+              <text>我的座驾</text>
+              <view class='menu-btn' bindtap='showMyCar'>
                 <image src='../../img/icon-menu.png'></image>
               </view>
             </view>
@@ -184,7 +185,7 @@
         </block>
       </view>
     </view>
-    <view class='pull-right'>
+    <view class='pull-right' wx:if='{{attrList.length > 0}}'>
       <view class='pull-right-inner'>
         <view class='icon-left'></view>
         <view class='icon-right'></view>
@@ -235,7 +236,8 @@
 <template is='popCar' data='{{carShow,carItems,userState}}'></template>
 
 <template is='popMyJob' data='{{myJobShow,jobItems,userState}}'></template>
-
+<template is='popMyCar' data='{{myCarShow,carItems,userState}}'></template>
+<template is='popMyHouse' data='{{myHouseShow,houseItems,userState}}'></template>
 <!-- 随机事件弹出over -->
 <!-- 今日安排弹出begin -->
 
