@@ -5,9 +5,7 @@ export default {
     planItems: []
   },
   actionPlan: function () {
-    if (isEnableBtn(this.data.userState.hour, 0)) {
       this.setData({ planShow: true, maskShow: true })
-    }
   },
   closePlan: function () {
     this.setData({ planShow: false, maskShow: false })

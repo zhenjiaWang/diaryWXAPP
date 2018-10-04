@@ -45,116 +45,21 @@
             </block>
           </view>
         </view>
-        <!-- <view class='one'>
-          <view class='one-inner clearfix'>
-            <text class='clearfix'>
-                            <text class='pull-left'>健</text>
-            <text class='pull-right'>康</text>
-            </text>
-            <text class='num-big clearfix'>
-                            <text class='num1'></text>
-            <text class='num0'></text>
-            <text class='num0'></text>
-            </text>
-          </view>
-        </view>
-        <view class='one'>
-          <view class='one-inner clearfix'>
-            <text class='clearfix'>
-                            <text class='pull-left'>金</text>
-            <text class='pull-right'>钱</text>
-            </text>
-            <text class='num-big num-m num-small clearfix'>
-                            <text class='num9'></text>
-            <text class='num9'></text>
-            <text class='num2'></text>
-            <text class='num-f'></text>
-            <text class='num3'></text>
-            <text class='num3'></text>
-            <text class='num0'></text>
-            </text>
-          </view>
-        </view>
-        <view class='one'>
-          <view class='one-inner clearfix'>
-            <text>投资财富</text>
-            <text class='num-big num-m num-small clearfix'>
-                            <text class='num5'></text>
-            <text class='num6'></text>
-            <text class='num3'></text>
-            <text class='num-f'></text>
-            <text class='num2'></text>
-            <text class='num3'></text>
-            </text>
-          </view>
-        </view>
-        <view class='one'>
-          <view class='one-inner clearfix'>
-            <text>能力才干</text>
-            <text class='num-big num-m clearfix'>
-                            <text class='num6'></text>
-            <text class='num7'></text>
-            </text>
-          </view>
-        </view>
-        <view class='one'>
-          <view class='one-inner clearfix'>
-            <text class='clearfix'>
-                            <text class='pull-left'>快</text>
-            <text class='pull-right'>乐</text>
-            </text>
-            <text class='num-big num-red clearfix'>
-                            <text class='num2'></text>
-            <text class='num3'></text>
-            </text>
-          </view>
-        </view>
-        <view class='one'>
-          <view class='one-inner clearfix'>
-            <text>江湖经验</text>
-            <text class='num-big clearfix'>
-                            <text class='num3'></text>
-            <text class='num5'></text>
-            </text>
-          </view>
-        </view>
-        <view class='one'>
-          <view class='one-inner clearfix'>
-            <text class='clearfix'>
-                            <text class='pull-left'>正</text>
-            <text class='pull-right'>气</text>
-            </text>
-            <text class='num-big clearfix'>
-                            <text class='num7'></text>
-            <text class='num5'></text>
-            </text>
-          </view>
-        </view>
-        <view class='one'>
-          <view class='one-inner clearfix'>
-            <text class='clearfix'>
-                            <text class='pull-left'>人</text>
-            <text class='pull-right'>脉</text>
-            </text>
-            <text class='num-big clearfix'>
-                            <text class='num8'></text>
-            <text class='num3'></text>
-            </text>
-          </view>
-        </view> -->
+        
         <block wx:if='{{attrList.length > 0}}'>
+          
           <view class='one'>
             <view class='one-inner clearfix'>
-              <text>我的车产</text>
-              <view class='menu-btn'>
+              <text>我的房产</text>
+              <view class='menu-btn {{userState.myHouseArray.length>0?"":"disable"}}' bindtap='showMyHouse'>
                 <image src='../../img/icon-menu.png'></image>
               </view>
             </view>
           </view>
           <view class='one'>
             <view class='one-inner clearfix'>
-              <text>我的房产</text>
-              <view class='menu-btn'>
+              <text>我的座驾</text>
+              <view class='menu-btn {{userState.myCarArray.length>0?"":"disable"}}' bindtap='showMyCar'>
                 <image src='../../img/icon-menu.png'></image>
               </view>
             </view>
@@ -162,7 +67,7 @@
           <view class='one'>
             <view class='one-inner clearfix'>
               <text class='clearfix'>
-                              <text class='pull-left'>伴</text>
+              <text class='pull-left'>伴</text>
               <text class='pull-right'>侣</text>
               </text>
               <view class='menu-btn'>
@@ -173,10 +78,10 @@
           <view class='one'>
             <view class='one-inner clearfix'>
               <text class='clearfix'>
-                              <text class='pull-left'>工</text>
+              <text class='pull-left'>工</text>
               <text class='pull-right'>作</text>
               </text>
-              <view class='menu-btn' bindtap='showMyJob'>
+              <view class='menu-btn {{userState.myJobId.length>0?"":"disable"}}' bindtap='showMyJob'>
                 <image src='../../img/icon-menu.png'></image>
               </view>
             </view>
@@ -184,7 +89,7 @@
         </block>
       </view>
     </view>
-    <view class='pull-right'>
+    <view class='pull-right' wx:if='{{attrList.length > 0}}'>
       <view class='pull-right-inner'>
         <view class='icon-left'></view>
         <view class='icon-right'></view>
@@ -235,7 +140,8 @@
 <template is='popCar' data='{{carShow,carItems,userState}}'></template>
 
 <template is='popMyJob' data='{{myJobShow,jobItems,userState}}'></template>
-
+<template is='popMyCar' data='{{myCarShow,carItems,userState}}'></template>
+<template is='popMyHouse' data='{{myHouseShow,houseItems,userState}}'></template>
 <!-- 随机事件弹出over -->
 <!-- 今日安排弹出begin -->
 

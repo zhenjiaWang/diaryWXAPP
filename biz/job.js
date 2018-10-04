@@ -6,9 +6,7 @@ export default {
     jobItems: []
   },
   actionJob: function () {
-    if (isEnableBtn(this.data.userState.hour,this.data.userState.jobLimit)) {
-      this.setData({ jobShow: true, maskShow: true })
-    }
+    this.setData({ jobShow: true, maskShow: true })
   },
   closeJob: function () {
     this.setData({ jobShow: false, maskShow: false })

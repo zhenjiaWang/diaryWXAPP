@@ -60,7 +60,7 @@
       <view class='tip'>
           <view class='tip-inner'>
               <image src='../../img/t.png' mode='widthFix'></image>
-              <text>每次消耗 1 个小时，每日限 1 次</text>
+              <text >每次消耗 1 个小时，每日限 1 次</text>
           </view>
       </view>
       <view class='feed2 clearfix' wx:for='{{jobItems}}' wx:key='id'>
@@ -131,11 +131,45 @@
               <view class='money money2'>出售价格：{{item.sellPrice}}</view>
               <view>
                   <text>{{item.remarks}}</text>
-                  <text>拥有：0</text>
+                  <text>拥有：{{tools.getHaveNumber(userState.myHouseNumber,item.id)}}</text>
               </view>
           </view>
-          <view class='btn-mini1'>购 买</view>
-          <view class='btn-mini2 disable'>出 售</view>
+          <view class='btn-mini1 {{tools.isEnableBtn(userState.hours,userState.houseLimit)?"":"disable"}}' bindtap='buyHouse' data-id='{{item.id}}'>购 买</view>
+          <view class='btn-mini2 {{(tools.isEnableBtn(userState.hours,userState.houseLimit)&&tools.arrayContain(userState.myHouseArray,item.id))?"":"disable"}}'
+           bindtap='sellHouse' data-id='{{item.id}}'>出 售</view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<template name="popMyHouse">
+  <view class='pop pop2' hidden='{{!myHouseShow}}'>
+    <view class='pop2-title clearfix'>
+      <image src='../../img/btn-4.png' title="这里的图标是btn-1到btn-6"></image>
+      <text>我的房产</text>
+      <view class='off' bindtap='closeMyHouse'>
+        <image src='../../img/off.png'></image>
+      </view>
+    </view>
+    <view class='pop-main'>
+      <view class='tip'>
+          <view class='tip-inner'>
+              <image src='../../img/t.png' mode='widthFix'></image>
+              <text>每天会有日常维护费</text>
+          </view>
+      </view>
+      <view class='feed2 clearfix' wx:for='{{houseItems}}' wx:key='id' wx:if='{{tools.arrayContain(userState.myHouseArray,item.id)}}'>
+          <view class='feed2-left'>
+              <view class='job'>{{item.title}}</view>
+              <view class='money'>购买价格：{{item.buyPrice}}</view>
+              <view class='money money2'>出售价格：{{item.sellPrice}}</view>
+              <view>
+                  <text>{{item.remarks}}</text>
+                  <text>拥有：{{tools.getHaveNumber(userState.myHouseNumber,item.id)}}</text>
+              </view>
+          </view>
+          <view class='btn-mid2 {{(tools.isEnableBtn(userState.hours,userState.houseLimit)&&tools.arrayContain(userState.myHouseArray,item.id))?"":"disable"}}'
+             bindtap='sellCar' data-id='{{item.id}}'>出 售</view>
       </view>
     </view>
   </view>
@@ -165,12 +199,48 @@
               <view class='money money2'>出售价格：{{item.sellPrice}}</view>
               <view>
                   <text>{{item.remarks}}</text>
-                  <text>拥有：0</text>
+                  <text>拥有：{{tools.getHaveNumber(userState.myCarNumber,item.id)}}</text>
               </view>
           </view>
-          <view class='btn-mini1'>购 买</view>
-          <view class='btn-mini2 disable'>出 售</view>
+          <view class='btn-mini1 {{tools.isEnableBtn(userState.hours,userState.carLimit)?"":"disable"}}' bindtap='buyCar' data-id='{{item.id}}'>购 买</view>
+          <view class='btn-mini2 {{(tools.isEnableBtn(userState.hours,userState.carLimit)&&tools.arrayContain(userState.myCarArray,item.id))?"":"disable"}}'
+           bindtap='sellCar' data-id='{{item.id}}'>出 售</view>
       </view>
+    </view>
+  </view>
+</template>
+
+<template name="popMyCar">
+  <view class='pop pop2' hidden='{{!myCarShow}}'>
+    <view class='pop2-title clearfix'>
+      <image src='../../img/btn-4.png' title="这里的图标是btn-1到btn-6"></image>
+      <text>我的座驾</text>
+      <view class='off' bindtap='closeMyCar'>
+        <image src='../../img/off.png'></image>
+      </view>
+    </view>
+    <view class='pop-main'>
+      <view class='tip'>
+          <view class='tip-inner'>
+              <image src='../../img/t.png' mode='widthFix'></image>
+              <text>每天会有日常维护费</text>
+          </view>
+      </view>
+      
+      <view class='feed2 clearfix' wx:for='{{carItems}}' wx:key='id' wx:if='{{tools.arrayContain(userState.myCarArray,item.id)}}'>
+          <view class='feed2-left'>
+              <view class='job'>{{item.title}}</view>
+              <view class='money'>购买价格：{{item.buyPrice}}</view>
+              <view class='money money2'>出售价格：{{item.sellPrice}}</view>
+              <view>
+                  <text>{{item.remarks}}</text>
+                  <text>拥有：{{tools.getHaveNumber(userState.myCarNumber,item.id)}}</text>
+              </view>
+          </view>
+          <view class='btn-mid2 {{(tools.isEnableBtn(userState.hours,userState.carLimit)&&tools.arrayContain(userState.myCarArray,item.id))?"":"disable"}}'
+            bindtap='sellCar' data-id='{{item.id}}'>出 售</view>
+      </view>
+      
     </view>
   </view>
 </template>

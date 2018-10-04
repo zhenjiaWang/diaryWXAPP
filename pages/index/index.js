@@ -60,7 +60,7 @@ const options={
     if (that.data.userState.hour = 1 && that.data.submitFlag) {
       return false
     } else {
-      that.setData({ submitFlag: true })
+      that.setData({ submitFlag: true,maskShow:true })
       wxPost(
         '/user/nextDay',
         {
