@@ -1,19 +1,65 @@
+const host ='https://img.jinrongzhushou.com/audio'
+const bgm = `${host}/zhangsheng.mp3`
+const result = `${host}/result.mp3`
+const nextDay = `${host}/gongji.mp3`
+const click = `${host}/click.mp3`
+const lose = `${host}/wuya.mp3`
+
  class Voice{
-    constructor() {
-     this.context = wx.createInnerAudioContext()
+  
+
+    constructor(context1,context2) {
+      this.context = context1
+      this.bgmContext = context2
+      this.bgmContext.loop = true
+      this.bgmContext.src = bgm
    }
 
-   nextDay=()=>{
-    this.context.src = 'http://ws.stream.qqmusic.qq.com/M500001VfvsJ21xFqb.mp3?guid=ffffffff82def4af4b12b3cd9337d5e7&uin=346897220&vkey=6292F51E1E384E061FF02C31F716658E5C81F5594D561F2E88B854E81CAAB7806D5E4F103E55D33C16F3FAC506D1AB172DE8600B37E43FAD&fromtag=46'
-    this.context.play()
-    setTimeout(()=>{
-      this.context.stop()
-    },2000)
-  }
-  
+    nextDay=()=>{
+      this.context.src = nextDay
+      this.context.play()
+    }
+    clickBtn=()=>{
+      this.context.src = click
+      this.context.play()
+    }
+    lose=()=>{
+      this.context.src = lose
+      this.context.play()
+    }
+    result=()=>{
+      this.context.src = result
+      this.context.play()
+    }
+
+    bgmRun(){
+      this.bgmContext.play()
+    }
+
+    _bgmPause(){
+      this.bgmContext.pause()
+    }
+
+
+   regiserListener(){//once only
+    
+      // context  play  start 
+     this.context.offPlay()
+     this.context.onPlay(()=>{
+       this._bgmPause()
+     })
+    //context play end 
+     this.context.offEnded()
+     this.context.onEnded( ()=>{
+       setTimeout(()=>{
+         this.bgmRun()
+       },1000)
+     })
+     return this
+   }
+
    uber=()=>{
     return this.context
   } 
 }
 export { Voice }
-

@@ -127,7 +127,7 @@
             <image src='../../img/btn-3.png'></image>
             <text>理财有道</text>
           </view>
-          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.luckLimit)?"":"disable"}}'>
+          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.luckLimit)?"":"disable"}}' bindtap='actionLuck'>
             <image src='../../img/btn-4.png'></image>
             <text>时来运转</text>
           </view>
@@ -171,6 +171,8 @@
 <template is='popCar' data='{{carShow,carItems,userState}}'></template>
 <template is='popClothes' data='{{clothesShow,clothesItems,userState}}'></template>
 <template is='popLuxury' data='{{luxuryShow,luxuryItems,userState}}'></template>
+
+<template is='popLuck' data='{{luckShow,luckItems,userState}}'></template>
 
 
 <template is='popMyJob' data='{{myJobShow,jobItems,userState}}'></template>
