@@ -3,6 +3,7 @@
 const { wxGet, wxPost, parseUserState, isEnableBtn} = require('../../utils/common.js')
 import biz from '../../biz/biz.js'
 const app = getApp()
+import { Voice } from '../../utils/Voice.js'    
 
 const options={
   data: {
@@ -14,6 +15,7 @@ const options={
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
   onLoad: function () {
+    new Voice().nextDay()
     const that = this
     app.appLogin().then(() => {
       if (app.globalData.userData.userId) {
