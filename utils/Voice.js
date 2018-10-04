@@ -1,65 +1,44 @@
-const host ='https://img.jinrongzhushou.com/audio'
-const bgm = `${host}/zhangsheng.mp3`
+const host = 'https://img.jinrongzhushou.com/audio'
+const bgm = `${host}/background.mp3`
 const result = `${host}/result.mp3`
 const nextDay = `${host}/gongji.mp3`
-const click = `${host}/click.mp3`
+const click = `${host}/click3.mp3`
 const lose = `${host}/wuya.mp3`
+const win = `${host}/win.mp3`
+const fail = `${host}/fail.mp3`
 
- class Voice{
-  
-
-    constructor(context1,context2) {
-      this.context = context1
-      this.bgmContext = context2
-      this.bgmContext.loop = true
-      this.bgmContext.src = bgm
-   }
-
-    nextDay=()=>{
-      this.context.src = nextDay
-      this.context.play()
-    }
-    clickBtn=()=>{
-      this.context.src = click
-      this.context.play()
-    }
-    lose=()=>{
-      this.context.src = lose
-      this.context.play()
-    }
-    result=()=>{
-      this.context.src = result
-      this.context.play()
-    }
-
-    bgmRun(){
-      this.bgmContext.play()
-    }
-
-    _bgmPause(){
-      this.bgmContext.pause()
-    }
-
-
-   regiserListener(){//once only
-    
-      // context  play  start 
-     this.context.offPlay()
-     this.context.onPlay(()=>{
-       this._bgmPause()
-     })
-    //context play end 
-     this.context.offEnded()
-     this.context.onEnded( ()=>{
-       setTimeout(()=>{
-         this.bgmRun()
-       },1000)
-     })
-     return this
-   }
-
-   uber=()=>{
-    return this.context
-  } 
+class Voice {
+  constructor() {
+    this.context = wx.createInnerAudioContext()
+  }
+  destroy=()=>{
+    this.context.destroy()
+  }
+  playNextDay = () => {
+    this.context.src = nextDay
+    this.context.play()
+  }
+  playClick = () => {
+    this.context.src = click
+    this.context.play()
+  }
+  playLose = () => {
+    this.context.src = lose
+    this.context.play()
+  }
+  playWin = () => {
+    this.context.src = win
+    this.context.play()
+  }
+  playFail = () => {
+    this.context.src = fail
+    this.context.play()
+  }
+  playResult = () => {
+    this.context.src = result
+    this.context.play()
+  }
 }
-export { Voice }
+export {
+  Voice
+}

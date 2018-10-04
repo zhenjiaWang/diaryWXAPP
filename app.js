@@ -1,5 +1,6 @@
 //app.js
 const { wxPost, wxGet, wxRunAsync} = require('./utils/common.js')
+
 App({
   onLaunch: function () {
     // 展示本地存储能力
@@ -50,9 +51,7 @@ App({
     })
   },
   globalData: {
-    userData:null,
-    context1: wx.createInnerAudioContext(),
-    context2: wx.createInnerAudioContext()
+    userData:null
   },
   getUserId(){
     const that=this
