@@ -15,7 +15,8 @@ const options={
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
   onLoad: function () {
-    new Voice().nextDay()
+  
+    //new Voice().nextDay()
     const that = this
     app.appLogin().then(() => {
       if (app.globalData.userData.userId) {
@@ -70,7 +71,12 @@ const options={
         },
         ({ data }) => {
           if (data.errorCode >= 0) {
-            that.setData({ submitFlag: false,  dialogShow: true, dialogText: data.text })
+            that.blackScreen('过了一夜...',function(){
+              new Voice().nextDay()
+              that.setData({ maskShow: false })
+            },function(){
+              that.setData({ submitFlag: true,maskShow: true, dialogShow: true, dialogText: data.text })
+            })
           }
           console.info(data)
         }

@@ -26,6 +26,25 @@ function storeMixin(options) {
           parseUserState(data, that)
           that.setData({maskShow:false,dialogShow:false})
         })
+    },
+    blackScreen:function(text,blackCallback,doneCallback){
+      const that = this
+      that.setData({ nightClass: 'show' })
+      setTimeout(function () {
+        that.setData({ nightText: text })
+        if (blackCallback) {
+          blackCallback()
+        }
+      }, 1200)
+      setTimeout(function () {
+        that.setData({ nightClass: 'show hide', nightText: '' })
+      }, 2500)
+      setTimeout(function () {
+        that.setData({ nightClass: '' })
+        if (doneCallback){
+          doneCallback()
+        }
+      }, 3500)
     }
   }
   for (let k in options) {
