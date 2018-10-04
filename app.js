@@ -7,6 +7,27 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
     
+
+    const that = this
+    wx.checkSession({
+      success: function () {
+        const userid = wx.getStorageSync("userId")
+        const gender = wx.getStorageSync("gender")
+
+        if (!userid || !(gender===0 || gender===1)) {
+          that.getUserId()
+          console.info('userId been deleted ,reGetUserId')
+        } else {
+          that.globalData.userId = userid
+          console.info('userId from storage')
+        }
+      },
+      fail: function () {
+        that.getUserId()
+        console.info(' get userId timeout or be removed')
+      }
+    })
+
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -31,6 +52,29 @@ App({
   globalData: {
     userData:null
   },
+  getUserId(){
+    const that=this
+    // 登录
+    wx.login({
+      success: res => {
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        wxPost('/user/login',
+          { code: res.code },
+          ({ data }) => {
+            if (data.errorCode === 0) {
+              wx.setStorageSync('userId', data.userData.userId)
+              wx.setStorageSync('gender', data.userData.userGender)
+
+              that.globalData.userData = data.userData
+            }
+           
+          },
+          ({ data }) => {
+
+          })
+      }
+    })
+  },
   appLogin: function () {
     const that=this
     return wxRunAsync((resolve, reject)=>{
@@ -43,9 +87,10 @@ App({
             ({ data }) => {
               if (data.errorCode === 0) {
                 wx.setStorageSync('userId', data.userData.userId)
+                wx.setStorageSync('gender', data.userData.userGender)
+
                 that.globalData.userData = data.userData
               }
-              console.info(data)
               resolve()
             },
             ({ data }) => {

@@ -48,7 +48,7 @@
         
         <block wx:if='{{attrList.length > 0}}'>
           
-          <view class='one'>
+          <view class='one' wx:if="{{userGender}}">
             <view class='one-inner clearfix'>
               <text>我的房产</text>
               <view class='menu-btn {{userState.myHouseArray.length>0?"":"disable"}}' bindtap='showMyHouse'>
@@ -56,7 +56,7 @@
               </view>
             </view>
           </view>
-          <view class='one'>
+          <view class='one'  wx:if="{{userGender}}">
             <view class='one-inner clearfix'>
               <text>我的座驾</text>
               <view class='menu-btn {{userState.myCarArray.length>0?"":"disable"}}' bindtap='showMyCar'>
@@ -64,6 +64,24 @@
               </view>
             </view>
           </view>
+          <!--female prop -->
+           <view class='one' wx:if="{{!userGender}}">
+            <view class='one-inner clearfix'>
+              <text>我的华服</text>
+              <view class='menu-btn {{userState.myClothesArray.length>0?"":"disable"}}' bindtap='showMyClothes'>
+                <image src='../../img/icon-menu.png'></image>
+              </view>
+            </view>
+          </view>
+          <view class='one'  wx:if="{{!userGender}}">
+            <view class='one-inner clearfix'>
+              <text>我的排场</text>
+              <view class='menu-btn {{userState.myLuxuryArray.length>0?"":"disable"}}' bindtap='showMyLuxury'>
+                <image src='../../img/icon-menu.png'></image>
+              </view>
+            </view>
+          </view>
+          <!--common prop-->
           <view class='one'>
             <view class='one-inner clearfix'>
               <text class='clearfix'>
@@ -113,14 +131,27 @@
             <image src='../../img/btn-4.png'></image>
             <text>时来运转</text>
           </view>
-          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.houseLimit)?"":"disable"}}' bindtap='actionHouse'>
+
+          <!--male prop-->
+          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.houseLimit)?"":"disable"}}' bindtap='actionHouse' wx:if="{{userGender}}">
             <image src='../../img/btn-5.png'></image>
             <text>购房置业</text>
           </view>
-          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.carLimit)?"":"disable"}}' bindtap='actionCar'>
+          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.carLimit)?"":"disable"}}' bindtap='actionCar' wx:if="{{userGender}}">
             <image src='../../img/btn-6.png'></image>
             <text>座驾排场</text>
           </view>
+
+          <!--female prop-->
+           <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.clothesLimit)?"":"disable"}}' bindtap='actionClothes' wx:if="{{!userGender}}">
+            <image src='../../img/btn-5.png'></image>
+            <text>衣锦华服</text>
+          </view>
+          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.luxuryLimit)?"":"disable"}}' bindtap='actionLuxury' wx:if="{{!userGender}}">
+            <image src='../../img/btn-6.png'></image>
+            <text>仪丈排场</text>
+          </view>
+          <!--common prop-->
           <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.coupleLimit)?"":"disable"}}' bindtap='actionCouple'>
             <image src='../../img/btn-6.png'></image>
             <text>食色性也</text>
@@ -138,10 +169,18 @@
 <template is='popPlan' data='{{planShow,planItems,userState}}'></template>
 <template is='popHouse' data='{{houseShow,houseItems,userState}}'></template>
 <template is='popCar' data='{{carShow,carItems,userState}}'></template>
+<template is='popClothes' data='{{clothesShow,clothesItems,userState}}'></template>
+<template is='popLuxury' data='{{luxuryShow,luxuryItems,userState}}'></template>
+
 
 <template is='popMyJob' data='{{myJobShow,jobItems,userState}}'></template>
 <template is='popMyCar' data='{{myCarShow,carItems,userState}}'></template>
 <template is='popMyHouse' data='{{myHouseShow,houseItems,userState}}'></template>
+<template is='popMyClothes' data='{{myClothesShow,clothesItems,userState}}'></template>
+
+
+<template is='popMyLuxury' data='{{myLuxuryShow,luxuryItems,userState}}'></template>
+
 <!-- 随机事件弹出over -->
 <!-- 今日安排弹出begin -->
 

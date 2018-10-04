@@ -15,20 +15,37 @@ const options={
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
   onLoad: function () {
-  
-    //new Voice().nextDay()
-    const that = this
-    app.appLogin().then(() => {
-      if (app.globalData.userData.userId) {
-        that.setData({
-          userId: app.globalData.userData.userId,
-          userGender: app.globalData.userData.userGender,
-          hasUserInfo: true
-        })
-        that.start()
-        that.resData()
-      }
-    })
+   const that=this
+   const userId= wx.getStorageSync("userId")
+   const userGender = wx.getStorageSync("gender")
+   const userData = app.globalData.userData
+
+   this.setData({ userId, userGender })
+
+   if(userId){
+     this.start()
+     this.resData()
+   } else if (userData){
+     that.setData({
+       userId: userData.userId,
+       userGender: userData.userGender,
+       hasUserInfo: true
+     })
+     that.start()
+     that.resData()
+   } else{
+     app.appLogin().then(() => {
+       if (app.globalData.userData.userId) {
+         that.setData({
+           userId: app.globalData.userData.userId,
+           userGender: app.globalData.userData.userGender,
+           hasUserInfo: true
+         })
+         that.start()
+         that.resData()
+       }
+     })
+   }
   },
   resData: function () {
     const that = this
