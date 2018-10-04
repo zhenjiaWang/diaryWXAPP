@@ -26,7 +26,7 @@
 <template name="popPlan">
   <view class='pop pop2' hidden='{{!planShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-2.png' title="这里的图标是btn-1到btn-6"></image>
+      <image src='../../img/btn-2.png' ></image>
       <text>日常消遣</text>
       <view class='off' bindtap='closePlan'>
         <image src='../../img/off.png'></image>
@@ -50,7 +50,7 @@
 <template name="popJob">
   <view class='pop pop2' hidden='{{!jobShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-1.png' title="这里的图标是btn-1到btn-6"></image>
+      <image src='../../img/btn-1.png' ></image>
       <text>找工作</text>
       <view class='off' bindtap='closeJob'>
         <image src='../../img/off.png'></image>
@@ -111,7 +111,7 @@
 <template name="popHouse">
   <view class='pop pop2' hidden='{{!houseShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-4.png' title="这里的图标是btn-1到btn-6"></image>
+      <image src='../../img/btn-4.png' ></image>
       <text>购房置业</text>
       <view class='off' bindtap='closeHouse'>
         <image src='../../img/off.png'></image>
@@ -145,7 +145,7 @@
 <template name="popMyHouse">
   <view class='pop pop2' hidden='{{!myHouseShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-4.png' title="这里的图标是btn-1到btn-6"></image>
+      <image src='../../img/btn-4.png' ></image>
       <text>我的房产</text>
       <view class='off' bindtap='closeMyHouse'>
         <image src='../../img/off.png'></image>
@@ -179,7 +179,7 @@
 <template name="popCar">
   <view class='pop pop2' hidden='{{!carShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-4.png' title="这里的图标是btn-1到btn-6"></image>
+      <image src='../../img/btn-4.png' ></image>
       <text>座驾排场</text>
       <view class='off' bindtap='closeCar'>
         <image src='../../img/off.png'></image>
@@ -213,7 +213,7 @@
 <template name="popMyCar">
   <view class='pop pop2' hidden='{{!myCarShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-4.png' title="这里的图标是btn-1到btn-6"></image>
+      <image src='../../img/btn-4.png' ></image>
       <text>我的座驾</text>
       <view class='off' bindtap='closeMyCar'>
         <image src='../../img/off.png'></image>
@@ -249,7 +249,7 @@
 <template name="popClothes">
   <view class='pop pop2' hidden='{{!clothesShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-4.png' title="这里的图标是btn-1到btn-6"></image>
+      <image src='../../img/btn-4.png' ></image>
       <text>衣锦华服</text>
       <view class='off' bindtap='closeClothes'>
         <image src='../../img/off.png'></image>
@@ -283,7 +283,7 @@
 <template name="popMyClothes">
   <view class='pop pop2' hidden='{{!myClothesShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-4.png' title="这里的图标是btn-1到btn-6"></image>
+      <image src='../../img/btn-4.png' ></image>
       <text>衣锦华服</text>
       <view class='off' bindtap='closeMyClothes'>
         <image src='../../img/off.png'></image>
@@ -319,7 +319,7 @@
 <template name="popLuxury">
   <view class='pop pop2' hidden='{{!luxuryShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-4.png' title="这里的图标是btn-1到btn-6"></image>
+      <image src='../../img/btn-4.png' ></image>
       <text>仪丈排场</text>
       <view class='off' bindtap='closeLuxury'>
         <image src='../../img/off.png'></image>
@@ -353,7 +353,7 @@
 <template name="popMyLuxury">
   <view class='pop pop2' hidden='{{!myLuxuryShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-4.png' title="这里的图标是btn-1到btn-6"></image>
+      <image src='../../img/btn-4.png' ></image>
       <text>仪丈排场</text>
       <view class='off' bindtap='closeMyLuxury'>
         <image src='../../img/off.png'></image>
@@ -381,6 +381,37 @@
             bindtap='sellLuxury' data-id='{{item.id}}'>出 售</view>
       </view>
       
+    </view>
+  </view>
+</template>
+
+
+<template name="popLuck">
+  <view class='pop pop2' hidden='{{!luckShow}}'>
+    <view class='pop2-title clearfix'>
+      <image src='../../img/btn-2.png' ></image>
+      <text>时来运转</text>
+      <view class='off' bindtap='closeLuck'>
+        <image src='../../img/off.png'></image>
+      </view>
+    </view>
+    <view class='pop-main'>
+      <view class='tip'>
+          <view class='tip-inner'>
+              <image src='../../img/t.png' mode='widthFix'></image>
+              <text>每次消耗 1 个小时，每日限 1 次</text>
+          </view>
+      </view>
+      <view class='feed2 clearfix' wx:for="{{luckItems}}" wx:key="id">
+            <view class='feed2-left'>
+                <view class='job'>{{item.title}}</view>
+                <view class='money'>
+                    <text>{{item.investPrice}}</text>
+                </view>
+                <view>有概率获得{{item.gainPrice}}钱</view>
+            </view>
+            <view class='btn-mid {{tools.isEnableBtn(userState.hours,userState.luckLimit)?"":"disable"}}' bindtap='applyLuck' data-id='{{item.id}}'>试一次</view>
+        </view>
     </view>
   </view>
 </template>

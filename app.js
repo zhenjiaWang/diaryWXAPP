@@ -50,7 +50,9 @@ App({
     })
   },
   globalData: {
-    userData:null
+    userData:null,
+    context1: wx.createInnerAudioContext(),
+    context2: wx.createInnerAudioContext()
   },
   getUserId(){
     const that=this

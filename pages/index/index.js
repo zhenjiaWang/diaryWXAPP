@@ -4,6 +4,7 @@ const { wxGet, wxPost, parseUserState, isEnableBtn} = require('../../utils/commo
 import biz from '../../biz/biz.js'
 const app = getApp()
 import { Voice } from '../../utils/Voice.js'    
+const voice = new Voice(app.globalData.context1, app.globalData.context2)
 
 const options={
   data: {
@@ -15,6 +16,7 @@ const options={
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
   onLoad: function () {
+    voice.regiserListener().bgmRun()
    const that=this
    const userId= wx.getStorageSync("userId")
    const userGender = wx.getStorageSync("gender")
@@ -61,7 +63,8 @@ const options={
             houseItems: data.houseArray,
             clothesItems: data.clothesArray,
             luxuryItems: data.luxuryArray,
-            coupleItems: data.coupleArray
+            coupleItems: data.coupleArray,
+            luckItems: data.luckArray
           })
         }
       })
@@ -89,7 +92,7 @@ const options={
         ({ data }) => {
           if (data.errorCode >= 0) {
             that.blackScreen('过了一夜...',function(){
-              new Voice().nextDay()
+              voice.nextDay()
               that.setData({ maskShow: false })
             },function(){
               that.setData({ submitFlag: true,maskShow: true, dialogShow: true, dialogText: data.text })
