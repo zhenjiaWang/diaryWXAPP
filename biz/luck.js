@@ -6,15 +6,18 @@ export default {
   },
   actionLuck: function () {
     this.setData({ luckShow: true, maskShow: true })
+    this.voiceContext().playClick()
   },
   closeLuck: function () {
     this.setData({ luckShow: false, maskShow: false })
+    this.voiceContext().playClick()
   },
   applyLuck: function (e) {
     const that = this
     if (that.data.userState.luckLimit == 1 && that.data.submitFlag) {
       return false
     } else {
+      that.voiceContext().playClick()
       that.setData({ submitFlag: true })
       let luckId = e.currentTarget.dataset.id
       if (luckId) {
@@ -27,6 +30,7 @@ export default {
           ({ data }) => {
             if (data.errorCode >= 0) {
               that.setData({ submitFlag: false, luckShow: false, dialogShow: true, dialogText: data.text })
+              that.resultVoice(data,true)
             }
             console.info(data)
           }

@@ -3,8 +3,8 @@
 const { wxGet, wxPost, parseUserState, isEnableBtn} = require('../../utils/common.js')
 import biz from '../../biz/biz.js'
 const app = getApp()
-import { Voice } from '../../utils/Voice.js'    
-const voice = new Voice(app.globalData.context1, app.globalData.context2)
+import { Voice } from '../../utils/Voice.js'
+var voice=false
 
 const options={
   data: {
@@ -15,9 +15,20 @@ const options={
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
+  onUnload:function(){
+    if (voice){
+      voice.desrory()
+    }
+  },
+  voiceContext:function(){
+    if (voice) {
+      return voice
+    }
+  },
   onLoad: function () {
-    voice.regiserListener().bgmRun()
    const that=this
+   voice = new Voice()
+
    const userId= wx.getStorageSync("userId")
    const userGender = wx.getStorageSync("gender")
    const userData = app.globalData.userData
@@ -83,6 +94,7 @@ const options={
     if (that.data.userState.hour = 1 && that.data.submitFlag) {
       return false
     } else {
+      that.voiceContext().playClick()
       that.setData({ submitFlag: true,maskShow:true })
       wxPost(
         '/user/nextDay',
@@ -91,11 +103,12 @@ const options={
         },
         ({ data }) => {
           if (data.errorCode >= 0) {
+            that.voiceContext().playNextDay()
             that.blackScreen('过了一夜...',function(){
-              voice.nextDay()
               that.setData({ maskShow: false })
             },function(){
-              that.setData({ submitFlag: true,maskShow: true, dialogShow: true, dialogText: data.text })
+              that.voiceContext().playResult()
+              that.setData({ submitFlag: false,maskShow: true, dialogShow: true, dialogText: data.text })
             })
           }
           console.info(data)
