@@ -3,6 +3,10 @@ import plan from './plan.js'
 import car from './car.js'
 import house from './house.js'
 import couple from './couple.js'
+import clothes from './clothes.js'
+import luxury from './luxury.js'
+import luck from './luck.js'
+
 
 const { wxGet, parseUserState } = require('../utils/common.js')
 
@@ -59,4 +63,4 @@ function storeMixin(options) {
   return result;
 }
 
-export default storeMixin({ job, plan,car,house,couple })
+export default storeMixin({ job, plan, car, house, couple, clothes, luxury, luck})

@@ -1,49 +1,67 @@
-const { wxPost } = require('../utils/common.js')
-
-const bizName='luxury'
-const _bizName = bizName.charAt(0).toUpperCase + bizName.substring(1)
-
-export default { 
-  data:{
-    [`${bizName}Show`]: false,
-    [`${bizName}Items`]:[],
-    [`${bizName}CallLimit`]:1
+const { wxPost, isEnableBtn } = require('../utils/common.js')
+export default {
+  data: {
+    myLuxuryShow: false,
+    luxuryShow: false,
+    luxuryItems: []
   },
-  [`action${_bizName}`]() {
-    const obj = { maskShow: true }
-    obj[`${bizName}Show`] = true
-    this.setData(obj)
+  actionLuxury: function () {
+    this.setData({ luxuryShow: true, maskShow: true })
   },
-  [`close${_bizName}`] () {
-    const obj = { maskShow: false }
-    obj[`${bizName}Show`] = false
-    this.setData(obj)
+  closeLuxury: function () {
+    this.setData({ luxuryShow: false, maskShow: false })
   },
-  [`call${_bizName}`] (e) {
+  showMyLuxury: function () {
+    this.setData({ myLuxuryShow: true, maskShow: true })
+  },
+  closeMyLuxury: function () {
+    this.setData({ myLuxuryShow: false, maskShow: false })
+  },
+  buyLuxury: function (e) {
+    console.info(this.data.submitFlag)
     const that = this
-    if (that.data.userState.hours && that.data[`${bizName}CallLimit`]) {
-      const data = {}
-      data[`${bizName}CallLimit`] = 0
-      that.setData(data)
-      let id = e.currentTarget.dataset.id
-      console.info(id)
-      if (id) {
-        const params = { userId: that.data.userId }
-        params[`${bizName}Id`] = id
-        wxPost(`/user/call${_bizName}`, params,
+    if (that.data.userState.luxuryLimit == 1 && that.data.submitFlag) {
+      return false
+    } else {
+      that.setData({ submitFlag: true })
+      let luxuryId = e.currentTarget.dataset.id
+      if (luxuryId) {
+        wxPost(
+          '/user/buyLuxury',
+          {
+            userId: that.data.userId,
+            luxuryId: luxuryId
+          },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              const dialogData = {
-                dialogShow: true,
-                dialogText: data.text
-              }
-              dialogData[`${bizName}Show`] = false
-              that.setData(dialogData)
+              that.setData({ submitFlag: false, luxuryShow: false, dialogShow: true, dialogText: data.text })
             }
-            console.info(data)
+          }
+        )
+      }
+    }
+  },
+  sellLuxury: function (e) {
+    const that = this
+    if (that.data.userState.luxuryLimit == 1 && that.data.submitFlag) {
+      return false
+    } else {
+      that.setData({ submitFlag: true })
+      let luxuryId = e.currentTarget.dataset.id
+      if (luxuryId) {
+        wxPost(
+          '/user/sellLuxury',
+          {
+            userId: that.data.userId,
+            luxuryId: luxuryId
+          },
+          ({ data }) => {
+            if (data.errorCode >= 0) {
+              that.setData({ submitFlag: false, myLuxuryShow: false, luxuryShow: false, dialogShow: true, dialogText: data.text })
+            }
           }
         )
       }
     }
   }
- }
+}
