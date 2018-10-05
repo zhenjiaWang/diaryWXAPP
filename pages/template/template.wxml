@@ -261,7 +261,7 @@
 <template name="popClothes">
   <view class='pop pop2' hidden='{{!clothesShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-4.png' ></image>
+      <image src='../../img/btn-5.png' ></image>
       <text>衣锦华服</text>
       <view class='off' bindtap='closeClothes'>
         <image src='../../img/off.png'></image>
@@ -295,7 +295,7 @@
 <template name="popMyClothes">
   <view class='pop pop2' hidden='{{!myClothesShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-4.png' ></image>
+      <image src='../../img/btn-5.png' ></image>
       <text>衣锦华服</text>
       <view class='off' bindtap='closeMyClothes'>
         <image src='../../img/off.png'></image>
@@ -331,7 +331,7 @@
 <template name="popLuxury">
   <view class='pop pop2' hidden='{{!luxuryShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-4.png' ></image>
+      <image src='../../img/btn-6.png' ></image>
       <text>仪丈排场</text>
       <view class='off' bindtap='closeLuxury'>
         <image src='../../img/off.png'></image>
@@ -365,7 +365,7 @@
 <template name="popMyLuxury">
   <view class='pop pop2' hidden='{{!myLuxuryShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-4.png' ></image>
+      <image src='../../img/btn-6.png' ></image>
       <text>仪丈排场</text>
       <view class='off' bindtap='closeMyLuxury'>
         <image src='../../img/off.png'></image>
@@ -401,7 +401,7 @@
 <template name="popLuck">
   <view class='pop pop2' hidden='{{!luckShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-2.png' ></image>
+      <image src='../../img/btn-4.png' ></image>
       <text>时来运转</text>
       <view class='off' bindtap='closeLuck'>
         <image src='../../img/off.png'></image>
@@ -424,6 +424,37 @@
             </view>
             <view class='btn-mid {{tools.isEnableBtn(userState.hours,userState.luckLimit)?"":"disable"}}' bindtap='applyLuck' data-id='{{item.id}}'>试一次</view>
         </view>
+    </view>
+  </view>
+</template>
+
+
+
+<template name="popCouple">
+  <view class='pop pop2' hidden='{{!coupleShow}}'>
+    <view class='pop2-title clearfix'>
+      <image src='../../img/btn-6.png' ></image>
+      <text>食色性也</text>
+      <view class='off' bindtap='closeCouple'>
+        <image src='../../img/off.png'></image>
+      </view>
+    </view>
+    <view class='pop-main'>
+      <view class='tip'>
+          <view class='tip-inner'>
+              <image src='../../img/t.png' mode='widthFix'></image>
+              <text >每次消耗 1 个小时，每日限 1 次</text>
+          </view>
+      </view>
+      <view class='feed2 clearfix' wx:for='{{coupleItems}}' wx:key='id'>
+        <view class='feed2-left'>
+          <view class='job'>{{item.title}}</view>
+          <view class='money'>{{item.mate?item.mate.name:'当前无对象'}}</view>
+          <view>{{item.remarks}}</view>
+        </view>
+        <view wx:if='{{userState.myCoupleId===item.id}}' class='job-btn in-job disable' ></view>
+        <view wx:else class='job-btn  {{tools.isEnableBtn(userState.hours,userState.coupleLimit)?"":"disable"}}' bindtap='applyCouple' data-id='{{item.id}}'></view>
+      </view>
     </view>
   </view>
 </template>

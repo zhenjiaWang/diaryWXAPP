@@ -1,24 +1,40 @@
+const { wxPost, isEnableBtn } = require('../utils/common.js')
 export default {
   data: {
     coupleShow: false,
-    coupleItems: []
+    jobItems: []
   },
   actionCouple: function () {
-  //  this.setData({ coupleShow: true, maskShow: true })
-    const that=this
-    that.setData({ dialogShow: true })
-    // that.setData({nightClass:'show'})
-    // setTimeout(function(){
-    //   that.setData({ nightText: '过了一夜...' })
-    // },1200)
-    // setTimeout(function () {
-    //   that.setData({ nightClass: 'show hide', nightText: '' })
-    // }, 2500)
-    // setTimeout(function () {
-    //   that.setData({nightClass:'',nightText:'' })
-    // }, 3500)
+    this.setData({ coupleShow: true, maskShow: true })
+    this.voiceContext().playClick()
   },
   closeCouple: function () {
     this.setData({ coupleShow: false, maskShow: false })
+    this.voiceContext().playClick()
+  },
+  applyCouple: function (e) {
+    const that = this
+    if (that.data.userState.coupleLimit == 1 && that.data.submitFlag) {
+      return false
+    } else {
+      that.voiceContext().playClick()
+      that.setData({ submitFlag: true })
+      let coupleId = e.currentTarget.dataset.id
+      if (coupleId) {
+        wxPost(
+          '/user/applyCouple',
+          {
+            userId: that.data.userId,
+            coupleId: coupleId
+          },
+          ({ data }) => {
+            if (data.errorCode >= 0) {
+              that.setData({ submitFlag: false, coupleShow: false, dialogShow: true, dialogResult: data.resultArray })
+              that.resultVoice(data, true)
+            }
+          }
+        )
+      }
+    }
   }
 }
