@@ -7,21 +7,26 @@ export default {
   },
   actionCar: function () {
     this.setData({ carShow: true, maskShow: true })
+    this.voiceContext().playClick()
   },
   closeCar: function () {
     this.setData({ carShow: false, maskShow: false })
+    this.voiceContext().playClick()
   },
   showMyCar: function () {
     this.setData({ myCarShow: true, maskShow: true })
+    this.voiceContext().playClick()
   },
   closeMyCar: function () {
     this.setData({ myCarShow: false, maskShow: false })
+    this.voiceContext().playClick()
   },
   buyCar:function(e){
     const that = this
     if (that.data.userState.carLimit == 1 && that.data.submitFlag) {
       return false
     } else {
+      that.voiceContext().playClick()
       that.setData({ submitFlag: true })
       let carId = e.currentTarget.dataset.id
       if (carId) {
@@ -34,6 +39,7 @@ export default {
           ({ data }) => {
             if (data.errorCode >= 0) {
               that.setData({ submitFlag: false, carShow: false, dialogShow: true, dialogText: data.text })
+              that.resultVoice(data)
             }
             console.info(data)
           }
@@ -46,6 +52,7 @@ export default {
     if (that.data.userState.carLimit == 1 && that.data.submitFlag) {
       return false
     } else {
+      that.voiceContext().playClick()
       that.setData({ submitFlag: true })
       let carId = e.currentTarget.dataset.id
       if (carId) {
@@ -58,6 +65,7 @@ export default {
           ({ data }) => {
             if (data.errorCode >= 0) {
               that.setData({ submitFlag: false, myCarShow:false,carShow: false, dialogShow: true, dialogText: data.text })
+              that.resultVoice(data,true)
             }
             console.info(data)
           }

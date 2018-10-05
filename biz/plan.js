@@ -1,8 +1,6 @@
 const { wxPost, isEnableBtn } = require('../utils/common.js')
 
 const app=getApp()
-import { Voice } from '../utils/Voice.js'
-const voice = new Voice(app.globalData.context1, app.globalData.context2)
 
 export default {
   data: {
@@ -11,18 +9,18 @@ export default {
   },
   actionPlan: function () {
     this.setData({ planShow: true, maskShow: true })
-    voice.clickBtn()
+    this.voiceContext().playClick()
   },
   closePlan: function () {
     this.setData({ planShow: false, maskShow: false })
-    voice.clickBtn()
+    this.voiceContext().playClick()
   },
   applyPlan: function (e) {
     const that = this
-    if (that.data.userState.planLimit == 1 && that.data.submitFlag) {
+    if (that.data.submitFlag) {
       return false
     } else {
-      voice.clickBtn()
+      this.voiceContext().playClick()
       that.setData({ submitFlag: true })
       let planId = e.currentTarget.dataset.id
       console.info(planId)
@@ -36,8 +34,8 @@ export default {
           ({ data }) => {
             if (data.errorCode >= 0) {
               that.setData({ submitFlag:false,planShow: false, dialogShow: true, dialogText: data.text })
+              that.resultVoice(data)
             }
-            voice.result()
             console.info(data)
           }
         )
