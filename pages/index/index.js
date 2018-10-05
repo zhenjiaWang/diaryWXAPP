@@ -108,7 +108,7 @@ const options={
               that.setData({ maskShow: false })
             },function(){
               that.voiceContext().playResult()
-              that.setData({ submitFlag: false,maskShow: true, dialogShow: true, dialogText: data.text })
+              that.setData({ submitFlag: false, maskShow: true, dialogShow: true, dialogResult: data.resultArray })
             })
           }
           console.info(data)

@@ -38,7 +38,7 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.setData({ submitFlag: false, houseShow: false, dialogShow: true, dialogText: data.text })
+              that.setData({ submitFlag: false, houseShow: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }
             console.info(data)
@@ -52,6 +52,7 @@ export default {
     if (that.data.userState.houseLimit == 1 && that.data.submitFlag) {
       return false
     } else {
+      that.voiceContext().playClick()
       that.setData({ submitFlag: true })
       let houseId = e.currentTarget.dataset.id
       if (houseId) {
@@ -63,7 +64,8 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.setData({ submitFlag: false, myHouseShow: false, houseShow: false, dialogShow: true, dialogText: data.text })
+              that.setData({ submitFlag: false, myHouseShow: false, houseShow: false, dialogShow: true, dialogResult: data.resultArray })
+              that.resultVoice(data)
             }
             console.info(data)
           }

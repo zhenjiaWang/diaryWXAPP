@@ -38,7 +38,7 @@ export default {
           },
           ({ data }) => {
             if(data.errorCode>=0){
-              that.setData({ submitFlag:false,jobShow: false, dialogShow: true, dialogText: data.text })
+              that.setData({ submitFlag: false, jobShow: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }
             console.info(data)
