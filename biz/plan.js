@@ -20,7 +20,7 @@ export default {
     if (that.data.submitFlag) {
       return false
     } else {
-      this.voiceContext().playClick()
+      that.voiceContext().playClick()
       that.setData({ submitFlag: true })
       let planId = e.currentTarget.dataset.id
       console.info(planId)
@@ -33,7 +33,7 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.setData({ submitFlag:false,planShow: false, dialogShow: true, dialogText: data.text })
+              that.setData({ submitFlag: false, planShow: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }
             console.info(data)

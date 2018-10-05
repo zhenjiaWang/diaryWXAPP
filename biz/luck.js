@@ -29,7 +29,7 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.setData({ submitFlag: false, luckShow: false, dialogShow: true, dialogText: data.text })
+              that.setData({ submitFlag: false, luckShow: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data,true)
             }
             console.info(data)

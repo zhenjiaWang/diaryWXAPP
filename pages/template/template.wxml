@@ -6,9 +6,21 @@
 </template>
 <template name="popDialog">
   <view class='pop' hidden='{{!dialogShow}}'>
-    <view class='story' style='height:350rpx;'>
+    <view class='story' style='min-height:380rpx;'>
       <view class='text-center'><image src='../../img/jieguo.png' mode='widthFix'></image></view>
-      <text>{{dialogText}}</text>
+      <view class='game-result clearfix'>
+            <view class='result-one' wx:for='{{dialogResult}}' wx:key='*this'>
+                <view class='title'>{{item.text}}</view>
+                <view class='clearfix' wx:if='{{item.effectArray&&item.effectArray.length >0}}'>
+                    <view class='view-one' wx:for='{{item.effectArray}}' wx:for-item="effect" wx:key='*this'>
+                        <text>{{effect.attrName}}</text>
+                        <text class='{{effect.op}}'>{{effect.value}}</text>
+                    </view>
+                    
+                </view>
+            </view>
+        </view>
+      <!-- <text>{{dialogText}}</text> -->
     </view>
     <view class='btn-2' bindtap='dialogOK'>{{dialogBtn}}</view>
   </view>

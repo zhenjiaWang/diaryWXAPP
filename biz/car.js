@@ -38,7 +38,7 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.setData({ submitFlag: false, carShow: false, dialogShow: true, dialogText: data.text })
+              that.setData({ submitFlag: false, carShow: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }
             console.info(data)
@@ -64,8 +64,8 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.setData({ submitFlag: false, myCarShow:false,carShow: false, dialogShow: true, dialogText: data.text })
-              that.resultVoice(data,true)
+              that.setData({ submitFlag: false, myCarShow: false, carShow: false, dialogShow: true, dialogResult: data.resultArray })
+              that.resultVoice(data)
             }
             console.info(data)
           }
