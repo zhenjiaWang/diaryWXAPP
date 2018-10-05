@@ -16,7 +16,7 @@ const commonData = {
   submitFlag: false,
   maskShow: false,
   dialogShow:false,
-  dialogText:'',
+  dialogResult:'',
   dialogBtn:'确 定'
 }
 function storeMixin(options) {

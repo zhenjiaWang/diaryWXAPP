@@ -327,3 +327,33 @@ page{overflow: hidden;}
         opacity: 0;
     }
 }
+.game-result{
+    width: 600rpx;
+    padding-left:5rpx;
+    height:380rpx;
+    overflow-y: auto;
+}
+.game-result .title{
+    font-size:30rpx;
+    padding-bottom:10rpx;
+}
+.pull-right{
+    float: right;
+}
+.add,.sub{
+    color:#f7d157;
+    font-size:32rpx;
+    text-shadow: 
+                0 0 1px #000, 
+                0 0 1px #000,
+                0 0 1px #000,
+                0 0 1px #000,
+                0 0 1px #000;
+}
+.sub{color:#ed7c7c;}
+.view-one{width: 50%;float:left;line-height: 1.6;font-size:28rpx;}
+.view-one text:first-child{
+    display: inline-block;
+    min-width: 100rpx;
+}
+.result-one{margin-bottom: 20rpx;}

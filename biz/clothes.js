@@ -39,7 +39,7 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.setData({ submitFlag: false, clothesShow: false, dialogShow: true, dialogText: data.text })
+              that.setData({ submitFlag: false, clothesShow: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }
           }
@@ -52,6 +52,7 @@ export default {
     if (that.data.userState.clothesLimit == 1 && that.data.submitFlag) {
       return false
     } else {
+      that.voiceContext().playClick()
       that.setData({ submitFlag: true })
       let clothesId = e.currentTarget.dataset.id
       if (clothesId) {
@@ -63,7 +64,8 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.setData({ submitFlag: false, myClothesShow: false, clothesShow: false, dialogShow: true, dialogText: data.text })
+              that.setData({ submitFlag: false, myClothesShow: false, clothesShow: false, dialogShow: true, dialogResult: data.resultArray })
+              that.resultVoice(data)
             }
           }
         )

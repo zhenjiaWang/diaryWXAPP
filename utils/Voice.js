@@ -10,6 +10,7 @@ const fail = `${host}/fail.mp3`
 class Voice {
   constructor() {
     this.context = wx.createInnerAudioContext()
+    this.context.volume=0.3
   }
   destroy=()=>{
     this.context.destroy()
