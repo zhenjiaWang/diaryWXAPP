@@ -24,7 +24,7 @@ export default {
         wxPost(
           '/user/applyLuck',
           {
-            userId: that.data.userId,
+            userId: that.data.userData.userId,
             luckId: luckId
           },
           ({ data }) => {

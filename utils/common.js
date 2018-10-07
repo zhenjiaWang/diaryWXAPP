@@ -40,19 +40,15 @@ exports.parseUserState = (data,that) =>{
     for (var i = 0; i < data.attrList.length; i++) {
       data.attrList[i]['textArray'] = data.attrList[i]['text'].split('')
       data.attrList[i]['length'] = data.attrList[i]['text'].length
-      data.userState[data.attrList[i]['value']] = data.userState[data.attrList[i]['value']].replace(',', 'f')
-      data.userState[data.attrList[i]['value'] + 'Array'] = data.userState[data.attrList[i]['value']].split('')
       data.userState[data.attrList[i]['value'] + 'Length'] = data.userState[data.attrList[i]['value']].length
-      data.userState[data.attrList[i]['value'] + 'Color'] = ''
+      data.userState[data.attrList[i]['value'] + 'Color'] = '1'
       if (data.attrList[i]['value'] === 'money' || data.attrList[i]['value'] === 'profit') {
-        data.userState[data.attrList[i]['value'] + 'Color'] = 'm'
+        data.userState[data.attrList[i]['value'] + 'Color'] = '2'
       }
       if (data.attrList[i]['value'] === 'happy') {
-        data.userState[data.attrList[i]['value'] + 'Color'] = 'red'
+        data.userState[data.attrList[i]['value'] + 'Color'] = '3'
       }
     }
-    data.userState['daysArray'] = data.userState['days'].split('')
-    data.userState['hoursArray'] = data.userState['hours'].split('')
     that.setData({
       attrList: data.attrList,
       userState: data.userState

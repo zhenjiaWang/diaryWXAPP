@@ -28,7 +28,7 @@ export default {
         wxPost(
           '/user/applyPlan',
           {
-            userId: that.data.userId,
+            userId: that.data.userData.userId,
             planId: planId
           },
           ({ data }) => {
