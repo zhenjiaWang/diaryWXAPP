@@ -1,4 +1,4 @@
-const { wxPost, isEnableBtn } = require('../utils/common.js')
+const { wxPost, isEnableBtn, showMaskNavigationBarColor, closeMaskNavigationBarColor } = require('../utils/common.js')
 
 const app=getApp()
 
@@ -8,10 +8,12 @@ export default {
     planItems: []
   },
   actionPlan: function () {
+    showMaskNavigationBarColor()
     this.setData({ planShow: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closePlan: function () {
+    closeMaskNavigationBarColor()
     this.setData({ planShow: false, maskShow: false })
     this.voiceContext().playClick()
   },

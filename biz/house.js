@@ -1,4 +1,4 @@
-const { wxPost, isEnableBtn } = require('../utils/common.js')
+const { wxPost, isEnableBtn, showMaskNavigationBarColor, closeMaskNavigationBarColor} = require('../utils/common.js')
 export default {
   data: {
     myHouseShow: false,
@@ -6,18 +6,22 @@ export default {
     houseItems: []
   },
   actionHouse: function () {
+    showMaskNavigationBarColor()
     this.setData({ houseShow: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeHouse: function () {
+    closeMaskNavigationBarColor()
     this.setData({ houseShow: false, maskShow: false })
     this.voiceContext().playClick()
   },
   showMyHouse: function () {
+    showMaskNavigationBarColor()
     this.setData({ myHouseShow: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeMyHouse: function () {
+    closeMaskNavigationBarColor()
     this.setData({ myHouseShow: false, maskShow: false })
     this.voiceContext().playClick()
   },

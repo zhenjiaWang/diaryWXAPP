@@ -29,7 +29,7 @@ const options={
    
    that.blackScreen('quickShow', '开始体验之旅...喵喵喵？', function () {
      that.setData({ maskShow: false })
-     ///that.setData({ eventShow: true, maskShow: true})
+     //that.setData({ eventShow: true, maskShow: true})
     }, function () {
    })
 

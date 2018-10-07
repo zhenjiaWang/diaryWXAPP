@@ -28,10 +28,11 @@
 <template name="popEvent">
   <view class='pop' hidden='{{!eventShow}}'>
     <view class='story'>
-      <text>你女朋友微信告诉你，我要去锻炼跑步，需要一个蓝牙运动耳机，可这月你囊中羞涩，怎么办？</text>
+    <view class='text-center'><image src='../../img/ouyu.png' mode='widthFix'></image></view>
+      <text>应酬归来，腰酸无力，百度看到治疗广告</text>
     </view>
-    <view class='btn-2'>专心跑步，别听歌了</view>
-    <view class='btn-2'>买个新的去</view>
+    <view class='btn-2'>买来试试</view>
+    <view class='btn-2'>不买</view>
   </view>
 </template>
 
@@ -449,7 +450,10 @@
       <view class='feed2 clearfix' wx:for='{{coupleItems}}' wx:key='id'>
         <view class='feed2-left'>
           <view class='job'>{{item.title}}</view>
-          <view class='money'>{{tools.getCoupleState(coupleState,item.id)}}</view>
+          <view class='money'>
+            <text>{{tools.getCoupleStateName(coupleState,item.id)}}</text>
+            <image wx:if='{{tools.isCouple(coupleState,item.id)}}' src='{{tools.getCoupleStateAvatar(coupleState,item.id)}}' class='user-photo' mode='widthFix'></image>
+          </view>
           <view>{{item.remarks}}</view>
         </view>
         <view wx:if='{{userState.myCoupleId===item.id}}' class='mf-btn2 {{tools.isEnableBtn(userState.hours,userState.coupleLimit)?"":"disable"}}' 
@@ -479,7 +483,10 @@
       <view class='feed2 clearfix' wx:for='{{coupleItems}}' wx:key='id' wx:if='{{userState.myCoupleId===item.id}}'>
         <view class='feed2-left'>
           <view class='job'>{{item.title}}</view>
-          <view class='money'>当前对象：{{userData.userNickName}}</view>
+          <view class='money'>
+            <text>当前对象：{{userData.userNickName}}</text>
+            <image src='{{userData.userAvatarUrl}}' class='user-photo' mode='widthFix'></image>
+          </view>
           <view>{{item.remarks}}</view>
         </view>
         <view class='mf-btn2 {{(tools.isEnableBtn(userState.hours,userState.coupleLimit)&&userState.myCoupleId===item.id)?"":"disable"}}' 

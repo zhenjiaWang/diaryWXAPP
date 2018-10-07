@@ -1,4 +1,4 @@
-const { wxPost, isEnableBtn } = require('../utils/common.js')
+const { wxPost, isEnableBtn, showMaskNavigationBarColor, closeMaskNavigationBarColor } = require('../utils/common.js')
 export default {
   data: {
     myLuxuryShow: false,
@@ -6,18 +6,22 @@ export default {
     luxuryItems: []
   },
   actionLuxury: function () {
+    showMaskNavigationBarColor()
     this.setData({ luxuryShow: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeLuxury: function () {
+    closeMaskNavigationBarColor()
     this.setData({ luxuryShow: false, maskShow: false })
     this.voiceContext().playClick()
   },
   showMyLuxury: function () {
+    showMaskNavigationBarColor()
     this.setData({ myLuxuryShow: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeMyLuxury: function () {
+    closeMaskNavigationBarColor()
     this.setData({ myLuxuryShow: false, maskShow: false })
     this.voiceContext().playClick()
   },

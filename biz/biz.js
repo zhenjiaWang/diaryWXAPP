@@ -8,7 +8,7 @@ import luxury from './luxury.js'
 import luck from './luck.js'
 import event from './event.js'
 
-const { wxGet, parseUserState } = require('../utils/common.js')
+const { wxGet, parseUserState, showMaskNavigationBarColor,closeMaskNavigationBarColor } = require('../utils/common.js')
 
 const commonData = {
   nightClass:'',
@@ -26,11 +26,13 @@ function storeMixin(options) {
     data: commonData,
     closeTip: function () {
       const that = this
+      closeMaskNavigationBarColor()
       that.voiceContext().playClick()
       that.setData({ tipShow: false, maskShow: false })
     },
     actionTip: function () {
       const that = this
+      showMaskNavigationBarColor()
       that.voiceContext().playClick()
       that.setData({tipShow:true,maskShow:true})
     },
@@ -55,6 +57,7 @@ function storeMixin(options) {
         false,
         ({ data }) => {
           parseUserState(data, that)
+          closeMaskNavigationBarColor()
           that.setData({maskShow:false,dialogShow:false})
         })
     },
