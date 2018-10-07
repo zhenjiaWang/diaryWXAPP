@@ -1,4 +1,4 @@
-const { wxPost, wxGet,isEnableBtn } = require('../utils/common.js')
+const { wxPost, wxGet, isEnableBtn, showMaskNavigationBarColor, closeMaskNavigationBarColor } = require('../utils/common.js')
 export default {
   data: {
     myCoupleShow: false,
@@ -14,19 +14,23 @@ export default {
       ({ data }) => {
         console.info(data)
         if (data.errorCode === 0) {
+          showMaskNavigationBarColor()
           that.setData({ coupleShow: true, maskShow: true, coupleState: data.state })
         }
       })
   },
   closeCouple: function () {
+    closeMaskNavigationBarColor()
     this.setData({ coupleShow: false, maskShow: false })
     this.voiceContext().playClick()
   },
   showMyCouple: function () {
+    showMaskNavigationBarColor()
     this.setData({ myCoupleShow: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeMyCouple: function () {
+    closeMaskNavigationBarColor()
     this.setData({ myCoupleShow: false, maskShow: false })
     this.voiceContext().playClick()
   },

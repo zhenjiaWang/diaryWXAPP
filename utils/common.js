@@ -55,6 +55,26 @@ exports.parseUserState = (data,that) =>{
     })
   }
 }
+exports.showMaskNavigationBarColor=()=>{
+  wx.setNavigationBarColor({
+    frontColor: '#ffffff',
+    backgroundColor: '#0e1934',
+    animation: {
+      duration: 200,
+      timingFunc: 'easeIn'
+    }
+  })
+}
+exports.closeMaskNavigationBarColor = () => {
+  wx.setNavigationBarColor({
+    frontColor: '#ffffff',
+    backgroundColor: '#2e55af',
+    animation: {
+      duration: 200,
+      timingFunc: 'easeOut'
+    }
+  })
+}
 
 exports.isEnableBtn = (hour, limitCount) =>{
   return (hour == 0 || limitCount == 1) ? false : true
