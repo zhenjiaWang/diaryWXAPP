@@ -33,7 +33,7 @@ export default {
         wxPost(
           '/user/applyJob',
           {
-            userId:that.data.userId,
+            userId:that.data.userData.userId,
             jobId:jobId
           },
           ({ data }) => {

@@ -26,12 +26,12 @@
   </view>
 </template>
 <template name="popEvent">
-  <view class='pop' style='display:none;'>
+  <view class='pop' hidden='{{!eventShow}}'>
     <view class='story'>
-      <text>有人向你兜售一些读起来很刺激的书籍和看着就让人脸红心跳加速的图册，你要买几本吗？</text>
+      <text>你女朋友微信告诉你，我要去锻炼跑步，需要一个蓝牙运动耳机，可这月你囊中羞涩，怎么办？</text>
     </view>
-    <view class='btn-2'>要</view>
-    <view class='btn-2'>不 要</view>
+    <view class='btn-2'>专心跑步，别听歌了</view>
+    <view class='btn-2'>买个新的去</view>
   </view>
 </template>
 
@@ -72,7 +72,7 @@
       <view class='tip'>
           <view class='tip-inner'>
               <image src='../../img/t.png' mode='widthFix'></image>
-              <text >每次消耗 1 个小时，每日限 1 次</text>
+              <text >找份工作干，每天可以获得一些工钱。只要你能力才干和江湖经验足够，这将会是你稳定的金钱来源每次消耗 1 个小时，每日限 1 次</text>
           </view>
       </view>
       <view class='feed2 clearfix' wx:for='{{jobItems}}' wx:key='id'>
@@ -418,7 +418,7 @@
             <view class='feed2-left'>
                 <view class='job'>{{item.title}}</view>
                 <view class='money'>
-                    <text>{{item.investPrice}}</text>
+                    <text>投{{item.investPrice}}</text>
                 </view>
                 <view>有概率获得{{item.gainPrice}}钱</view>
             </view>
@@ -449,11 +449,70 @@
       <view class='feed2 clearfix' wx:for='{{coupleItems}}' wx:key='id'>
         <view class='feed2-left'>
           <view class='job'>{{item.title}}</view>
-          <view class='money'>{{item.mate?item.mate.name:'当前无对象'}}</view>
+          <view class='money'>{{tools.getCoupleState(coupleState,item.id)}}</view>
           <view>{{item.remarks}}</view>
         </view>
-        <view wx:if='{{userState.myCoupleId===item.id}}' class='job-btn in-job disable' ></view>
-        <view wx:else class='job-btn  {{tools.isEnableBtn(userState.hours,userState.coupleLimit)?"":"disable"}}' bindtap='applyCouple' data-id='{{item.id}}'></view>
+        <view wx:if='{{userState.myCoupleId===item.id}}' class='mf-btn2 {{tools.isEnableBtn(userState.hours,userState.coupleLimit)?"":"disable"}}' 
+        bindtap='breakUp' data-id='{{item.id}}'></view>
+        <view wx:else class='mf-btn  {{tools.isEnableBtn(userState.hours,userState.coupleLimit)?"":"disable"}}' bindtap='relationship' data-id='{{item.id}}'></view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<template name="popMyCouple">
+  <view class='pop pop2' hidden='{{!myCoupleShow}}'>
+    <view class='pop2-title clearfix'>
+      <image src='../../img/btn-6.png' ></image>
+      <text>我的伴侣</text>
+      <view class='off' bindtap='closeMyCouple'>
+        <image src='../../img/off.png'></image>
+      </view>
+    </view>
+    <view class='pop-main'>
+      <view class='tip'>
+          <view class='tip-inner'>
+              <image src='../../img/t.png' mode='widthFix'></image>
+              <text></text>
+          </view>
+      </view>
+      <view class='feed2 clearfix' wx:for='{{coupleItems}}' wx:key='id' wx:if='{{userState.myCoupleId===item.id}}'>
+        <view class='feed2-left'>
+          <view class='job'>{{item.title}}</view>
+          <view class='money'>当前对象：{{userData.userNickName}}</view>
+          <view>{{item.remarks}}</view>
+        </view>
+        <view class='mf-btn2 {{(tools.isEnableBtn(userState.hours,userState.coupleLimit)&&userState.myCoupleId===item.id)?"":"disable"}}' 
+        bindtap='breakUp' data-id='{{item.id}}'></view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<template name="popTip">
+  <view class='pop pop2' hidden='{{!tipShow}}'>
+    <view class='pop2-title clearfix'>
+      <image src='../../img/btn-6.png' ></image>
+      <text>提示</text>
+      <view class='off' bindtap='closeTip'>
+        <image src='../../img/off.png'></image>
+      </view>
+    </view>
+    <view class='pop-main'>
+      <view class='tip'>
+          <view class='tip-inner'>
+              <image src='../../img/t.png' mode='widthFix'></image>
+              <text >每次消耗 1 个小时，每日限 1 次</text>
+          </view>
+      </view>
+      <view class='feed2 clearfix' wx:for='{{tipItems}}' wx:key='id'>
+        <view class='feed2-left'>
+          <view class='money'>{{item.title}}</view>
+          <view >{{item.remarks}}</view>
+          <!-- <view>{{item.remarks}}</view> -->
+        </view>
+        <!-- <view wx:if='{{userState.myCoupleId===item.id}}' class='job-btn in-job disable' ></view>
+        <view wx:else class='job-btn  {{tools.isEnableBtn(userState.hours,userState.coupleLimit)?"":"disable"}}' bindtap='applyCouple' data-id='{{item.id}}'></view> -->
       </view>
     </view>
   </view>

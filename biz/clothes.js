@@ -34,7 +34,7 @@ export default {
         wxPost(
           '/user/buyClothes',
           {
-            userId: that.data.userId,
+            userId: that.data.userData.userId,
             clothesId: clothesId
           },
           ({ data }) => {
@@ -59,7 +59,7 @@ export default {
         wxPost(
           '/user/sellClothes',
           {
-            userId: that.data.userId,
+            userId: that.data.userData.userId,
             clothesId: clothesId
           },
           ({ data }) => {

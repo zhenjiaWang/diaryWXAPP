@@ -3,10 +3,10 @@
 <view class='game-main'>
   <view class='top-title'>
     <image class='icon-1' src='../../img/icon-1.png' mode="widthFix"></image>
-    <text class='num-box'>游戏还剩<text class='num-big'><text class='num{{item}}' wx:for='{{userState["daysArray"]}}' wx:key='*this'></text></text>天</text>
+    <text class='num-box'>游戏还剩<text class='numFont font60 color1'>{{userState.days}}</text>天</text>
     <image class='icon-2' src='../../img/line-bg.png' mode="widthFix"></image>
     <image class='icon-1' src='../../img/icon-2.png' mode="widthFix"></image>
-    <text class='num-box'>今日还剩<text class='num-big'><text class='num{{item}}' wx:for='{{userState["hoursArray"]}}' wx:key='*this'></text></text>小时</text>
+    <text class='num-box'>今日还剩<text class='numFont font60 color1'>{{userState.hours}}</text>小时</text>
     <text hidden='{{userState.days>0}}' class='next-day {{userState.hours>0?"disable":""}}' bindtap='nextDay'></text>
   </view>
   <view class='game-info clearfix'>
@@ -26,23 +26,11 @@
             <block wx:else>
               <text>{{item.text}}</text>
             </block>
-            <block  wx:if='{{userState[item.value+"Length"] <= 3}}'>
-            <!--
-            num-m 黄色
-            num-red 红色
-            -->
-              <text class='num-big num-{{userState[item.value+"Color"]}} clearfix'>
-                  <text  class='num{{item}}' wx:for='{{userState[item.value+"Array"]}}' wx:key='*this'></text>
-              </text> 
-            </block>
-            <block  wx:else>
-              <text class='num-big num-{{userState[item.value+"Color"]}} num-small clearfix'>
-                <block  wx:for='{{userState[item.value+"Array"]}}' wx:key='*this'>
-                  <text wx:if='{{item==="f"}}' class='num-{{item}}'></text>
-                  <text wx:if='{{item!=="f"}}' class='num{{item}}'></text>
-                </block>
-              </text>
-            </block>
+            <text class='num-big'>
+                <text wx:if='{{userState[item.value+"Length"] <= 3}}' class='numFont font60 color{{userState[item.value+"Color"]}}'>{{userState[item.value]}}</text>
+                <text wx:elif='{{userState[item.value+"Length"] <= 7}}'  class='numFont font40 color{{userState[item.value+"Color"]}}'>{{userState[item.value]}}</text>
+                <text wx:else  class='numFont font30 color{{userState[item.value+"Color"]}}'>{{userState[item.value]}}</text>
+            </text>
           </view>
         </view>
         
@@ -88,7 +76,7 @@
               <text class='pull-left'>伴</text>
               <text class='pull-right'>侣</text>
               </text>
-              <view class='menu-btn'>
+              <view class='menu-btn {{userState.myCoupleId.length>0?"":"disable"}}' bindtap='showMyCouple'>
                 <image src='../../img/icon-menu.png'></image>
               </view>
             </view>
@@ -113,6 +101,7 @@
         <view class='icon-right'></view>
         <view class='title-img'>
           <image src="../../img/title-right.png" mode="widthFix"></image>
+          <image src='../../img/t.png' class='ask' bindtap='actionTip'></image>
         </view>
         <view class='right-inner'>
           <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.jobLimit)?"":"disable"}}' bindtap='actionJob'>
@@ -163,6 +152,7 @@
 </view>
 <!-- 随机事件弹出begin -->
 <view class='mask' hidden='{{!maskShow}}'></view>
+<template is='popTip' data='{{tipShow,tipItems,userState}}'></template>
 <template is='popNight' data='{{nightClass,nightText}}'></template>
 <template is='popDialog' data='{{dialogShow,dialogResult,dialogBtn}}'></template>
 <template is='popJob' data='{{jobShow,jobItems,userState}}'></template>
@@ -172,7 +162,8 @@
 <template is='popClothes' data='{{clothesShow,clothesItems,userState}}'></template>
 <template is='popLuxury' data='{{luxuryShow,luxuryItems,userState}}'></template>
 <template is='popLuck' data='{{luckShow,luckItems,userState}}'></template>
-<template is='popCouple' data='{{coupleShow,coupleItems,userState}}'></template>
+<template is='popCouple' data='{{coupleShow,coupleItems,userState,coupleState}}'></template>
+<template is='popEvent' data='{{eventShow,userState}}'></template>
 
 
 
@@ -180,10 +171,8 @@
 <template is='popMyCar' data='{{myCarShow,carItems,userState}}'></template>
 <template is='popMyHouse' data='{{myHouseShow,houseItems,userState}}'></template>
 <template is='popMyClothes' data='{{myClothesShow,clothesItems,userState}}'></template>
-
-
 <template is='popMyLuxury' data='{{myLuxuryShow,luxuryItems,userState}}'></template>
-
+<template is='popMyCouple' data='{{myCoupleShow,coupleItems,userState,userData}}'></template>
 <!-- 随机事件弹出over -->
 <!-- 今日安排弹出begin -->
 

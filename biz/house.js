@@ -33,7 +33,7 @@ export default {
         wxPost(
           '/user/buyHouse',
           {
-            userId: that.data.userId,
+            userId: that.data.userData.userId,
             houseId: houseId
           },
           ({ data }) => {
@@ -59,7 +59,7 @@ export default {
         wxPost(
           '/user/sellHouse',
           {
-            userId: that.data.userId,
+            userId: that.data.userData.userId,
             houseId: houseId
           },
           ({ data }) => {
