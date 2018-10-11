@@ -1,4 +1,4 @@
-const { wxPost, isEnableBtn } = require('../utils/common.js')
+const { wxPost, isEnableBtn, showMaskNavigationBarColor, closeMaskNavigationBarColor } = require('../utils/common.js')
 export default {
   data: {
     myCarShow: false,
@@ -6,18 +6,22 @@ export default {
     carItems: []
   },
   actionCar: function () {
+    showMaskNavigationBarColor()
     this.setData({ carShow: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeCar: function () {
+    closeMaskNavigationBarColor()
     this.setData({ carShow: false, maskShow: false })
     this.voiceContext().playClick()
   },
   showMyCar: function () {
+    showMaskNavigationBarColor()
     this.setData({ myCarShow: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeMyCar: function () {
+    closeMaskNavigationBarColor()
     this.setData({ myCarShow: false, maskShow: false })
     this.voiceContext().playClick()
   },
@@ -33,7 +37,7 @@ export default {
         wxPost(
           '/user/buyCar',
           {
-            userId: that.data.userId,
+            userId: that.data.userData.userId,
             carId: carId
           },
           ({ data }) => {
@@ -59,7 +63,7 @@ export default {
         wxPost(
           '/user/sellCar',
           {
-            userId: that.data.userId,
+            userId: that.data.userData.userId,
             carId: carId
           },
           ({ data }) => {

@@ -1,4 +1,4 @@
-const { wxPost, isEnableBtn } = require('../utils/common.js')
+const { wxPost, isEnableBtn, showMaskNavigationBarColor, closeMaskNavigationBarColor } = require('../utils/common.js')
 export default {
   data: {
     myJobShow:false,
@@ -6,18 +6,22 @@ export default {
     jobItems: []
   },
   actionJob: function () {
+    showMaskNavigationBarColor()
     this.setData({ jobShow: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeJob: function () {
+    closeMaskNavigationBarColor()
     this.setData({ jobShow: false, maskShow: false })
     this.voiceContext().playClick()
   },
   showMyJob:function(){
+    showMaskNavigationBarColor()
     this.setData({ myJobShow: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeMyJob:function(){
+    closeMaskNavigationBarColor()
     this.setData({ myJobShow: false, maskShow: false })
     this.voiceContext().playClick()
   },
@@ -33,7 +37,7 @@ export default {
         wxPost(
           '/user/applyJob',
           {
-            userId:that.data.userId,
+            userId:that.data.userData.userId,
             jobId:jobId
           },
           ({ data }) => {

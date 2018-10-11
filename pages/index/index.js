@@ -10,8 +10,7 @@ const options={
   data: {
     attrList: [],
     userState: false,
-    userId: false,
-    userGender: false,
+    userData:false,
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
@@ -27,42 +26,28 @@ const options={
   },
   onLoad: function () {
    const that=this
+   
+   that.blackScreen('quickShow', '开始体验之旅...喵喵喵？', function () {
+     that.setData({ maskShow: false })
+     //that.setData({ eventShow: true, maskShow: true})
+    }, function () {
+   })
+
    voice = new Voice()
-
-   const userId= wx.getStorageSync("userId")
-   const userGender = wx.getStorageSync("gender")
-   const userData = app.globalData.userData
-
-   this.setData({ userId, userGender })
-
-   if(userId){
-     this.start()
-     this.resData()
-   } else if (userData){
-     that.setData({
-       userId: userData.userId,
-       userGender: userData.userGender,
-       hasUserInfo: true
-     })
-     that.start()
-     that.resData()
-   } else{
-     app.appLogin().then(() => {
-       if (app.globalData.userData.userId) {
-         that.setData({
-           userId: app.globalData.userData.userId,
-           userGender: app.globalData.userData.userGender,
-           hasUserInfo: true
-         })
-         that.start()
-         that.resData()
-       }
-     })
-   }
+   app.appLogin().then(() => {
+      if (app.globalData.userData.userId) {
+        that.setData({
+          userData: app.globalData.userData,
+          hasUserInfo: true
+        })
+        that.start()
+        that.resData()
+      }
+    })
   },
   resData: function () {
     const that = this
-    wxGet('/user/resData/' + that.data.userId,
+    wxGet('/user/resData/' + that.data.userData.userId,
       false,
       ({ data }) => {
         console.info(data)
@@ -75,7 +60,8 @@ const options={
             clothesItems: data.clothesArray,
             luxuryItems: data.luxuryArray,
             coupleItems: data.coupleArray,
-            luckItems: data.luckArray
+            luckItems: data.luckArray,
+            tipItems:data.tipArray
           })
         }
       })
@@ -83,7 +69,7 @@ const options={
   start: function () {
     const that = this
     wxPost('/user/start',
-      { userId: that.data.userId },
+      { userId: that.data.userData.userId },
       ({ data }) => {
         parseUserState(data,that)
       }
@@ -99,12 +85,12 @@ const options={
       wxPost(
         '/user/nextDay',
         {
-          userId: that.data.userId
+          userId: that.data.userData.userId
         },
         ({ data }) => {
           if (data.errorCode >= 0) {
             that.voiceContext().playNextDay()
-            that.blackScreen('过了一夜...',function(){
+            that.blackScreen('show','过了一夜...',function(){
               that.setData({ maskShow: false })
             },function(){
               that.voiceContext().playResult()

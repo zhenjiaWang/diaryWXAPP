@@ -6,9 +6,9 @@ import couple from './couple.js'
 import clothes from './clothes.js'
 import luxury from './luxury.js'
 import luck from './luck.js'
+import event from './event.js'
 
-
-const { wxGet, parseUserState } = require('../utils/common.js')
+const { wxGet, parseUserState, showMaskNavigationBarColor,closeMaskNavigationBarColor } = require('../utils/common.js')
 
 const commonData = {
   nightClass:'',
@@ -17,11 +17,25 @@ const commonData = {
   maskShow: false,
   dialogShow:false,
   dialogResult:'',
-  dialogBtn:'确 定'
+  dialogBtn:'确 定',
+  tipShow: false,
+  tipItems: []
 }
 function storeMixin(options) {
   let result = {
     data: commonData,
+    closeTip: function () {
+      const that = this
+      closeMaskNavigationBarColor()
+      that.voiceContext().playClick()
+      that.setData({ tipShow: false, maskShow: false })
+    },
+    actionTip: function () {
+      const that = this
+      showMaskNavigationBarColor()
+      that.voiceContext().playClick()
+      that.setData({tipShow:true,maskShow:true})
+    },
     resultVoice: function (data,luckWin){
       const that = this
       if (data){
@@ -39,16 +53,26 @@ function storeMixin(options) {
     dialogOK:function(){
       const that=this
       that.voiceContext().playClick()
-      wxGet('/user/refresh/' + that.data.userId,
+      wxGet('/user/refresh/' + that.data.userData.userId,
         false,
         ({ data }) => {
           parseUserState(data, that)
+          closeMaskNavigationBarColor()
           that.setData({maskShow:false,dialogShow:false})
         })
     },
-    blackScreen:function(text,blackCallback,doneCallback){
+    blackScreen:function(showClass,text,blackCallback,doneCallback){
       const that = this
-      that.setData({ nightClass: 'show' })
+      const times=showClass==='show'?1000:0
+      wx.setNavigationBarColor({
+        frontColor: '#ffffff',
+        backgroundColor: '#000',
+        animation: {
+          duration: times,
+          timingFunc: 'easeIn'
+        }
+      })
+      that.setData({ nightClass: showClass })
       setTimeout(function () {
         that.setData({ nightText: text })
         if (blackCallback) {
@@ -57,6 +81,14 @@ function storeMixin(options) {
       }, 1200)
       setTimeout(function () {
         that.setData({ nightClass: 'show hide', nightText: '' })
+        wx.setNavigationBarColor({
+          frontColor: '#ffffff',
+          backgroundColor: '#2e55af',
+          animation: {
+            duration: 1000,
+            timingFunc: 'easeIn'
+          }
+        })
       }, 2500)
       setTimeout(function () {
         that.setData({ nightClass: '' })
@@ -78,4 +110,4 @@ function storeMixin(options) {
   return result;
 }
 
-export default storeMixin({ job, plan, car, house, couple, clothes, luxury, luck})
+export default storeMixin({ job, plan, car, house, couple, clothes, luxury, luck, event})

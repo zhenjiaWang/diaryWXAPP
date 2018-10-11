@@ -1,4 +1,4 @@
-const { wxPost, isEnableBtn } = require('../utils/common.js')
+const { wxPost, isEnableBtn, showMaskNavigationBarColor, closeMaskNavigationBarColor } = require('../utils/common.js')
 
 export default {
   data: {
@@ -7,18 +7,22 @@ export default {
     clothesItems: []
   },
   actionClothes: function () {
+    showMaskNavigationBarColor()
     this.setData({ clothesShow: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeClothes: function () {
+    closeMaskNavigationBarColor()
     this.setData({ clothesShow: false, maskShow: false })
     this.voiceContext().playClick()
   },
   showMyClothes: function () {
+    showMaskNavigationBarColor()
     this.setData({ myClothesShow: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeMyClothes: function () {
+    closeMaskNavigationBarColor()
     this.setData({ myClothesShow: false, maskShow: false })
     this.voiceContext().playClick()
   },
@@ -34,7 +38,7 @@ export default {
         wxPost(
           '/user/buyClothes',
           {
-            userId: that.data.userId,
+            userId: that.data.userData.userId,
             clothesId: clothesId
           },
           ({ data }) => {
@@ -59,7 +63,7 @@ export default {
         wxPost(
           '/user/sellClothes',
           {
-            userId: that.data.userId,
+            userId: that.data.userData.userId,
             clothesId: clothesId
           },
           ({ data }) => {

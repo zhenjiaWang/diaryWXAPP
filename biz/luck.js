@@ -1,14 +1,16 @@
-const { wxPost, isEnableBtn } = require('../utils/common.js')
+const { wxPost, isEnableBtn, showMaskNavigationBarColor, closeMaskNavigationBarColor } = require('../utils/common.js')
 export default {
   data: {
     luckShow: false,
     jobItems: []
   },
   actionLuck: function () {
+    showMaskNavigationBarColor()
     this.setData({ luckShow: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeLuck: function () {
+    closeMaskNavigationBarColor()
     this.setData({ luckShow: false, maskShow: false })
     this.voiceContext().playClick()
   },
@@ -24,7 +26,7 @@ export default {
         wxPost(
           '/user/applyLuck',
           {
-            userId: that.data.userId,
+            userId: that.data.userData.userId,
             luckId: luckId
           },
           ({ data }) => {

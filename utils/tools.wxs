@@ -16,9 +16,41 @@ var getHaveNumber = function (obj, key) {
     return 0
   }
 }
-
+var isCouple = function (coupleState, coupleId) {
+  var flag = false
+  if (coupleState && coupleId) {
+    var user = coupleState[coupleId]
+    if (user) {
+      flag=true
+    }
+  }
+  return flag
+}
+var getCoupleStateName = function (coupleState, coupleId) {
+  var stateName='当前无对象'
+  if (coupleState && coupleId) {
+    var user=coupleState[coupleId]
+    if(user){
+      stateName='当前对象:'+user.userNickName
+    }
+  }
+  return stateName
+}
+var getCoupleStateAvatar = function (coupleState, coupleId) {
+  var stateAvatar = ''
+  if (coupleState && coupleId) {
+    var user = coupleState[coupleId]
+    if (user) {
+      stateAvatar = user.userAvatarUrl
+    }
+  }
+  return stateAvatar
+}
 module.exports={
   isEnableBtn: isEnableBtn,
   arrayContain: arrayContain,
-  getHaveNumber: getHaveNumber
+  getHaveNumber: getHaveNumber,
+  getCoupleStateName: getCoupleStateName,
+  getCoupleStateAvatar: getCoupleStateAvatar,
+  isCouple: isCouple
 }
