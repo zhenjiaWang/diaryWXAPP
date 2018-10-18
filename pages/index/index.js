@@ -26,24 +26,56 @@ const options={
   },
   onLoad: function () {
    const that=this
-   
-   that.blackScreen('quickShow', '开始体验之旅...喵喵喵？', function () {
-     that.setData({ maskShow: false })
-     //that.setData({ eventShow: true, maskShow: true})
-    }, function () {
+   that.setData({
+     userData: app.globalData.userData,
+     hasAuth:app.globalData.hasAuth
    })
 
    voice = new Voice()
-   app.appLogin().then(() => {
-      if (app.globalData.userData.userId) {
-        that.setData({
-          userData: app.globalData.userData,
-          hasUserInfo: true
-        })
-        that.start()
-        that.resData()
-      }
-    })
+  
+
+    // setTimeout(()=>{
+    //   wxGet('/userEvent/load',
+    //     {
+    //       userId: that.data.userData.userId,
+    //       eventId: '6456797463776231424',
+    //     },
+    //     ({ data }) => {
+    //       console.info(data)
+    //     })
+    // },2000)
+  },
+  gameStart: function (e){
+    console.log(e.detail.errMsg)
+    console.log(e.detail.userInfo)
+    console.log(e.detail.rawData)
+    app.globalData.userData = e.detail.userInfo
+    const that = this
+    if (that.data.submitFlag) {
+      return false
+    }else{
+      that.setData({submitFlag:true })
+      wx.setNavigationBarColor({
+        frontColor: '#ffffff',
+        backgroundColor: '#000',
+        animation: {
+          duration: 500,
+          timingFunc: 'easeIn'
+        }
+      })
+      that.setData({ nightClass: 'show' })
+      app.appLogin().then(() => {
+        if (app.globalData.userData.userId) {
+          that.setData({
+            userData: app.globalData.userData,
+            
+            submitFlag:false
+          })
+          that.start()
+          that.resData()
+        }
+      })
+    }
   },
   resData: function () {
     const that = this
@@ -72,6 +104,27 @@ const options={
       { userId: that.data.userData.userId },
       ({ data }) => {
         parseUserState(data,that)
+        setTimeout(function () {
+          that.setData({ nightText: data.nightText, hasUserInfo: true })
+        }, 1200)
+        setTimeout(function () {
+          that.setData({ nightClass: 'show hide', nightText: '' })
+          wx.setNavigationBarColor({
+            frontColor: '#ffffff',
+            backgroundColor: '#2e55af',
+            animation: {
+              duration: 1000,
+              timingFunc: 'easeIn'
+            }
+          })
+        }, 2500)
+        setTimeout(function () {
+          that.setData({ nightClass: '' })
+          if (data.resultArray){
+            that.setData({ maskShow: true, dialogShow: true, dialogResult: data.resultArray })
+            that.resultVoice(data)
+          }
+        }, 3500)
       }
     )
   },

@@ -19,7 +19,9 @@ const commonData = {
   dialogResult:'',
   dialogBtn:'确 定',
   tipShow: false,
-  tipItems: []
+  tipItems: [],
+  findEventId:'',
+  findEventType:''
 }
 function storeMixin(options) {
   let result = {
@@ -59,6 +61,16 @@ function storeMixin(options) {
           parseUserState(data, that)
           closeMaskNavigationBarColor()
           that.setData({maskShow:false,dialogShow:false})
+
+
+          wxGet('/user/' + that.data.findEventType +'/findEvent',
+           {
+             userId:that.data.userData.userId,
+             findEventId: that.data.findEventId,
+           },
+            ({ data }) => {
+              console.info(data)
+            })
         })
     },
     blackScreen:function(showClass,text,blackCallback,doneCallback){

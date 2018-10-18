@@ -10,7 +10,7 @@ export default {
     const that = this
     that.voiceContext().playClick()
     wxGet('/couple/state',
-      {gender: that.data.userData.userGender},
+      {gender: that.data.userData.gender},
       ({ data }) => {
         console.info(data)
         if (data.errorCode === 0) {
