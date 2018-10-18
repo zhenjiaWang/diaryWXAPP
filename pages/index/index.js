@@ -59,7 +59,7 @@ const options={
         frontColor: '#ffffff',
         backgroundColor: '#000',
         animation: {
-          duration: 1000,
+          duration: 500,
           timingFunc: 'easeIn'
         }
       })
