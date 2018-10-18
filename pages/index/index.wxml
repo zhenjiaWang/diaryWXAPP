@@ -2,7 +2,7 @@
 <wxs src="../../utils/tools.wxs" module="tools" />
 <view class='body-bg' wx:if='{{!hasUserInfo}}'>
     <view class='img-auto'><image src='../../img/slogan.png' mode='widthFix'></image></view>
-    <view class='text-center user-img-box'><view class='user-img'><image src='{{userData.avatarUrl}}'></image></view></view>
+    <view class='text-center user-img-box'><view class='user-img'><image src='{{userData.avatarUrl||"../../img/photo-no.png"}}'></image></view></view>
     <view class='text-center user-name'>
         <text>{{userData.nickName}}</text>
         <image wx:if='{{userData.gender==2}}' src='../../img/icon-gilr.png' mode='widthFix'></image>
@@ -37,7 +37,7 @@
             <block  wx:if='{{item.length === 2}}'>
               <text class='clearfix'>
               <text class='pull-left'>{{item.textArray[0]}}</text>
-              <text class='pull-right'>{{item.textArray[1]}}</text>
+              <text class='pull-ight'>{{item.textArray[1]}}</text>
               </text>
             </block>
             <block wx:else>
