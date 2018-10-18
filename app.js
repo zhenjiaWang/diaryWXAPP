@@ -10,8 +10,10 @@ App({
     
 
     const that = this
+    
     wx.checkSession({
       success: function () {
+        console.info('wx.checkSession ,success')
         const userId = wx.getStorageSync("userId")
         if (!userId) {
           that.globalData.userId = ''
@@ -32,11 +34,13 @@ App({
       success: res => {
         if (res.authSetting['scope.userInfo']) {
           // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+          console.info('wx.getSetting ,success')
           wx.getUserInfo({
             success: res => {
+              console.log(res.userInfo)
               // 可以将 res 发送给后台解码出 unionId
-              this.globalData.userInfo = res.userInfo
-
+              this.globalData.userData = res.userInfo
+              this.globalData.hasAuth=true
               // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
               // 所以此处加入 callback 以防止这种情况
               if (this.userInfoReadyCallback) {
@@ -49,6 +53,7 @@ App({
     })
   },
   globalData: {
+    hasAuth:false, 
     userData:null,
     userId:''
   },
@@ -60,8 +65,15 @@ App({
         success: res => {
           // 发送 res.code 到后台换取 openId, sessionKey, unionId
           wxPost('/user/login',
-            { code: res.code,
-              userId:that.globalData.userId
+            {
+              code: res.code,
+              userId: that.globalData.userId,
+              nickName: that.globalData.userData.nickName,
+              avatarUrl: that.globalData.userData.avatarUrl,
+              gender: that.globalData.userData.gender,
+              city: that.globalData.userData.city,
+              province: that.globalData.userData.province,
+              country: that.globalData.userData.country
             },
             ({ data }) => {
               if (data.errorCode === 0) {

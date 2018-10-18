@@ -35,7 +35,10 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.setData({ submitFlag: false, planShow: false, dialogShow: true, dialogResult: data.resultArray })
+              that.setData({
+                findEventId:planId,
+                findEventType:'plan',
+                submitFlag: false, planShow: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }
             console.info(data)

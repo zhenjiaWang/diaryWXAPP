@@ -31,7 +31,7 @@ var getCoupleStateName = function (coupleState, coupleId) {
   if (coupleState && coupleId) {
     var user=coupleState[coupleId]
     if(user){
-      stateName='当前对象:'+user.userNickName
+      stateName='当前对象:'+user.nickName
     }
   }
   return stateName
@@ -41,7 +41,7 @@ var getCoupleStateAvatar = function (coupleState, coupleId) {
   if (coupleState && coupleId) {
     var user = coupleState[coupleId]
     if (user) {
-      stateAvatar = user.userAvatarUrl
+      stateAvatar = user.avatarUrl
     }
   }
   return stateAvatar
