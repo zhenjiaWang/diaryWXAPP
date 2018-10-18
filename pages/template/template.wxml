@@ -73,7 +73,7 @@
       <view class='tip'>
           <view class='tip-inner'>
               <image src='../../img/t.png' mode='widthFix'></image>
-              <text >找份工作干，每天可以获得一些工钱。只要你能力才干和江湖经验足够，这将会是你稳定的金钱来源每次消耗 1 个小时，每日限 1 次</text>
+              <text >每次消耗 1 个小时，每日限 1 次</text>
           </view>
       </view>
       <view class='feed2 clearfix' wx:for='{{jobItems}}' wx:key='id'>
@@ -484,8 +484,8 @@
         <view class='feed2-left'>
           <view class='job'>{{item.title}}</view>
           <view class='money'>
-            <text>当前对象：{{userData.userNickName}}</text>
-            <image src='{{userData.userAvatarUrl}}' class='user-photo' mode='widthFix'></image>
+            <text>当前对象：{{userData.nickName}}</text>
+            <image src='{{userData.avatarUrl}}' class='user-photo' mode='widthFix'></image>
           </view>
           <view>{{item.remarks}}</view>
         </view>
@@ -499,27 +499,18 @@
 <template name="popTip">
   <view class='pop pop2' hidden='{{!tipShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-6.png' ></image>
+      <image src='../../img/ques.png' ></image>
       <text>提示</text>
       <view class='off' bindtap='closeTip'>
         <image src='../../img/off.png'></image>
       </view>
     </view>
     <view class='pop-main'>
-      <view class='tip'>
-          <view class='tip-inner'>
-              <image src='../../img/t.png' mode='widthFix'></image>
-              <text >每次消耗 1 个小时，每日限 1 次</text>
-          </view>
-      </view>
       <view class='feed2 clearfix' wx:for='{{tipItems}}' wx:key='id'>
         <view class='feed2-left'>
           <view class='money'>{{item.title}}</view>
           <view >{{item.remarks}}</view>
-          <!-- <view>{{item.remarks}}</view> -->
         </view>
-        <!-- <view wx:if='{{userState.myCoupleId===item.id}}' class='job-btn in-job disable' ></view>
-        <view wx:else class='job-btn  {{tools.isEnableBtn(userState.hours,userState.coupleLimit)?"":"disable"}}' bindtap='applyCouple' data-id='{{item.id}}'></view> -->
       </view>
     </view>
   </view>
