@@ -6,7 +6,8 @@ const items = 'eventItems'
 export default {
   data: {
     [show]: false,
-    [items]: []
+    [items]: [],
+    eventTitle:null
   },
   watch: {
     [show]: function (n, o) {
@@ -15,6 +16,17 @@ export default {
         this.setData({ [items]: [] })
         this.setData({ [items]: dateItem })
       }
+    }
+  },
+  showEvent:function(data){
+    if(data){
+      console.info(this)
+      this.setData({
+        eventShow: true,
+        maskShow: true,
+        eventItems: data['eventResultArray'],
+        eventTitle: data['event']['content']
+      })
     }
   },
   applyEvent: function (e) {

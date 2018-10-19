@@ -44,12 +44,22 @@ function storeMixin(options) {
                       { userId, eventId },
                       ({ data }) => {
                         if (data.errorCode >= 0) {
-                          console.info(data)
-                          that.setData({
-                            eventShow: true,
-                            maskShow: true,
-                            eventItems: data['eventResultArray']
-                          })
+                          that.showEvent(data)
+                        }
+                      })
+                  }
+                })
+            } else if (category && category!=='plan'){
+              wxGet('/userEvent/findEvent',
+                { userId },
+                ({ data }) => {
+                  const eventId = data['eventId']
+                  if (data.errorCode >= 0) {
+                    wxGet('/userEvent/load',
+                      { userId, eventId },
+                      ({ data }) => {
+                        if (data.errorCode >= 0) {
+                          that.showEvent(data)
                         }
                       })
                   }
