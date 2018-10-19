@@ -1,28 +1,42 @@
 const { wxPost, isEnableBtn, showMaskNavigationBarColor, closeMaskNavigationBarColor } = require('../utils/common.js')
+const show ='jobShow'
+const foldShow ='myJobShow'
+const items = 'jobItems'
+
 export default {
   data: {
-    myJobShow:false,
-    jobShow: false,
-    jobItems: []
+    [foldShow]:false,
+    [show]: false,
+    [items]: []
+  },
+  watch:{
+    [show]: function (n, o) {
+      if (!n) {
+        //reset scollbar 
+        const dateItem = this.data[items]
+        this.setData({ [items]: [] })
+        this.setData({ [items]: dateItem })
+      }
+    }
   },
   actionJob: function () {
     showMaskNavigationBarColor()
-    this.setData({ jobShow: true, maskShow: true })
+    this.setData({ [show]: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeJob: function () {
     closeMaskNavigationBarColor()
-    this.setData({ jobShow: false, maskShow: false })
+    this.setData({ [show]: false, maskShow: false })
     this.voiceContext().playClick()
   },
   showMyJob:function(){
     showMaskNavigationBarColor()
-    this.setData({ myJobShow: true, maskShow: true })
+    this.setData({ [foldShow]: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeMyJob:function(){
     closeMaskNavigationBarColor()
-    this.setData({ myJobShow: false, maskShow: false })
+    this.setData({ [foldShow]: false, maskShow: false })
     this.voiceContext().playClick()
   },
   applyJob: function (e) {
@@ -42,7 +56,7 @@ export default {
           },
           ({ data }) => {
             if(data.errorCode>=0){
-              that.setData({ submitFlag: false, jobShow: false, dialogShow: true, dialogResult: data.resultArray })
+              that.setData({ submitFlag: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }
             console.info(data)

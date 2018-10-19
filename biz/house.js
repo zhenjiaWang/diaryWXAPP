@@ -1,28 +1,44 @@
 const { wxPost, isEnableBtn, showMaskNavigationBarColor, closeMaskNavigationBarColor} = require('../utils/common.js')
+
+
+const show = 'houseShow'
+const foldShow = 'myHouseShow'
+const items = 'houseItems'
+
 export default {
   data: {
-    myHouseShow: false,
-    houseShow: false,
-    houseItems: []
+    [foldShow]: false,
+    [show]: false,
+    [items]: []
+  },
+  watch: {
+    [show]: function (n, o) {
+      if (!n) {
+        //reset scollbar 
+        const dateItem = this.data[items]
+        this.setData({ [items]: [] })
+        this.setData({ [items]: dateItem })
+      }
+    }
   },
   actionHouse: function () {
     showMaskNavigationBarColor()
-    this.setData({ houseShow: true, maskShow: true })
+    this.setData({ [show]: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeHouse: function () {
     closeMaskNavigationBarColor()
-    this.setData({ houseShow: false, maskShow: false })
+    this.setData({ [show]: false, maskShow: false })
     this.voiceContext().playClick()
   },
   showMyHouse: function () {
     showMaskNavigationBarColor()
-    this.setData({ myHouseShow: true, maskShow: true })
+    this.setData({ [foldShow]: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeMyHouse: function () {
     closeMaskNavigationBarColor()
-    this.setData({ myHouseShow: false, maskShow: false })
+    this.setData({ [foldShow]: false, maskShow: false })
     this.voiceContext().playClick()
   },
   buyHouse: function (e) {
@@ -42,7 +58,7 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.setData({ submitFlag: false, houseShow: false, dialogShow: true, dialogResult: data.resultArray })
+              that.setData({ submitFlag: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }
             console.info(data)
@@ -68,7 +84,7 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.setData({ submitFlag: false, myHouseShow: false, houseShow: false, dialogShow: true, dialogResult: data.resultArray })
+              that.setData({ submitFlag: false, [foldShow]: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }
             console.info(data)

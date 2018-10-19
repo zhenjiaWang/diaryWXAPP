@@ -1,10 +1,26 @@
 const { wxPost, wxGet, isEnableBtn, showMaskNavigationBarColor, closeMaskNavigationBarColor } = require('../utils/common.js')
+
+
+const show = 'coupleShow'
+const foldShow = 'myCoupleShow'
+const items = 'coupleItems'
+
 export default {
   data: {
-    myCoupleShow: false,
-    coupleShow: false,
-    coupleItems: [],
+    [foldShow]: false,
+    [show]: false,
+    [items]: [],
     coupleState:[]
+  },
+  watch: {
+    [show]: function (n, o) {
+      if (!n) {
+        //reset scollbar 
+        const dateItem = this.data[items]
+        this.setData({ [items]: [] })
+        this.setData({ [items]: dateItem })
+      }
+    }
   },
   actionCouple: function () {
     const that = this
@@ -15,23 +31,23 @@ export default {
         console.info(data)
         if (data.errorCode === 0) {
           showMaskNavigationBarColor()
-          that.setData({ coupleShow: true, maskShow: true, coupleState: data.state })
+          that.setData({ [show]: true, maskShow: true, coupleState: data.state })
         }
       })
   },
   closeCouple: function () {
     closeMaskNavigationBarColor()
-    this.setData({ coupleShow: false, maskShow: false })
+    this.setData({ [show]: false, maskShow: false })
     this.voiceContext().playClick()
   },
   showMyCouple: function () {
     showMaskNavigationBarColor()
-    this.setData({ myCoupleShow: true, maskShow: true })
+    this.setData({ [foldShow]: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeMyCouple: function () {
     closeMaskNavigationBarColor()
-    this.setData({ myCoupleShow: false, maskShow: false })
+    this.setData({ [foldShow]: false, maskShow: false })
     this.voiceContext().playClick()
   },
   relationship: function (e) {
@@ -51,7 +67,7 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.setData({ submitFlag: false, coupleShow: false, dialogShow: true, dialogResult: data.resultArray })
+              that.setData({ submitFlag: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }
           }
@@ -76,7 +92,7 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.setData({ submitFlag: false, myCoupleShow: false,coupleShow: false, dialogShow: true, dialogResult: data.resultArray })
+              that.setData({ submitFlag: false, [foldShow]: false,[show]: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }
           }
