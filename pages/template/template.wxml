@@ -29,10 +29,10 @@
   <view class='pop' hidden='{{!eventShow}}'>
     <view class='story'>
     <view class='text-center'><image src='../../img/ouyu.png' mode='widthFix'></image></view>
-      <text>应酬归来，腰酸无力，百度看到治疗广告</text>
+      <text>有位商人告诉你，天下最好赚的，还是女人的钱。</text>
     </view>
-    <view class='btn-2'>买来试试</view>
-    <view class='btn-2'>不买</view>
+    <view class='btn-2'>那就琢磨一下</view>
+    <view class='btn-2'>不考虑</view>
   </view>
 </template>
 
