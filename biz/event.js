@@ -17,9 +17,28 @@ export default {
       }
     }
   },
-  closeEvent: function () {
-    closeMaskNavigationBarColor()
-    this.setData({ [show]: false, maskShow: false })
-    this.voiceContext().playClick()
+  applyEvent: function (e) {
+    const that = this
+    if ( that.data.submitFlag) {
+      return false
+    } else {
+      that.voiceContext().playClick()
+      that.setData({ submitFlag: true })
+      let resultId = e.currentTarget.dataset.id
+      const userId=that.data.userData.userId
+      if (resultId) {
+        wxPost(
+          '/userEvent/applyResult',
+          { userId, resultId },
+          ({ data }) => {
+            if (data.errorCode >= 0) {
+              that.setData({ submitFlag: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
+              that.resultVoice(data)
+            }
+            console.info(data)
+          }
+        )
+      }
+    }
   }
 }
