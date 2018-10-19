@@ -31,8 +31,8 @@
     <view class='text-center'><image src='../../img/ouyu.png' mode='widthFix'></image></view>
       <text>有位商人告诉你，天下最好赚的，还是女人的钱。</text>
     </view>
-    <view class='btn-2'>那就琢磨一下</view>
-    <view class='btn-2'>不考虑</view>
+    <view class='btn-2' bindtap='closeEvent'>那就琢磨一下</view>
+    <view class='btn-2' bindtap='closeEvent'>不考虑</view>
   </view>
 </template>
 

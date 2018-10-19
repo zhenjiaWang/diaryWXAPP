@@ -1,17 +1,31 @@
 const { wxPost, isEnableBtn, showMaskNavigationBarColor, closeMaskNavigationBarColor } = require('../utils/common.js')
+
+const show = 'luckShow'
+const items = 'jobItems'
+
 export default {
   data: {
-    luckShow: false,
-    jobItems: []
+    [show]: false,
+    [items]: []
+  },
+  watch: {
+    [show]: function (n, o) {
+      if (!n) {
+        //reset scollbar 
+        const dateItem = this.data[items]
+        this.setData({ [items]: [] })
+        this.setData({ [items]: dateItem })
+      }
+    }
   },
   actionLuck: function () {
     showMaskNavigationBarColor()
-    this.setData({ luckShow: true, maskShow: true })
+    this.setData({ [show]: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeLuck: function () {
     closeMaskNavigationBarColor()
-    this.setData({ luckShow: false, maskShow: false })
+    this.setData({ [show]: false, maskShow: false })
     this.voiceContext().playClick()
   },
   applyLuck: function (e) {
@@ -31,7 +45,7 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.setData({ submitFlag: false, luckShow: false, dialogShow: true, dialogResult: data.resultArray })
+              that.setData({ submitFlag: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data,true)
             }
             console.info(data)

@@ -1,29 +1,44 @@
 const { wxPost, isEnableBtn, showMaskNavigationBarColor, closeMaskNavigationBarColor } = require('../utils/common.js')
 
+
+const show = 'clothesShow'
+const foldShow = 'myClothesShow'
+const items = 'clothesItems'
+
 export default {
   data: {
-    myClothesShow: false,
-    clothesShow: false,
-    clothesItems: []
+    [foldShow]: false,
+    [show]: false,
+    [items]: []
+  },
+  watch: {
+    [show]: function (n, o) {
+      if (!n) {
+        //reset scollbar 
+        const dateItem = this.data[items]
+        this.setData({ [items]: [] })
+        this.setData({ [items]: dateItem })
+      }
+    }
   },
   actionClothes: function () {
     showMaskNavigationBarColor()
-    this.setData({ clothesShow: true, maskShow: true })
+    this.setData({ [show]: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeClothes: function () {
     closeMaskNavigationBarColor()
-    this.setData({ clothesShow: false, maskShow: false })
+    this.setData({ [show]: false, maskShow: false })
     this.voiceContext().playClick()
   },
   showMyClothes: function () {
     showMaskNavigationBarColor()
-    this.setData({ myClothesShow: true, maskShow: true })
+    this.setData({ [foldShow]: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeMyClothes: function () {
     closeMaskNavigationBarColor()
-    this.setData({ myClothesShow: false, maskShow: false })
+    this.setData({ [foldShow]: false, maskShow: false })
     this.voiceContext().playClick()
   },
   buyClothes: function (e) {
@@ -43,7 +58,7 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.setData({ submitFlag: false, clothesShow: false, dialogShow: true, dialogResult: data.resultArray })
+              that.setData({ submitFlag: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }
           }
@@ -68,7 +83,7 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.setData({ submitFlag: false, myClothesShow: false, clothesShow: false, dialogShow: true, dialogResult: data.resultArray })
+              that.setData({ submitFlag: false, [foldShow]: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }
           }
