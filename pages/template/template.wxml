@@ -28,11 +28,15 @@
 <template name="popEvent">
   <view class='pop' hidden='{{!eventShow}}'>
     <view class='story'>
-    <view class='text-center'><image src='../../img/ouyu.png' mode='widthFix'></image></view>
-      <text>有位商人告诉你，天下最好赚的，还是女人的钱。</text>
+      <view class='text-center'>
+        <image src='../../img/ouyu.png' mode='widthFix'></image>
+      </view>
+      <view class='text-center'>{{eventTitle}}</view>
     </view>
-    <view class='btn-2'>那就琢磨一下</view>
-    <view class='btn-2'>不考虑</view>
+
+     <view class='btn-2' bindtap='applyEvent' wx:for="{{eventItems}}" wx:key="id" data-id="{{item.id}}">
+      {{item.resultText}}
+    </view>
   </view>
 </template>
 
@@ -507,7 +511,7 @@
     </view>
     <view class='pop-main'>
       <view class='feed2 clearfix' wx:for='{{tipItems}}' wx:key='id'>
-        <view class='feed2-left'>
+        <view class='feed2-left' style="width:100%">
           <view class='money'>{{item.title}}</view>
           <view >{{item.remarks}}</view>
         </view>

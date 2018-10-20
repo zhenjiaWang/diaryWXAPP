@@ -26,6 +26,49 @@ const commonData = {
 function storeMixin(options) {
   let result = {
     data: commonData,
+    watch:{
+      'maskShow':function(n,o){
+        const that=this
+        setTimeout(()=>{
+          //show event 
+          const userId = this.data.userData.userId
+          if (!that.data.maskShow && userId ){
+            const { id: findEventId, category } = this.getEventStack().pop() || {}
+            if (findEventId && category==='plan') {
+              wxGet('/user/plan/findEvent',
+                { userId, findEventId },
+                ({ data }) => {
+                  const eventId = data['eventId']
+                  if (data.errorCode >= 0) {
+                    wxGet('/userEvent/load',
+                      { userId, eventId },
+                      ({ data }) => {
+                        if (data.errorCode >= 0) {
+                          that.showEvent(data)
+                        }
+                      })
+                  }
+                })
+            } else if (category && category!=='plan'){
+              wxGet('/userEvent/findEvent',
+                { userId },
+                ({ data }) => {
+                  const eventId = data['eventId']
+                  if (data.errorCode >= 0) {
+                    wxGet('/userEvent/load',
+                      { userId, eventId },
+                      ({ data }) => {
+                        if (data.errorCode >= 0) {
+                          that.showEvent(data)
+                        }
+                      })
+                  }
+                })
+            }
+          }
+        },1500)
+      }
+    },
     closeTip: function () {
       const that = this
       closeMaskNavigationBarColor()
@@ -61,16 +104,18 @@ function storeMixin(options) {
           parseUserState(data, that)
           closeMaskNavigationBarColor()
           that.setData({maskShow:false,dialogShow:false})
-
-
-          wxGet('/user/' + that.data.findEventType +'/findEvent',
-           {
-             userId:that.data.userData.userId,
-             findEventId: that.data.findEventId,
-           },
-            ({ data }) => {
-              console.info(data)
-            })
+          // const eventType = that.data.findEventType 
+          // if (eventType){
+          //   wxGet(`/user/${eventType}/findEvent`,
+          //     {
+          //       userId: that.data.userData.userId,
+          //       findEventId: that.data.findEventId,
+          //     },
+          //     ({ data }) => {
+          //       console.info(data)
+          //     })
+          // }
+         
         })
     },
     blackScreen:function(showClass,text,blackCallback,doneCallback){
@@ -116,6 +161,10 @@ function storeMixin(options) {
       //result.data[k] = value.data
       Object.assign(result.data, value.data)
       delete value.data
+    }
+    if(value.watch){
+      Object.assign(result.watch, value.watch)
+      delete value.watch
     }
     Object.assign(result, value)
   }

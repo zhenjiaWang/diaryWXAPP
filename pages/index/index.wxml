@@ -184,7 +184,7 @@
 <template is='popLuxury' data='{{luxuryShow,luxuryItems,userState}}'></template>
 <template is='popLuck' data='{{luckShow,luckItems,userState}}'></template>
 <template is='popCouple' data='{{coupleShow,coupleItems,userState,coupleState,userData}}'></template>
-<template is='popEvent' data='{{eventShow,userState}}'></template>
+<template is='popEvent' data='{{eventShow,eventItems,eventTitle}}'></template>
 
 
 

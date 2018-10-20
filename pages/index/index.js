@@ -2,9 +2,13 @@
 //获取应用实例
 const { wxGet, wxPost, parseUserState, isEnableBtn} = require('../../utils/common.js')
 import biz from '../../biz/biz.js'
-const app = getApp()
+import {EventStack} from '../../utils/EventStack.js'
 import { Voice } from '../../utils/Voice.js'
+const { setWatcher } = require("../../utils/watcher.js");
+const app = getApp()
+
 var voice=false
+const eventStack = new EventStack()
 
 const options={
   data: {
@@ -24,20 +28,23 @@ const options={
       return voice
     }
   },
+  getEventStack:function(){
+    return eventStack
+  },
   onLoad: function () {
    const that=this
+   setWatcher(that)
    that.setData({
      userData: app.globalData.userData,
      hasAuth:app.globalData.hasAuth
    })
 
-   voice = new Voice()
-  
+   voice = new Voice() 
 
     // setTimeout(()=>{
     //   wxGet('/userEvent/load',
     //     {
-    //       userId: that.data.userData.userId,
+    //       userId: '6458684617618333696',
     //       eventId: '6456797463776231424',
     //     },
     //     ({ data }) => {
@@ -64,7 +71,6 @@ const options={
       wx.getUserInfo({
         success: res => {
           app.globalData.userData = res.userInfo
-          console.info(res.userInfo)
           that.setData({
             userData: res.userInfo,
             //hasUserInfo: true
@@ -80,9 +86,9 @@ const options={
       })
       return
     }
-    console.log(e.detail.errMsg)
-    console.log(e.detail.userInfo)
-    console.log(e.detail.rawData)
+    // console.log(e.detail.errMsg)
+    // console.log(e.detail.userInfo)
+    // console.log(e.detail.rawData)
     app.globalData.userData = e.detail.userInfo
     const that = this
     if (that.data.submitFlag) {

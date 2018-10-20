@@ -1,28 +1,43 @@
 const { wxPost, isEnableBtn, showMaskNavigationBarColor, closeMaskNavigationBarColor } = require('../utils/common.js')
+
+const show = 'carShow'
+const foldShow = 'myCarShow'
+const items = 'carItems'
+
 export default {
   data: {
-    myCarShow: false,
-    carShow: false,
-    carItems: []
+    [foldShow]: false,
+    [show]: false,
+    [items]: []
+  },
+  watch: {
+    [show]: function(n,o) {
+      if (!n) {
+        //reset scollbar 
+        const dateItem = this.data[items]
+        this.setData({ [items]: [] })
+        this.setData({ [items]: dateItem })
+      }
+    }
   },
   actionCar: function () {
     showMaskNavigationBarColor()
-    this.setData({ carShow: true, maskShow: true })
+    this.setData({ [show]: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeCar: function () {
     closeMaskNavigationBarColor()
-    this.setData({ carShow: false, maskShow: false })
+    this.setData({ [show]: false, maskShow: false })
     this.voiceContext().playClick()
   },
   showMyCar: function () {
     showMaskNavigationBarColor()
-    this.setData({ myCarShow: true, maskShow: true })
+    this.setData({ [foldShow]: true, maskShow: true })
     this.voiceContext().playClick()
   },
   closeMyCar: function () {
     closeMaskNavigationBarColor()
-    this.setData({ myCarShow: false, maskShow: false })
+    this.setData({ [foldShow]: false, maskShow: false })
     this.voiceContext().playClick()
   },
   buyCar:function(e){
@@ -42,7 +57,7 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.setData({ submitFlag: false, carShow: false, dialogShow: true, dialogResult: data.resultArray })
+              that.setData({ submitFlag: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }
             console.info(data)
@@ -68,7 +83,7 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.setData({ submitFlag: false, myCarShow: false, carShow: false, dialogShow: true, dialogResult: data.resultArray })
+              that.setData({ submitFlag: false, [foldShow]: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }
             console.info(data)
