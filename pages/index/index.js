@@ -186,6 +186,7 @@ const options={
             that.blackScreen('show','过了一夜...',function(){
               that.setData({ maskShow: false })
             },function(){
+              that.getEventStack().push({ category: 'random-nextDay' })
               that.voiceContext().playResult()
               that.setData({ submitFlag: false, maskShow: true, dialogShow: true, dialogResult: data.resultArray })
             })

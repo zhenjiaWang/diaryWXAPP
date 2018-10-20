@@ -20,6 +20,7 @@ export default {
     }
   },
   actionPlan: function () {
+    if (this.hangOn) return 
     showMaskNavigationBarColor()
     this.setData({ [show]: true, maskShow: true })
     this.voiceContext().playClick()
