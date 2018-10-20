@@ -19,6 +19,7 @@ export default {
     }
   },
   actionLuck: function () {
+    if (this.hangOn) return 
     showMaskNavigationBarColor()
     this.setData({ [show]: true, maskShow: true })
     this.voiceContext().playClick()
@@ -45,10 +46,10 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
+              that.getEventStack().push({ category: 'random-luck' })
               that.setData({ submitFlag: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data,true)
             }
-            console.info(data)
           }
         )
       }
