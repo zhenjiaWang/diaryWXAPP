@@ -194,6 +194,16 @@ const options={
         }
       )
     }
+  },
+  viewRankingList:()=>{
+    wx.navigateTo({
+      url: './rankingList',
+    })
+  },
+  viewReport:()=>{
+    wx.navigateTo({
+      url: './report',
+    })
   }
 }
 

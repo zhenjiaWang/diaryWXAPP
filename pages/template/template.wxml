@@ -162,7 +162,7 @@
 <template name="popMyHouse">
   <view class='pop pop2' hidden='{{!myHouseShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-4.png' ></image>
+      <image src='../../img/btn-5.png' ></image>
       <text>我的房产</text>
       <view class='off' bindtap='closeMyHouse'>
         <image src='../../img/off.png'></image>

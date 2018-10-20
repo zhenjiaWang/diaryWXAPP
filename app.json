@@ -1,8 +1,10 @@
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
     "pages/template/template",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/index/rankingList",
+    "pages/index/report"
   ],
   "window":{
     "backgroundTextStyle":"light",
