@@ -1,0 +1,7 @@
+<!--pages/index/temp.wxml-->
+ <view > 
+  <canvas canvas-id="share" style='width:{{canvasWidth}}px; height:{{canvasHeight}}px'  wx:if='{{false}}'></canvas>
+  <canvas canvas-id="kline" style='width:{{canvasWidth}}px; height:50px;border:1px solid #000;margin-top:50rpx;'></canvas>
+  <canvas canvas-id="kline1" style='width:{{canvasWidth}}px; height:50px;border:1px solid #000;margin-top:50rpx;'></canvas>
+  <canvas canvas-id="kline2" style='width:{{canvasWidth}}px; height:50px;border:1px solid #000;margin-top:50rpx;'></canvas>
+</view>
