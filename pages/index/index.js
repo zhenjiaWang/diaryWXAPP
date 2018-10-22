@@ -203,7 +203,7 @@ const options={
   },
   viewReport:()=>{
     wx.navigateTo({
-      url: './report',
+      url: './temp',
     })
   }
 }

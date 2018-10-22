@@ -4,13 +4,14 @@
     "pages/template/template",
     "pages/logs/logs",
     "pages/index/rankingList",
-    "pages/index/report"
+    "pages/index/report",
+    "pages/index/temp"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#2e55af",
     "navigationBarTitleText": "全民混北京",
-    "navigationBarTextStyle":"#ff",
+    "navigationBarTextStyle": "#ff",
     "navigationStyle": "default"
   }
 }
