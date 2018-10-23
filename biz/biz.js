@@ -21,7 +21,8 @@ const commonData = {
   tipShow: false,
   tipItems: [],
   findEventId:'',
-  findEventType:''
+  findEventType:'',
+  hangOn:false
 }
 function storeMixin(options) {
   let result = {
@@ -35,6 +36,7 @@ function storeMixin(options) {
           if (!that.data.maskShow && userId ){
             const { id: findEventId, category } = this.getEventStack().pop() || {}
             if (findEventId && category==='plan') {
+              that.setData({ hangOn:true})
               wxGet('/user/plan/findEvent',
                 { userId, findEventId },
                 ({ data }) => {
@@ -44,10 +46,21 @@ function storeMixin(options) {
                       { userId, eventId },
                       ({ data }) => {
                         if (data.errorCode >= 0) {
-                          that.showEvent(data)
+                          if (!that.data.maskShow){//请求结束再次判断时候有其他弹出
+                            that.showEvent(data)
+                            //find random event
+                            that.getEventStack().push({ category: 'random' })
+                          }
                         }
+                        that.setData({ hangOn: false })//final 
+                      },()=>{//load fail callback
+                        that.setData({ hangOn: false })
                       })
+                  } else {//findEvent errorcode=-1
+                    that.setData({ hangOn: false })
                   }
+                },()=>{//findEvent fail callback
+                  that.setData({ hangOn: false })
                 })
             } else if (category && category!=='plan'){
               wxGet('/userEvent/findEvent',
@@ -55,18 +68,42 @@ function storeMixin(options) {
                 ({ data }) => {
                   const eventId = data['eventId']
                   if (data.errorCode >= 0) {
+                    that.setData({ hangOn: true })
                     wxGet('/userEvent/load',
                       { userId, eventId },
                       ({ data }) => {
                         if (data.errorCode >= 0) {
-                          that.showEvent(data)
+                          if (!that.data.maskShow) {//请求结束再次判断时候有其他弹出
+                            that.showEvent(data)
+                            //find random event 50%
+                            if (new Date().getTime() % 2 === 1) {
+                              that.getEventStack().push({ category: 'random' })
+                            }
+                          }
                         }
+                        that.setData({ hangOn: false })
+                      }, () => {//load fail callback
+                        that.setData({ hangOn: false })
                       })
+                  } else {//findEvent errorcode=-1
+                    that.setData({ hangOn: false })
                   }
+                }, () => {//findEvent fail callback
+                  that.setData({ hangOn: false })
                 })
             }
           }
         },1500)
+      },
+      'hangOn':function(n,o){
+        if(n){
+          const that=this
+          setTimeout(()=>{
+            that.setData({
+              hangOn:false
+            })
+          },1500)
+        }
       }
     },
     closeTip: function () {
