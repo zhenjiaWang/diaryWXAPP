@@ -129,7 +129,7 @@
           </view>
           <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,0)?"":"disable"}}' bindtap='actionPlan'>
             <image src='../../img/btn-2.png'></image>
-            <text>日常消遣</text>ƒ
+            <text>日常消遣</text>
           </view>
           <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.fundLimit)?"":"disable"}}'>
             <image src='../../img/btn-3.png'></image>
