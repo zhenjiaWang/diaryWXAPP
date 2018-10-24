@@ -1,7 +1,7 @@
 const { wxPost, isEnableBtn, showMaskNavigationBarColor, closeMaskNavigationBarColor } = require('../utils/common.js')
 
 const show = 'luckShow'
-const items = 'jobItems'
+const items = 'luckItems'
 
 export default {
   data: {

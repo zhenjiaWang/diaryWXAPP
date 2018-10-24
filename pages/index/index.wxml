@@ -131,7 +131,7 @@
             <image src='../../img/btn-2.png'></image>
             <text>日常消遣</text>
           </view>
-          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.fundLimit)?"":"disable"}}'>
+          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.fundLimit)?"":"disable"}}' bindtap='actionFund'>
             <image src='../../img/btn-3.png'></image>
             <text>理财有道</text>
           </view>
@@ -187,6 +187,9 @@
 <template is='popLuck' data='{{luckShow,luckItems,userState}}'></template>
 <template is='popCouple' data='{{coupleShow,coupleItems,userState,coupleState,userData}}'></template>
 <template is='popEvent' data='{{eventShow,eventItems,eventTitle}}'></template>
+
+<template is='popFund' data='{{fundShow,fundItems,userState}}'></template>
+<template is='popFundDetail' data='{{fundDetailShow,canvasHeight, canvasWidth,fundItem,userState,fundMoney}}'></template>
 
 
 

@@ -7,6 +7,7 @@ import clothes from './clothes.js'
 import luxury from './luxury.js'
 import luck from './luck.js'
 import event from './event.js'
+import fund from './fund.js'
 
 const { wxGet, parseUserState, showMaskNavigationBarColor,closeMaskNavigationBarColor } = require('../utils/common.js')
 
@@ -208,4 +209,4 @@ function storeMixin(options) {
   return result;
 }
 
-export default storeMixin({ job, plan, car, house, couple, clothes, luxury, luck, event})
+export default storeMixin({ job, plan, car, house, couple, clothes, luxury, luck, event, fund})
