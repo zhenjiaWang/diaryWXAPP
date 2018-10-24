@@ -131,7 +131,7 @@
             <image src='../../img/btn-2.png'></image>
             <text>日常消遣</text>
           </view>
-          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.financialLimit)?"":"disable"}}'>
+          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.fundLimit)?"":"disable"}}'>
             <image src='../../img/btn-3.png'></image>
             <text>理财有道</text>
           </view>
