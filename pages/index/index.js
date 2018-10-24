@@ -41,17 +41,6 @@ const options={
 
    voice = new Voice() 
 
-    // setTimeout(()=>{
-    //   wxGet('/userEvent/load',
-    //     {
-    //       userId: '6458684617618333696',
-    //       eventId: '6456797463776231424',
-    //     },
-    //     ({ data }) => {
-    //       console.info(data)
-    //     })
-    // },2000)
-
     if (app.globalData.userData) {
       this.setData({
         userData: app.globalData.userData,
@@ -86,9 +75,6 @@ const options={
       })
       return
     }
-    // console.log(e.detail.errMsg)
-    // console.log(e.detail.userInfo)
-    // console.log(e.detail.rawData)
     app.globalData.userData = e.detail.userInfo
     const that = this
     if (that.data.submitFlag) {
@@ -133,7 +119,8 @@ const options={
             luxuryItems: data.luxuryArray,
             coupleItems: data.coupleArray,
             luckItems: data.luckArray,
-            tipItems:data.tipArray
+            tipItems:data.tipArray,
+            fundItems: data.fundArray
           })
         }
       })

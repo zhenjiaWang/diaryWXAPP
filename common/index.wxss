@@ -304,7 +304,7 @@ text.num-big {
     margin-top: 12rpx;
 }
 
-
+/
 
 .top-title text.num-box {
     font-size: 24rpx;
@@ -480,6 +480,22 @@ text.tags{display: inline-block;width:94rpx;height:26rpx;line-height:26rpx;borde
 .item-box .one .one-inner .numFont{font-size:36rpx;}
 .item-box2 .one{width:330rpx;}
 .item-box2 .one .one-inner .numFont{font-size:28rpx;}
+.item-box3{padding-top:30rpx;}
+.item-box3 .one{width: 298rpx;}
+.item-box3 .one .one-inner {height:60rpx;line-height: 60rpx;margin-bottom:20rpx;}
+.item-box3 .one .one-inner .numFont{font-size:38rpx;}
+.chart{background:rgba(0,0,0,.3);border-radius:10rpx;overflow: hidden;margin-top:20rpx;}
+.chart-input{margin-top:40rpx;}
+.chart-input input{
+    height:91rpx;
+    width: 300rpx;
+    background:rgba(0,0,0,.2);
+    border-radius:10rpx; 
+    font-size:28rpx;
+    text-indent: 20rpx;
+    float: left;
+}
+.chart-input .begin-btn{float: right;margin: 0;}
 .survival-txt{
     width: 678rpx;
     height:339rpx;

@@ -519,3 +519,95 @@
     </view>
   </view>
 </template>
+
+
+
+
+<template name="popFund">
+  <view class='pop pop2' hidden='{{!fundShow}}'>
+    <view class='pop2-title clearfix'>
+      <image src='../../img/btn-3.png' ></image>
+      <text>时来运转</text>
+      <view class='off' bindtap='closeFund'>
+        <image src='../../img/off.png'></image>
+      </view>
+    </view>
+    <view class='pop-main'>
+      <view class='tip'>
+          <view class='tip-inner'>
+              <image src='../../img/t.png' mode='widthFix'></image>
+              <text>每次消耗 1 个小时，每日限 1 次</text>
+          </view>
+      </view>
+       <view class='feed2 clearfix' wx:for="{{fundItems}}" wx:key="id">
+            <view class='feed2-left'>
+                <view class='job'>{{item.title}}</view>
+                <view class='money'>
+                    <text>{{userState.myFundArray.includes(item.id)?'投资':'未投资'}}</text>
+                    <text class='percent {{item.increase>0?"up":"down"}}'>{{item.increase}}%</text>
+                    <image src='../../img/arrow-{{item.increase>0?"up":"down"}}.png' mode='widthFix'></image>
+                </view>
+                <view>{{item.remarks}}</view>
+            </view>
+            <view class='btn-mid' class='btn-mid {{tools.isEnableBtn(userState.hours,userState.fundLimit)?"":"disable"}}' bindtap='actionFundDetail' data-item='{{item}}'>去看看</view>
+        </view>
+       </view>
+  </view>
+</template>
+<template name="popFundDetail">
+  <view class='pop pop2' hidden='{{!fundDetailShow}}'>
+      <view class='pop2-title clearfix'>
+          <image src='../../img/btn-3.png' ></image>
+          <text style='margin-left:40rpx;'>{{fundItem.title}}</text>
+          <view class='off' bindtap='closeFundDetail'>
+            <image src='../../img/off.png'></image>
+          </view>
+      </view>
+      <view class='pop-main'>
+          <view class='item-box item-box2 item-box3 clearfix'>
+              <view class="one">
+                  <view class="one-inner clearfix">
+                      <text class='clearfix'>
+                          <text>可用金额</text>
+                      </text>
+                      <text class="num-big">
+                          <text class="numFont color2">{{userState.money}}</text>
+                      </text>
+                  </view>
+              </view>
+              <view class="one">
+                  <view class="one-inner clearfix">
+                      <text class='clearfix'>
+                          <text>已经投资</text>
+                      </text>
+                      <text class="num-big">
+                          <text class="numFont color2">{{fundMoney}}</text>
+                      </text>
+                  </view>
+              </view>
+              <view class="one">
+                  <view class="one-inner clearfix">
+                      <text class='clearfix'>
+                          <text>今日涨跌</text>
+                      </text>
+                      <text class="num-big">
+                          <!-- <text class="numFont down">-34.3%</text> -->
+                          <text class='numFont {{fundItem.increase>0?"up":"down"}}'>{{fundItem.increase}}%</text>
+                      </text>
+                  </view>
+              </view>
+          </view>
+          <view class='chart' id='cvsWrap' style='height:300rpx;'>
+          <canvas canvas-id="kline" style='width:{{canvasWidth}}px; height:{{canvasHeight}}px;'></canvas>
+          </view>
+          <view class='chart-input clearfix'>
+              <input type='number' placeholder='请输入买入金额'></input>
+              <button class='begin-btn'>确认买入</button>
+          </view>
+          <view class='chart-input clearfix'>
+              <input type='number' placeholder='请输入买入金额'></input>
+              <button class='begin-btn begin-btn2'>确认卖出</button>
+          </view>
+      </view>
+  </view>
+</template>

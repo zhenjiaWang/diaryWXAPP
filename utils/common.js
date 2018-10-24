@@ -4,7 +4,7 @@ exports.wxRunAsync= (execute) => {
     execute(resolve, reject)
   })
 }
-exports.wxPost = (url, paramData, successCallback, failCallback) => {
+exports.wxPost = (url, paramData, successCallback, failCallback, completeCallback) => {
   wx.request({
     url: host + url,
     method: 'POST',
@@ -17,11 +17,16 @@ exports.wxPost = (url, paramData, successCallback, failCallback) => {
     },
     fail(res) {
       failCallback(res)
+    },
+    complete(res){
+      if (typeof completeCallback==='function'){
+        completeCallback(res)
+      }
     }
   })
 }
 
-exports.wxGet = (url, paramData, successCallback, failCallback) => {
+exports.wxGet = (url, paramData, successCallback, failCallback, completeCallback) => {
   wx.request({
     url: host + url,
     data: paramData,
@@ -30,6 +35,11 @@ exports.wxGet = (url, paramData, successCallback, failCallback) => {
     },
     fail(res) {
       failCallback(res)
+    },
+    complete(res) {
+      if (typeof completeCallback === 'function') {
+        completeCallback(res)
+      }
     }
   })
 }
