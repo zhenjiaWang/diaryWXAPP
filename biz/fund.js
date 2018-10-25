@@ -12,7 +12,19 @@ export default {
     fundItem:0,
     canvasHeight:null,
     canvasWidth:null,
-    fundMoney:null
+    fundMoney:'',
+    sellMoney:'',
+    buyMoney:''
+  },
+  bindSellInput(e){
+    this.setData({
+      sellMoney: e.detail.value
+    })
+  },
+  bindBuyInput(e) {
+    this.setData({
+      buyMoney: e.detail.value
+    })
   },
   watch: {
     [show]: function (n, o) {
@@ -26,10 +38,16 @@ export default {
     'fundDetailShow':function(n,o){
       if(!n){
         this.setData({//init
-          fundItem: 0
+          fundItem: 0,
+          sellMoney:'',
+          buyMoney:'',
+          fundMoney:''
         })
+        const dl = new DrawKLine()
+        const cvs = wx.createCanvasContext('kline')
+        dl.clearCanvas(cvs, this.data)
       }else{
-        if(n && !this.fundItem){
+        if(n && !this.data.fundItem){
           this.setData({//init
             fundItem: 0
           })
@@ -69,56 +87,100 @@ export default {
     this.setData({ [show]: false, fundDetailShow: true, fundItem})
     this.voiceContext().playClick()
     //
-    const userId = this.data.userData.userId
+    const that = this
+    const userId = that.data.userData.userId
     const fundId=fundItem.id
-    var query = wx.createSelectorQuery()
-    query.select('#cvsWrap').boundingClientRect()
-    const that=this
     
-    query.exec(function (res) {
-      that.setData({
-        canvasHeight: res[0].height,
-        canvasWidth: res[0].width
-      })
-      wxGet('/user/fund/trade', { userId, fundId},
-        (({ data }) => {
-          if (data.errorCode >= 0) {
-            const dl = new DrawKLine()
-            const array = data.market['market']
-            dl.drawNewLine(array, wx.createCanvasContext('kline'),
-            that.data.canvasWidth, that.data.canvasHeight)
-            that.setData({
-              fundMoney: data.fundMoney
-            })
-          }
+    if (that.data.canvasHeight && this.data.canvasWidth){
+      that.loadCanvas(userId,fundId)
+    }else{
+      const query = wx.createSelectorQuery()
+      query.select('#cvsWrap').boundingClientRect()
+      query.exec(function (res) {
+        that.setData({
+          canvasHeight: res[0].height,
+          canvasWidth: res[0].width
         })
-      )
-    })
+        that.loadCanvas(userId, fundId)
+      })
+    }   
+  },
+  loadCanvas(userId, fundId){
+    const that=this
+    const dl = new DrawKLine()
+    const cvs = wx.createCanvasContext('kline')
+    wxGet('/user/fund/trade', { userId, fundId },
+      (({ data }) => {
+        if (data.errorCode >= 0) {
+          const array = data.market['market']
+          dl.drawNewLine(array, cvs, that.data.canvasWidth, that.data.canvasHeight)
+          that.setData({
+            fundMoney: data.fundMoney
+          })
+        }
+      })
+    )
   },
   closeFundDetail:function(){
     closeMaskNavigationBarColor()
     this.setData({ [show]: false, maskShow: false, fundDetailShow:false })
     this.voiceContext().playClick()
   },
-  applyFund: function (e) {
+  applyFundBuy: function (e) {
     const that = this
-    if (that.data.userState.fundLimit == 1 && that.data.submitFlag) {
+    const isNotNum = isNaN(that.data.buyMoney)
+    const money = parseFloat((that.data.userState.money + '').replace(/,/gi, ''))
+    const amount = parseFloat(that.data.buyMoney)
+    if ((that.data.userState.fundLimit == 1 && that.data.submitFlag) || isNotNum || money < amount) {
+      if (money < amount){
+        console.info('buy 持有不足')
+      } else if (isNotNum){
+        console.info('buy 非数字')
+      }
       return false
     } else {
       that.voiceContext().playClick()
       that.setData({ submitFlag: true })
       let fundId = e.currentTarget.dataset.id
+      const userId = that.data.userData.userId
       if (fundId) {
-        wxPost(
-          '/user/applyFund',
-          {
-            userId: that.data.userData.userId,
-            fundId: fundId
-          },
+        wxPost('/user/fund/buy',
+          { userId, fundId, money: amount},
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.getEventStack().push({ category: 'random-fund' })
-              that.setData({ submitFlag: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
+              that.getEventStack().push({ category: 'random-fund-buy' })
+              that.setData({ submitFlag: false, 'fundDetailShow': false, dialogShow: true, dialogResult: data.resultArray })
+              that.resultVoice(data, true)
+            }
+          }
+        )
+      }
+    }
+  },
+  applyFundSell: function (e) {
+    const that = this
+    const isNotNum = isNaN(that.data.sellMoney)
+    const money = parseFloat((e.currentTarget.dataset.money + '').replace(/,/gi, ''))
+    const amount = parseFloat(that.data.sellMoney)
+    if ((that.data.userState.fundLimit == 1 && that.data.submitFlag) || isNotNum || money < amount) {
+      if (money < amount) {
+        console.info('sell 持有不足')
+      } else if (isNotNum) {
+        console.info('sell 非数字')
+      }
+      return false
+    } else {
+      that.voiceContext().playClick()
+      that.setData({ submitFlag: true })
+      let fundId = e.currentTarget.dataset.id
+      const userId = that.data.userData.userId
+      if (fundId) {
+        wxPost('/user/fund/sell',
+          { userId, fundId, money: amount },
+          ({ data }) => {
+            if (data.errorCode >= 0) {
+              that.getEventStack().push({ category: 'random-fund-sell' })
+              that.setData({ submitFlag: false, 'fundDetailShow': false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data, true)
             }
           }

@@ -43,18 +43,16 @@ Page({
         }
       })
     }
-   // this.draw()
-    const dl=new DrawKLine()
-    const ctx = wx.createCanvasContext('kline')
+    this.draw()
+    // const dl=new DrawKLine()
+    // const ctx = wx.createCanvasContext('kline')
 
-    const array=[1.2,0.8,0.9,1.2,1.3,1.5,1.9,1.1,1.3,1.5,1.1,1.2,0.7,0.5,0.3]
-    dl.drawKLine(array, wx.createCanvasContext('kline'),this.data.canvasWidth,50)
+    // const array=[1.2,0.8,0.9,1.2,1.3,1.5,1.9,1.1,1.3,1.5,1.1,1.2,0.7,0.5,0.3]
+    // dl.drawKLine(array, wx.createCanvasContext('kline'),this.data.canvasWidth,50)
 
-    dl.drawKLine(array, wx.createCanvasContext('kline1'), this.data.canvasWidth, 50)
+    // dl.drawKLine(array, wx.createCanvasContext('kline1'), this.data.canvasWidth, 50)
 
-    dl.drawNewLine(array, wx.createCanvasContext('kline2'), this.data.canvasWidth, 100)
-
-
+    // dl.drawNewLine(array, wx.createCanvasContext('kline2'), this.data.canvasWidth, 100)
   },
   watch: {
     'userInfo': {

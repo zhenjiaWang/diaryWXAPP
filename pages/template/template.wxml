@@ -543,7 +543,7 @@
             <view class='feed2-left'>
                 <view class='job'>{{item.title}}</view>
                 <view class='money'>
-                    <text>{{userState.myFundArray.includes(item.id)?'投资':'未投资'}}</text>
+                    <text>{{tools.arrayContain(userState.myFundArray,item.id)?'已投资':'未投资'}}</text>
                     <text class='percent {{item.increase>0?"up":"down"}}'>{{item.increase}}%</text>
                     <image src='../../img/arrow-{{item.increase>0?"up":"down"}}.png' mode='widthFix'></image>
                 </view>
@@ -601,12 +601,12 @@
           <canvas canvas-id="kline" style='width:{{canvasWidth}}px; height:{{canvasHeight}}px;'></canvas>
           </view>
           <view class='chart-input clearfix'>
-              <input type='number' placeholder='请输入买入金额'></input>
-              <button class='begin-btn'>确认买入</button>
+              <input type='digit' placeholder='请输入买入金额' bindinput='bindBuyInput' value='{{buyMoney}}' style="text-indent:10rpx"></input>
+              <button class='begin-btn  {{tools.isEnableBtn(userState.hours,userState.fundLimit)?"":"disable"}}' bindtap='applyFundBuy' data-id="{{fundItem.id}}">确认买入</button>
           </view>
           <view class='chart-input clearfix'>
-              <input type='number' placeholder='请输入买入金额'></input>
-              <button class='begin-btn begin-btn2'>确认卖出</button>
+              <input type='digit' placeholder='请输入卖出金额'bindinput='bindSellInput' value='{{sellMoney}}' style="text-indent:10rpx"></input>
+              <button class='begin-btn begin-btn2  {{tools.isEnableBtn(userState.hours,userState.fundLimit)?"":"disable"}}' bindtap='applyFundSell' data-id="{{fundItem.id}}" data-money='{{fundMoney}}'>确认卖出</button>
           </view>
       </view>
   </view>
