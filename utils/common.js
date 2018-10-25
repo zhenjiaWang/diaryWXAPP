@@ -56,7 +56,7 @@ exports.parseUserState = (data,that) =>{
       data.attrList[i]['length'] = data.attrList[i]['text'].length
       data.userState[data.attrList[i]['value'] + 'Length'] = data.userState[data.attrList[i]['value']].length
       data.userState[data.attrList[i]['value'] + 'Color'] = '1'
-      if (data.attrList[i]['value'] === 'money' || data.attrList[i]['value'] === 'profit') {
+      if (data.attrList[i]['value'] === 'money' || data.attrList[i]['value'] === 'fund') {
         data.userState[data.attrList[i]['value'] + 'Color'] = '2'
       }
       if (data.attrList[i]['value'] === 'happy') {
