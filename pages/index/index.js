@@ -157,7 +157,7 @@ const options={
   },
   nextDay:function(){
     const that = this
-    if (that.data.userState.hour = 1 && that.data.submitFlag) {
+    if (that.data.userState.hour >0 && that.data.submitFlag) {
       return false
     } else {
       that.voiceContext().playClick()
@@ -176,6 +176,32 @@ const options={
               that.getEventStack().push({ category: 'random-nextDay' })
               that.voiceContext().playResult()
               that.setData({ submitFlag: false, maskShow: true, dialogShow: true, dialogResult: data.resultArray })
+            })
+          }
+          console.info(data)
+        }
+      )
+    }
+  },
+  done: function () {
+    const that = this
+    if (that.data.userState.days == 0&&that.data.userState.hour == 0 && that.data.submitFlag) {
+      return false
+    } else {
+      that.voiceContext().playClick()
+      that.setData({ submitFlag: true, maskShow: true })
+      wxPost(
+        '/user/done',
+        {
+          userId: that.data.userData.userId
+        },
+        ({ data }) => {
+          if (data.errorCode >= 0) {
+            that.voiceContext().playNextDay()
+            that.blackScreen('show', '完...', function () {
+              that.setData({ maskShow: false })
+            }, function () {
+              that.setData({ submitFlag: false, maskShow: false })
             })
           }
           console.info(data)
