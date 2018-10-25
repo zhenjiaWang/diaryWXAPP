@@ -16,7 +16,9 @@ exports.wxPost = (url, paramData, successCallback, failCallback, completeCallbac
       successCallback(res)
     },
     fail(res) {
-      failCallback(res)
+      if (typeof failCallback === 'function') {
+        failCallback(res)
+      }
     },
     complete(res){
       if (typeof completeCallback==='function'){
@@ -34,7 +36,9 @@ exports.wxGet = (url, paramData, successCallback, failCallback, completeCallback
       successCallback(res)
     },
     fail(res) {
-      failCallback(res)
+      if (typeof failCallback === 'function') {
+        failCallback(res)
+      }
     },
     complete(res) {
       if (typeof completeCallback === 'function') {
