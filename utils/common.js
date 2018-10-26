@@ -1,4 +1,5 @@
 const host = 'https://game.jinrongzhushou.com/v1'
+export const maxEventInDay=4
 exports.wxRunAsync= (execute) => {
   return new Promise((resolve, reject) => {
     execute(resolve, reject)
@@ -49,7 +50,7 @@ exports.wxGet = (url, paramData, successCallback, failCallback, completeCallback
 }
 
 exports.parseUserState = (data,that) =>{
-  console.info(data)
+ // console.info(data)
   if (data.errorCode === 0) {
     for (var i = 0; i < data.attrList.length; i++) {
       data.attrList[i]['textArray'] = data.attrList[i]['text'].split('')

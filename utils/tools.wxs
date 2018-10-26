@@ -46,11 +46,25 @@ var getCoupleStateAvatar = function (coupleState, coupleId) {
   }
   return stateAvatar
 }
+
+var commentCode = function (comment){
+  if (comment === '穷困潦倒') {
+    return 1
+  } else if (comment === '风生水起') {
+    return 2
+  } else if (comment === '碌碌无为') {
+    return 3
+  } else if (comment === '混王之王') {
+
+  } return 4
+}
+
 module.exports={
   isEnableBtn: isEnableBtn,
   arrayContain: arrayContain,
   getHaveNumber: getHaveNumber,
   getCoupleStateName: getCoupleStateName,
   getCoupleStateAvatar: getCoupleStateAvatar,
-  isCouple: isCouple
+  isCouple: isCouple,
+  commentCode: commentCode
 }

@@ -1,7 +1,11 @@
 <!--pages/index/temp.wxml-->
- <view > 
-  <canvas canvas-id="share" style='width:{{canvasWidth}}px; height:{{canvasHeight+300}}px'></canvas>
-  <!-- <canvas canvas-id="kline" style='width:{{canvasWidth}}px; height:50px;border:1px solid #000;margin-top:50rpx;'></canvas>
-  <canvas canvas-id="kline1" style='width:{{canvasWidth}}px; height:50px;border:1px solid #000;margin-top:50rpx;'></canvas>
-  <canvas canvas-id="kline2" style='width:{{canvasWidth}}px; height:100px;border:1px solid #000;margin-top:50rpx;'></canvas> -->
+ <view style="width:{{canvasWidth}}px; height:{{screenHeight}}px; overflow:auto"> 
+ 
+       <image style='width:{{canvasWidth}}px; height:{{canvasHeight}}px' src='{{canvasSaveimg}}'></image>
+
+   
+  <button class='begin-btn begin-btn2' bindtap="saveAsImg">保存海报</button>
+  <button class='begin-btn begin-btn2' open-type="share">分享好友</button>
+
 </view>
+<canvas canvas-id="share" style='width:{{canvasWidth}}px; height:{{canvasHeight}}px; '></canvas>

@@ -47,7 +47,7 @@ export default {
               that.setData({ submitFlag: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }
-            console.info(data)
+           // console.info(data)
           }
         )
       }
