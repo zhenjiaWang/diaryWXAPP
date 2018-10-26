@@ -1,30 +1,32 @@
 <!--pages/index/RankingList.wxml-->
+<wxs src="../../utils/tools.wxs" module="tools" />
+
 <view class='body-bg' style='display:;'>
     <view class='img-auto'><image src='../../img/phb.png' mode='widthFix'></image></view>
     <view class='game-main game-phb'>
         <view class='top-title'>
             <view class='pull-left view1'>
-                <view><text class='numFont font60 color2'>...</text></view>
+                <view><text class='numFont font40 color2'>{{myData.seq}}</text></view>
                 <view><text class='font24 color2'>我的排名</text></view>
             </view>
             <view class='pull-left view2 clearfix'>
                 <view class='text-center user-img-box'>
                     <view class='user-img'>
-                        <image src='../../img/1.png'></image>
+                        <image src='{{myData.avatarUrl}}'></image>
                     </view>
                 </view>
-                <view class='font26'>隔壁家老王</view>
-                <view><text class='tags tags-1'>穷困潦倒</text></view>
+                <view class='font26'>{{myData.nickName}}</view>
+                <view><text class='tags tags-{{tools.commentCode(myData.comment)}}'>{{myData.comment||'--'}}</text></view>
             </view>
             <view class='view3'>
-                <text class='numFont font54'>23178208</text>
+                <text class='numFont font54'>{{myData.score||'-- '}}</text>
                 <text class='font30'>分</text>
             </view>
         </view>
         <view class='begin-txt-box'>
             <view class='begin-txt-main'>
                 <view class='phb-title clearfix'>
-                    <text class='font30'>单局成绩排行榜</text>
+                    <text class='font30'>单局排行</text>
                     <text>上次更新时间：{{lastUpdate}}</text>
                 </view>
                 <view class='phb-list'>
@@ -38,17 +40,15 @@
                         <view class='pull-left view2 clearfix'>
                             <view class='text-center user-img-box'>
                                 <view class='user-img'>
-                                    <image src='../../img/1.png'></image>
+                                    <image src='{{item.avatarUrl}}'></image>
                                 </view>
                             </view>
-                            <view class='font26'>隔壁家老王</view>
-                            <view><text class='tags tags-1' wx:if="{{index===0}}">穷困潦倒</text></view>
-                            <view><text class='tags tags-2' wx:if="{{index===1}}">风生水起</text></view>
-                            <view><text class='tags tags-3' wx:if="{{index===2}}">碌碌无为</text></view>
-                            <view><text class='tags tags-4' wx:if="{{index===3}}">混王之王</text></view>
+                            <view class='font26'>{{item.nickName}}</view>
+                            <view><text class='tags tags-{{tools.commentCode(item.comment)}}'>{{item.comment}}</text>
+                            </view>
                         </view>
                         <view class=' view3'>
-                            <text class='numFont font43'>23178208</text>
+                            <text class='numFont font43'>{{item.score||'--'}}</text>
                             <text class='font24'>分</text>
                         </view>
                     </view>

@@ -38,7 +38,6 @@ export default {
       that.voiceContext().playClick()
       that.setData({ submitFlag: true })
       let planId = e.currentTarget.dataset.id
-      console.info(planId)
       if (planId) {
         wxPost(
           '/user/applyPlan',
@@ -55,7 +54,7 @@ export default {
                 submitFlag: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }
-            console.info(data)
+           // console.info(data)
           }
         )
       }

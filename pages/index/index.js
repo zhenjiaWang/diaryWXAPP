@@ -108,7 +108,7 @@ const options={
     wxGet('/user/resData/' + that.data.userData.userId,
       false,
       ({ data }) => {
-        console.info(data)
+      //  console.info(data)
         if (data.errorCode === 0) {
           that.setData({
             planItems: data.planArray,
@@ -173,6 +173,7 @@ const options={
             that.blackScreen('show','过了一夜...',function(){
               that.setData({ maskShow: false })
             },function(){
+              that.getEventStack().init()
               that.getEventStack().push({ category: 'random-nextDay' })
               that.voiceContext().playResult()
               that.setData({ submitFlag: false, maskShow: true, dialogShow: true, dialogResult: data.resultArray })
