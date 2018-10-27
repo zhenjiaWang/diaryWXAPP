@@ -31,70 +31,67 @@ function storeMixin(options) {
     watch:{
       'maskShow':function(n,o){
         const that=this
-        setTimeout(()=>{
-          //show event 
-          const userId = this.data.userData.userId
-          if (!that.data.maskShow && userId ){
-            const { id: findEventId, category } = this.getEventStack().pop() || {}
-            if (findEventId && category==='plan') {
-              that.setData({ hangOn:true})
-              wxGet('/user/plan/findEvent',
-                { userId, findEventId },
-                ({ data }) => {
-                  const eventId = data['eventId']
-                  if (data.errorCode >= 0) {
-                    wxGet('/userEvent/load',
-                      { userId, eventId },
-                      ({ data }) => {
-                        if (data.errorCode >= 0) {
-                          if (!that.data.maskShow){//请求结束再次判断时候有其他弹出
-                            that.showEvent(data)
-                            //find random event
-                            that.getEventStack().push({ category: 'random' })
-                          }
-                        }
-                        that.setData({ hangOn: false })//final 
-                      },()=>{//load fail callback
-                        that.setData({ hangOn: false })
-                      })
-                  } else {//findEvent errorcode=-1
-                    that.setData({ hangOn: false })
-                  }
-                },()=>{//findEvent fail callback
-                  that.setData({ hangOn: false })
-                })
-            } else if (category && category!=='plan'){
-              wxGet('/userEvent/findEvent',
-                { userId },
-                ({ data }) => {
-                  const eventId = data['eventId']
-                  if (data.errorCode >= 0) {
-                    that.setData({ hangOn: true })
-                    wxGet('/userEvent/load',
-                      { userId, eventId },
-                      ({ data }) => {
-                        if (data.errorCode >= 0) {
-                          if (!that.data.maskShow) {//请求结束再次判断时候有其他弹出
-                            that.showEvent(data)
-                            //find random event 50%
-                            if (new Date().getTime() % 2 === 1) {
-                              that.getEventStack().push({ category: 'random' })
+        if (!n) { //show event 
+          setTimeout(() => {
+            const userId = this.data.userData.userId
+            if (!that.data.maskShow && userId) {
+              const { id: findEventId, category } = this.getEventStack().pop() || {}
+              const stack = that.getEventStack()
+              if (findEventId && category === 'plan') {
+                that.setData({ hangOn: true })
+                wxGet('/user/plan/findEvent',
+                  { userId, findEventId },
+                  ({ data }) => {
+                    const eventId = data['eventId']
+                    if (data.errorCode >= 0) {
+                      wxGet('/userEvent/load',
+                        { userId, eventId },
+                        ({ data }) => {
+                          if (data.errorCode >= 0) {
+                            if (!that.data.maskShow) {//请求结束再次判断时候有其他弹出
+                              that.showEvent(data)
+                              if (Math.ceil(Math.random() * 100) < stack.continueOdds()) {
+                                stack.push({ category: 'random-serial' })
+                              }
                             }
                           }
-                        }
-                        that.setData({ hangOn: false })
-                      }, () => {//load fail callback
-                        that.setData({ hangOn: false })
-                      })
-                  } else {//findEvent errorcode=-1
+                        }, null, () => {//load complete callback
+                          that.setData({ hangOn: false })
+                        })
+                    }
+                  }, null, () => {//findEvent complete callback
                     that.setData({ hangOn: false })
-                  }
-                }, () => {//findEvent fail callback
-                  that.setData({ hangOn: false })
-                })
+                  })
+              } else if (category && category !== 'plan') {
+                wxGet('/userEvent/findEvent',
+                  { userId },
+                  ({ data }) => {
+                    const eventId = data['eventId']
+                    if (data.errorCode >= 0) {
+                      that.setData({ hangOn: true })
+                      wxGet('/userEvent/load',
+                        { userId, eventId },
+                        ({ data }) => {
+                          if (data.errorCode >= 0) {
+                            if (!that.data.maskShow) {//请求结束再次判断时候有其他弹出
+                              that.showEvent(data)
+                              const randomPoint = Math.ceil(Math.random() * 100)
+                              if (randomPoint < stack.continueOdds()) {
+                                stack.push({ category: 'random-serial' })
+                              }
+                            }
+                          }
+                        }, null, () => {//load fail callback
+                          that.setData({ hangOn: false })
+                        })
+                    }
+                  }, null, () => {//findEvent fail callback
+                    that.setData({ hangOn: false })
+                  })
+              }
             }
-          }
-        },1500)
+          }, 1500)
+        }
       },
       'hangOn':function(n,o){
         if(n){

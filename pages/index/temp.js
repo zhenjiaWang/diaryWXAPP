@@ -2,23 +2,33 @@
 const app = getApp()
 const { setWatcher } = require("../../utils/watcher.js");
 import { DrawKLine } from '../../utils/DrawKLine.js'
-
+const { wxGet} = require('../../utils/common.js')
+const descriptHeight=350
+const abilityHeight=330
 Page({
   data: {
     canvasWidth:null,
     canvasHeight:null,
+    screenHeight:null,
     userInfo: {},
-    hasUserInfo: false
+    hasUserInfo: false,
+    canvasSaveimg:''
   },
   onLoad: function (options) {
-    let canvasWidth, canvasHeight
+    wx.showLoading({
+      title: '数据生成中...',
+    })
+    let canvasWidth, canvasHeight, screenHeight
+    const totalHeight = abilityHeight + descriptHeight
     wx.getSystemInfo({
       success: function (res) {
         canvasWidth = res.windowWidth
-        canvasHeight = res.windowHeight - 50
+        screenHeight = res.windowHeight 
+        canvasHeight = res.windowHeight > totalHeight ? res.windowHeight : totalHeight
       },
     })
-    this.setData({ canvasWidth, canvasHeight })
+   
+    this.setData({ canvasWidth, canvasHeight, screenHeight })
     setWatcher(this)
     if (app.globalData.userInfo) {
       this.setData({
@@ -43,21 +53,11 @@ Page({
         }
       })
     }
-    this.draw()
-    // const dl=new DrawKLine()
-    // const ctx = wx.createCanvasContext('kline')
-
-    // const array=[1.2,0.8,0.9,1.2,1.3,1.5,1.9,1.1,1.3,1.5,1.1,1.2,0.7,0.5,0.3]
-    // dl.drawKLine(array, wx.createCanvasContext('kline'),this.data.canvasWidth,50)
-
-    // dl.drawKLine(array, wx.createCanvasContext('kline1'), this.data.canvasWidth, 50)
-
-    // dl.drawNewLine(array, wx.createCanvasContext('kline2'), this.data.canvasWidth, 100)
+    //this.draw()
   },
   watch: {
     'userInfo': {
       handler(value) {
-        console.info(value.avatarUrl)
         this.getImageInfo(value.avatarUrl)
       }
     }
@@ -69,20 +69,16 @@ Page({
         wx.getImageInfo({
           src: url,
           success: res => {
-            console.info('get avatar success')
             resolve(res)
           },
           fail: error => {
             reject(error)
-          },
-          complete:e=>{
-            console.info(e)
           }
         })
       })
       const p2 = new Promise((resolve, reject) => {
         wx.getImageInfo({
-          src: url,
+          src: 'https://img.jinrongzhushou.com/common/hun_qrcode.jpg',
           success: (res) => {
             console.info('get qrcode success')
             resolve(res);
@@ -92,15 +88,25 @@ Page({
           }
         })
       })
-      Promise.all([p1,p2]).then((result) => {
-        console.info(result)
+      const userId = app.globalData.userId
+      const p3 = new Promise((resolve,reject)=>{
+        wxGet(`/user/report/${userId}`,null,({data})=>{
+          resolve(data);
+        },(error)=>{
+          reject(error)
+        })
+
+      })
+
+      Promise.all([p1,p2,p3]).then((result) => {
         const avatarResult = result[0]
         const qrcodeResult = result[1]
+        const reportResult = result[2]
         //
-        if (avatarResult.errMsg === 'getImageInfo:ok' && qrcodeResult.errMsg === 'getImageInfo:ok' ) {
+        if (avatarResult.errMsg === 'getImageInfo:ok' && qrcodeResult.errMsg === 'getImageInfo:ok' && reportResult.errorCode >= 0 ) {
           
-          that.draw({ avatar: avatarResult.path,
-          qrCodeImg: qrcodeResult.path})
+         that.draw({ avatar: avatarResult.path,
+         qrCodeImg: qrcodeResult.path},reportResult.data)
         }
       }).catch((error) => {
         console.info(error)
@@ -112,7 +118,21 @@ Page({
     rankImg = '../../img/feng.png',
     qrCodeImg = '../../img/scjg.png',
     point='23178208'
-    }={}){
+  } = {}, {
+    couple= '左手',
+    happy='',
+    health='',
+    positive='',
+    experience='',
+    house='',
+    score= '',
+    money='',
+    car='',
+    fund= '',
+    comment= '',
+    ability= '',
+    job='',
+    connections= ''}={}){
     let { canvasWidth, canvasHeight}=this.data
     const ctx = wx.createCanvasContext('share')
     let usedHeight = 15 //已使用的高度
@@ -134,8 +154,8 @@ Page({
     const center = padding + _r
     ctx.arc(center, usedHeight + _r, _r, 0, 2 * Math.PI);
     ctx.clip()
-    ctx.setFillStyle('#000')
-    ctx.fill()
+    ctx.setStrokeStyle('#fff')
+    ctx.stroke()
     ctx.drawImage(avatar, padding, usedHeight, _d, _d)
     ctx.restore()
     ctx.drawImage(rankImg, center + 22, usedHeight + _r - 30, rankWidth, 40)
@@ -163,57 +183,85 @@ Page({
     const itemR = 10 //圆角半径
     const tripleW = (canvasWidth - padding * 2 - itemPd * 2) / 3
     //line 1
-    this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '金 钱', '100')
-    this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '投资财富', '100')
-    this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '能力才干', '100')
+    this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '金 钱', money)
+    this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '投资财富', fund)
+    this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '能力才干', ability)
 
     //line 2
     usedHeight += itemH + 10
-    this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '快 乐', '100')
-    this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '正 直', '100')
-    this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '人 脉', '100')
+    this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '快 乐', happy)
+    this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '健康', health )
+    this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '人 脉', connections)
 
     //line 3  
     usedHeight += itemH + 10
-    this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '社会经验', '100')
-    this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '正气', '100')
+    this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '社会经验', experience)
+    this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR,'正 义', positive)
 
     const doubleW = (canvasWidth - padding * 2 - itemPd) / 2
     //line 4
     usedHeight += itemH + 10
-    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '座 驾', '宝马X5M')
-    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '房 产', '二环200m²loft')
+    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '座 驾', car)
+    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '房 产', house)
 
     //line 5
     usedHeight += itemH + 10
-    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '伴 侣', 'Anglababy')
-    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '工 作', 'CEO')
+    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '伴 侣',couple)
+    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '工 作', job)
 
 
     //description
     usedHeight += itemH + 10
-    ctx.drawImage('../../img/survival-txt.png', padding, usedHeight, titleWidth, canvasHeight - usedHeight - 20)
+    ctx.drawImage('../../img/survival-txt.png', padding, usedHeight, titleWidth, descriptHeight-100)
     usedHeight += 40
 
     ctx.setTextAlign('left')
     ctx.setFillStyle('#000')
-    let str = '你在北京各种产业投资了0金钱，一旦钱包被偷了就倾家荡产了,你在北京各种产业投资了0金钱，一旦钱包被偷了就倾家荡产了你在北京各种产业投资了0金钱，一旦钱包被偷了就倾家荡产了你在北京各种产业投资了0金钱，一旦钱包被偷了就倾家荡产了你在北京各种产业投资了0金钱，一旦钱包被偷了就倾家荡产了'
-    const h=this.drawText(ctx, str, padding+20,usedHeight, 10, titleWidth-40)
+    let str = '你在北京各种产业投资了0金钱，一旦钱包被偷了就倾家荡产了,你在北京各种产业投资了0金钱'
+    for(let x=0;x<3;x++){
+      const h = this.drawText(ctx, str, padding + 20, usedHeight, 10, titleWidth - 40)
+      usedHeight+=h-10
+    }
+   
+    
     //draw qrcode
     ctx.save()
     ctx.beginPath()
     let q_r = 45//二维码圆半径
     let q_d = q_r * 2//二维码尺寸
-    const q_center = (titleWidth + padding-100) + q_r
-    const bottom = canvasHeight - 120 
-    ctx.arc(q_center, bottom + q_r, q_r, 0, 2 * Math.PI);
+    const q_center = padding + q_r
+    const bottom = 330 + 250+30
+    
+    ctx.arc(q_center, bottom+q_r, q_r, 0, 2 * Math.PI);
     ctx.clip()
-    // ctx.setFillStyle('#000')
-    // ctx.fill()
-    ctx.drawImage(qrCodeImg, titleWidth + padding - 100, bottom, q_d, q_d)
+    ctx.stroke()
+    ctx.drawImage(qrCodeImg, padding, bottom , q_d, q_d)
     ctx.restore()
 
+    ctx.setFontSize(16)
+
+    ctx.setFillStyle('#FFFFFF')
+    ctx.fillText('长按图片,扫码加入', padding + q_d + 15, bottom+45)
+    ctx.fillText('马上开始鬼混吧!', padding + q_d + 15, bottom + 70)
+
     ctx.draw()
+
+    const that=this
+    setTimeout(()=>{
+      wx.canvasToTempFilePath({
+        canvasId: 'share',
+        fileType: 'jpg',
+        success: (res) => {
+          that.setData({
+            canvasSaveimg: res.tempFilePath
+          })
+        }, complete: function (err) {
+          console.info(err)
+          wx.hideLoading()
+        }
+      })
+    },500)
+   
   },
   drawText (ctx, str, x,initHeight, titleHeight, canvasWidth) {
     var lineWidth = 0;
@@ -276,5 +324,25 @@ Page({
   },
   onShareAppMessage: function () {
 
+  },
+  saveAsImg:function(){
+    wx.canvasToTempFilePath({
+      canvasId: 'share',
+      fileType: 'jpg',
+      success: function (res) {
+        wx.saveImageToPhotosAlbum({
+          filePath: res.tempFilePath,
+          success(res) {
+            wx.hideLoading();
+            wx.showToast({
+              title: '保存成功',
+            });
+          },
+          fail() {
+            wx.hideLoading()
+          }
+        })
+      }
+    })
   }
 })

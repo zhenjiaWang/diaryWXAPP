@@ -492,8 +492,10 @@ text.tags{display: inline-block;width:94rpx;height:26rpx;line-height:26rpx;borde
     background:rgba(0,0,0,.2);
     border-radius:10rpx; 
     font-size:28rpx;
-    text-indent: 20rpx;
+    /* text-indent: 20rpx; */
     float: left;
+    color:#fff;
+    text-align: center;
 }
 .chart-input .begin-btn{float: right;margin: 0;}
 .survival-txt{
