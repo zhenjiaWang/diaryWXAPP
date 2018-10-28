@@ -53,16 +53,16 @@ Page({
         }
       })
     }
-    //this.draw()
+   // this.draw()
   },
   watch: {
     'userInfo': {
       handler(value) {
-        this.getImageInfo(value.avatarUrl)
+        this.getImageInfo(value.avatarUrl,value.nickName)
       }
     }
   },
-  getImageInfo(url) {//  图片缓存本地的方法
+  getImageInfo(url, nickName) {//  图片缓存本地的方法
     const that = this
     if (url) {
       const p1 = new Promise((resolve, reject) => {
@@ -81,17 +81,32 @@ Page({
           src: 'https://img.jinrongzhushou.com/common/hun_qrcode.jpg',
           success: (res) => {
             console.info('get qrcode success')
-            resolve(res);
+            resolve(res)
           },
           fail: err => {
             reject(err)
           }
         })
       })
-      const userId = app.globalData.userId
+      const userId = '6461262883382648832'//app.globalData.userId TODO 
       const p3 = new Promise((resolve,reject)=>{
         wxGet(`/user/report/${userId}`,null,({data})=>{
-          resolve(data);
+          console.info('report get success ,and continue get comment ')
+          if (data.data.comment) {
+            wx.getImageInfo({
+              src: data.data.comment,
+              success: (res) => {
+                console.info('get user comment success')
+                data.data.comment = res.path
+                resolve(data)
+              },
+              fail: err => {
+                reject(err)
+              }
+            })
+          }else{
+            resolve(data)
+          }  
         },(error)=>{
           reject(error)
         })
@@ -105,7 +120,7 @@ Page({
         //
         if (avatarResult.errMsg === 'getImageInfo:ok' && qrcodeResult.errMsg === 'getImageInfo:ok' && reportResult.errorCode >= 0 ) {
           
-         that.draw({ avatar: avatarResult.path,
+         that.draw({ avatar: avatarResult.path,nickName,
          qrCodeImg: qrcodeResult.path},reportResult.data)
         }
       }).catch((error) => {
@@ -115,9 +130,9 @@ Page({
   },
   draw({
     avatar ='../../img/scjg.png',
-    rankImg = '../../img/feng.png',
     qrCodeImg = '../../img/scjg.png',
-    point='23178208'
+    point='23178208',
+    nickName='张三'
   } = {}, {
     couple= '左手',
     happy='',
@@ -129,7 +144,7 @@ Page({
     money='',
     car='',
     fund= '',
-    comment= '',
+    comment = '../../img/feng.png',
     ability= '',
     job='',
     connections= ''}={}){
@@ -158,7 +173,10 @@ Page({
     ctx.stroke()
     ctx.drawImage(avatar, padding, usedHeight, _d, _d)
     ctx.restore()
-    ctx.drawImage(rankImg, center + 22, usedHeight + _r - 30, rankWidth, 40)
+    ctx.drawImage(comment, center + 22, usedHeight + _r - 40, rankWidth, 40)
+    ctx.setFillStyle('#f6de4b')
+    ctx.setFontSize(14)
+    ctx.fillText(nickName, center + 40, usedHeight + _r +20)
 
     //point
     const starX = center + 22 + rankWidth + rankMargin
@@ -343,6 +361,11 @@ Page({
           }
         })
       }
+    })
+  },
+  backHome: function () {
+    wx.navigateBack({
+      delta: 1
     })
   }
 })
