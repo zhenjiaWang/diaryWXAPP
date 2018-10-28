@@ -1,11 +1,13 @@
 <!--pages/index/temp.wxml-->
- <view style="width:{{canvasWidth}}px; height:{{screenHeight}}px; overflow:auto"> 
- 
+ <view class='share-mask' style="width:{{canvasWidth}}px; height:{{screenHeight}}px; overflow:auto"> 
        <image style='width:{{canvasWidth}}px; height:{{canvasHeight}}px' src='{{canvasSaveimg}}'></image>
 
    
-  <button class='begin-btn begin-btn2' bindtap="saveAsImg">保存海报</button>
-  <button class='begin-btn begin-btn2' open-type="share">分享好友</button>
+  
+    <button class='btn' bindtap="backHome">返回首页</button>
+    <button class='btn'bindtap="saveAsImg">下载海报</button>
+    <button class='btn' open-type="share">分享好友</button>
 
 </view>
-<canvas canvas-id="share" style='width:{{canvasWidth}}px; height:{{canvasHeight}}px; '></canvas>
+
+ <canvas canvas-id="share" style='width:{{canvasWidth}}px; height:{{canvasHeight}}px;transform: translateX(-200%);'></canvas>

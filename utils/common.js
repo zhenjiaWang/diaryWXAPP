@@ -94,3 +94,41 @@ exports.closeMaskNavigationBarColor = () => {
 exports.isEnableBtn = (hour, limitCount) =>{
   return (hour == 0 || limitCount == 1) ? false : true
 }
+exports.share = ({
+  title='全名混北京',
+   success, fail, imageUrl, params,
+  url ='pages/index/index'
+} = {}) => {
+  if (!params) params = {}
+  const pages = getCurrentPages()
+  const currentPage = pages[pages.length - 1]
+  var opts = Object.assign(params, currentPage.options)
+
+  if (opts) {//params
+    url += '?from=share'
+    Object.keys(opts).forEach((i) => {
+      url += `&${i}=${opts[i]}`
+    })
+  }
+  console.info(url)
+  return {
+    title: title ? title : '',
+    path: url,
+    imageUrl: imageUrl ? imageUrl : '',
+    success: function (res) {
+      if (typeof success === 'function') {
+        success(res)
+      }
+    },
+    fail: function (res) {
+      if (typeof fail === 'function') {
+        fail(res)
+      } else if (!fail) {
+        wx.showToast({
+          title: '转发失败',
+          icon: 'none'
+        })
+      }
+    }
+  }
+}

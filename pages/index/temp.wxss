@@ -1,1 +1,2 @@
 /* pages/index/temp.wxss */
+@import '../../common/index.wxss';

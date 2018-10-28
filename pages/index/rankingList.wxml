@@ -16,7 +16,7 @@
                     </view>
                 </view>
                 <view class='font26'>{{myData.nickName}}</view>
-                <view><text class='tags tags-{{tools.commentCode(myData.comment)}}'>{{myData.comment||'--'}}</text></view>
+                <view class='tag-png'><image src='{{myData.comment}}' mode='widthFix' wx:if="{{myData.comment}}"></image></view>
             </view>
             <view class='view3'>
                 <text class='numFont font54'>{{myData.score||'-- '}}</text>
@@ -44,8 +44,7 @@
                                 </view>
                             </view>
                             <view class='font26'>{{item.nickName}}</view>
-                            <view><text class='tags tags-{{tools.commentCode(item.comment)}}'>{{item.comment}}</text>
-                            </view>
+                            <view class='tag-png'><image src='{{item.comment}}' mode='widthFix' wx:if='{{item.comment}}' ></image></view>
                         </view>
                         <view class=' view3'>
                             <text class='numFont font43'>{{item.score||'--'}}</text>
