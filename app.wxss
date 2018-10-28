@@ -387,7 +387,7 @@ page{overflow: hidden;}
     }
 }
 .game-result{
-    width: 600rpx;
+    /* width: 600rpx; */
     padding-left:5rpx;
     height:380rpx;
     overflow-y: auto;
