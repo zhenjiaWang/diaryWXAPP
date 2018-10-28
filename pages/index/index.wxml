@@ -27,7 +27,7 @@
     <image class='icon-1' src='../../img/icon-2.png' mode="widthFix"></image>
     <text class='num-box'>今日还剩<text class='numFont font60 color1'>{{userState.hours}}</text>小时</text>
     <text wx:if='{{userState.days>0}}' class='next-day {{userState.hours>0?"disable":""}}' bindtap='nextDay'></text>
-    <text wx:if='{{userState.days==0}}' class='next-day' bindtap='done'></text>
+    <text wx:if='{{userState.days==0}}' class='end' bindtap='done'></text>
 
   </view>
   <view class='game-info clearfix'>
