@@ -1,6 +1,6 @@
 // pages/index/RankingList.js
 const { formatTime } = require('../../utils/util.js') 
-const { wxGet } = require('../../utils/common.js')
+const { wxGet, share} = require('../../utils/common.js')
 const app = getApp()
 Page({
   data: {
@@ -43,6 +43,11 @@ Page({
   backHome:function(){
     wx.navigateBack({
       delta:1
+    })
+  },
+  onShareAppMessage(opt){
+    share({
+      
     })
   }
 })
