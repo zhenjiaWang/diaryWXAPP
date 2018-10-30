@@ -267,7 +267,7 @@
   <view class='pop pop2' hidden='{{!clothesShow}}'>
     <view class='pop2-title clearfix'>
       <image src='../../img/btn-5.png' ></image>
-      <text>衣锦华服</text>
+      <text>着装风格</text>
       <view class='off' bindtap='closeClothes'>
         <image src='../../img/off.png'></image>
       </view>
@@ -301,7 +301,7 @@
   <view class='pop pop2' hidden='{{!myClothesShow}}'>
     <view class='pop2-title clearfix'>
       <image src='../../img/btn-5.png' ></image>
-      <text>衣锦华服</text>
+      <text>我的着装</text>
       <view class='off' bindtap='closeMyClothes'>
         <image src='../../img/off.png'></image>
       </view>
@@ -337,7 +337,7 @@
   <view class='pop pop2' hidden='{{!luxuryShow}}'>
     <view class='pop2-title clearfix'>
       <image src='../../img/btn-6.png' ></image>
-      <text>仪丈排场</text>
+      <text>妆容排场</text>
       <view class='off' bindtap='closeLuxury'>
         <image src='../../img/off.png'></image>
       </view>
@@ -371,7 +371,7 @@
   <view class='pop pop2' hidden='{{!myLuxuryShow}}'>
     <view class='pop2-title clearfix'>
       <image src='../../img/btn-6.png' ></image>
-      <text>仪丈排场</text>
+      <text>我的排场</text>
       <view class='off' bindtap='closeMyLuxury'>
         <image src='../../img/off.png'></image>
       </view>

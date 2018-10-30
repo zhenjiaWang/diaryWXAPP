@@ -158,12 +158,12 @@
            <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.clothesLimit)?"":"disable"}}' 
            bindtap='actionClothes' wx:if="{{userData.gender==2}}">
             <image src='../../img/btn-5.png'></image>
-            <text>衣锦华服</text>
+            <text>着装风格</text>
           </view>
           <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.luxuryLimit)?"":"disable"}}' 
           bindtap='actionLuxury' wx:if="{{userData.gender==2}}">
             <image src='../../img/btn-6.png'></image>
-            <text>仪丈排场</text>
+            <text>妆容排场</text>
           </view>
           <!--common prop-->
           <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.coupleLimit)?"":"disable"}}' bindtap='actionCouple'>
