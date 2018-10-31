@@ -128,7 +128,7 @@
 <template name="popHouse">
   <view class='pop pop2' hidden='{{!houseShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-4.png' ></image>
+      <image src='../../img/btn-8.png' ></image>
       <text>购房置业</text>
       <view class='off' bindtap='closeHouse'>
         <image src='../../img/off.png'></image>
@@ -162,7 +162,7 @@
 <template name="popMyHouse">
   <view class='pop pop2' hidden='{{!myHouseShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-5.png' ></image>
+      <image src='../../img/btn-8.png' ></image>
       <text>我的房产</text>
       <view class='off' bindtap='closeMyHouse'>
         <image src='../../img/off.png'></image>
@@ -196,7 +196,7 @@
 <template name="popCar">
   <view class='pop pop2' hidden='{{!carShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-4.png' ></image>
+      <image src='../../img/btn-9.png' ></image>
       <text>座驾排场</text>
       <view class='off' bindtap='closeCar'>
         <image src='../../img/off.png'></image>
@@ -230,7 +230,7 @@
 <template name="popMyCar">
   <view class='pop pop2' hidden='{{!myCarShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-4.png' ></image>
+      <image src='../../img/btn-9.png' ></image>
       <text>我的座驾</text>
       <view class='off' bindtap='closeMyCar'>
         <image src='../../img/off.png'></image>
@@ -266,7 +266,7 @@
 <template name="popClothes">
   <view class='pop pop2' hidden='{{!clothesShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-5.png' ></image>
+      <image src='../../img/btn-10.png' ></image>
       <text>着装风格</text>
       <view class='off' bindtap='closeClothes'>
         <image src='../../img/off.png'></image>
@@ -300,7 +300,7 @@
 <template name="popMyClothes">
   <view class='pop pop2' hidden='{{!myClothesShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-5.png' ></image>
+      <image src='../../img/btn-10.png' ></image>
       <text>我的着装</text>
       <view class='off' bindtap='closeMyClothes'>
         <image src='../../img/off.png'></image>
@@ -336,7 +336,7 @@
 <template name="popLuxury">
   <view class='pop pop2' hidden='{{!luxuryShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-6.png' ></image>
+      <image src='../../img/btn-12.png' ></image>
       <text>妆容排场</text>
       <view class='off' bindtap='closeLuxury'>
         <image src='../../img/off.png'></image>
@@ -370,7 +370,7 @@
 <template name="popMyLuxury">
   <view class='pop pop2' hidden='{{!myLuxuryShow}}'>
     <view class='pop2-title clearfix'>
-      <image src='../../img/btn-6.png' ></image>
+      <image src='../../img/btn-12.png' ></image>
       <text>我的排场</text>
       <view class='off' bindtap='closeMyLuxury'>
         <image src='../../img/off.png'></image>
