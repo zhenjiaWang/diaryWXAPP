@@ -530,8 +530,26 @@ text.num-big {
     padding:0 30rpx 0 30rpx;
     margin-bottom: 30rpx;
 }
-
-
+.game-main game-phb{
+    padding-top:10rpx;
+}
+.game-phb .tab-title{
+    height:70rpx;
+    margin-bottom:10rpx;
+}
+.game-phb .tab-title view{
+    float: left;
+    width: 33%;
+    line-height: 70rpx;
+    color:#fff;
+    text-align: center;
+    font-size:28rpx;
+}
+.game-phb .tab-title view.active{color:#f5d83f;}
+.game-phb .begin-txt-box .begin-txt-main {
+    height:530rpx;
+}
+.phb-list{height:490rpx;}
 
 
 
