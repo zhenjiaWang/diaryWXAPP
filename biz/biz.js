@@ -43,6 +43,9 @@ function storeMixin(options) {
                   { userId, findEventId },
                   ({ data }) => {
                     const eventId = data['eventId']
+                    if (stack.isHappened(eventId)){
+                      return 
+                    }
                     if (data.errorCode >= 0) {
                       wxGet('/userEvent/load',
                         { userId, eventId },
@@ -67,6 +70,9 @@ function storeMixin(options) {
                   { userId },
                   ({ data }) => {
                     const eventId = data['eventId']
+                    if (stack.isHappened(eventId)) {
+                      return
+                    }
                     if (data.errorCode >= 0) {
                       that.setData({ hangOn: true })
                       wxGet('/userEvent/load',
