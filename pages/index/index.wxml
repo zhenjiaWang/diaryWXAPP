@@ -26,8 +26,8 @@
     <image class='icon-2' src='../../img/line-bg.png' mode="widthFix"></image>
     <image class='icon-1' src='../../img/icon-2.png' mode="widthFix"></image>
     <text class='num-box'>今日还剩<text class='numFont font60 color1'>{{userState.hours}}</text>小时</text>
-    <text wx:if='{{userState.days>0}}' class='next-day {{userState.hours>0?"disable":""}}' bindtap='nextDay'></text>
-    <text wx:if='{{userState.days==0}}' class='next-day' bindtap='done'></text>
+    <button wx:if='{{userState.days>0}}' class='next-day {{userState.hours>0?"disable":""}}' bindtap='nextDay'></button>
+    <button wx:if='{{userState.days==0}}' class='end {{userState.hours>0?"disable":""}}' bindtap='done'></button>
 
   </view>
   <view class='game-info clearfix'>
@@ -145,25 +145,25 @@
           <!--male prop-->
           <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.houseLimit)?"":"disable"}}' 
           bindtap='actionHouse' wx:if="{{userData.gender==1}}">
-            <image src='../../img/btn-5.png'></image>
+            <image src='../../img/btn-8.png'></image>
             <text>购房置业</text>
           </view>
           <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.carLimit)?"":"disable"}}' 
           bindtap='actionCar' wx:if="{{userData.gender==1}}">
-            <image src='../../img/btn-6.png'></image>
+            <image src='../../img/btn-9.png'></image>
             <text>座驾排场</text>
           </view>
 
           <!--female prop-->
            <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.clothesLimit)?"":"disable"}}' 
            bindtap='actionClothes' wx:if="{{userData.gender==2}}">
-            <image src='../../img/btn-5.png'></image>
-            <text>衣锦华服</text>
+            <image src='../../img/btn-10.png'></image>
+            <text>着装风格</text>
           </view>
           <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.luxuryLimit)?"":"disable"}}' 
           bindtap='actionLuxury' wx:if="{{userData.gender==2}}">
-            <image src='../../img/btn-6.png'></image>
-            <text>仪丈排场</text>
+            <image src='../../img/btn-12.png'></image>
+            <text>妆容排场</text>
           </view>
           <!--common prop-->
           <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.coupleLimit)?"":"disable"}}' bindtap='actionCouple'>
