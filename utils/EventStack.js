@@ -39,7 +39,7 @@ class EventStack{
       const odds = 100 / Math.pow(2, this.serialTime)
       return odds
     }
-    return 50
+    return 40
   }
   pop = () => {
     

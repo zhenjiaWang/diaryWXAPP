@@ -85,7 +85,7 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.getEventStack().push({ category: 'random-luxury' })
+             // that.getEventStack().push({ category: 'random-luxury' })
               that.setData({ submitFlag: false, [foldShow]: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }
