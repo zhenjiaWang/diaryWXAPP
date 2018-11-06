@@ -3,13 +3,13 @@ const h_key='event_h'
 const { maxEventInDay}=require('../utils/common.js')
 
 class EventStack{
-  item = []
-  happened=[]
+  item = []//队列
+  happened=[]//已加载的事件
   length=3
-  maxTime = maxEventInDay
-  limit=0
-  latestType=''
-  serialTime=0
+  maxTime = maxEventInDay//单日最大限制
+  limit=0//事件计数器
+  latestType=''//上次push的类型
+  serialTime=0 //连续次数
   
 
   constructor(){
@@ -37,7 +37,7 @@ class EventStack{
   continueOdds=()=>{
     if (this.serialTime) {
       const odds = 100 / Math.pow(2, this.serialTime)
-      return odds
+      return odds<40?odds:40
     }
     return 40
   }
@@ -45,7 +45,9 @@ class EventStack{
     
     if (this.maxTime > this.limit && this.item.length > 0) {
       wx.setStorage({ key, data: ++this.limit })
-      return this.item.pop()
+      let o= this.item.pop()
+      this.print()
+      return o
     } else {
       if (!this.item.length){
         console.info(`EventStack:no more event in stack`)
@@ -55,13 +57,13 @@ class EventStack{
     }
   }
   push = (event) => {
-    if (this.item.length < 3) {
+    if (this.item.length < this.maxTime) {
       this.item.push(event)
       const { category } = event
       if (category !== this.latestType){
         this.latestType = category
         this.serialTime=1
-      } else if (category === this.latestType && this.latestType==='random-serial'){
+      } else if (category === this.latestType && this.latestType==='random'){
         this.serialTime++
       }
     } else {
