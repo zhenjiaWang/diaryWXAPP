@@ -47,7 +47,11 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.getEventStack().push({ id:planId, category:'plan'})
+              if (Math.ceil(Math.random() * 100) > 35) {
+                that.getEventStack().push({ category: 'random-serial' })
+              } else {
+                that.getEventStack().push({ id: planId, category: 'plan' })
+              }
               that.setData({
                 findEventId:planId,
                 findEventType:'plan',

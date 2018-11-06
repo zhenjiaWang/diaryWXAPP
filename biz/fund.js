@@ -179,7 +179,7 @@ export default {
           { userId, fundId, money: amount },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.getEventStack().push({ category: 'random-fund-sell' })
+             // that.getEventStack().push({ category: 'random-fund-sell' })
               that.setData({ submitFlag: false, 'fundDetailShow': false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data, true)
             }
