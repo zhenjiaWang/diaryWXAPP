@@ -131,11 +131,11 @@
           </view>
           <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,0)?"":"disable"}}' bindtap='actionPlan'>
             <image src='../../img/btn-2.png'></image>
-            <text>日常消遣</text>
+            <text>四处逛逛</text>
           </view>
           <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.fundLimit)?"":"disable"}}' bindtap='actionFund'>
             <image src='../../img/btn-3.png'></image>
-            <text>理财有道</text>
+            <text>理财投资</text>
           </view>
           <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.luckLimit)?"":"disable"}}' bindtap='actionLuck'>
             <image src='../../img/btn-4.png'></image>
