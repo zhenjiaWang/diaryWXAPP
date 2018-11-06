@@ -174,7 +174,7 @@ const options={
               that.setData({ maskShow: false })
             },function(){
               that.getEventStack().init()
-              that.getEventStack().push({ category: 'random' })
+             // that.getEventStack().push({ category: 'random' })
               that.voiceContext().playResult()
               that.setData({ submitFlag: false, maskShow: true, dialogShow: true, dialogResult: data.resultArray })
             })

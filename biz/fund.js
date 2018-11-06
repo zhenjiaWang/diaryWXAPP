@@ -43,9 +43,12 @@ export default {
           buyMoney:'',
           fundMoney:''
         })
-        const dl = new DrawKLine()
-        const cvs = wx.createCanvasContext('kline')
-        dl.clearCanvas(cvs, this.data)
+        setTimeout(()=>{
+          const dl = new DrawKLine()
+          const cvs = wx.createCanvasContext('kline')
+          dl.clearCanvas(cvs, this.data)
+        },200)
+       
       }else{
         if(n && !this.data.fundItem){
           this.setData({//init
@@ -84,26 +87,29 @@ export default {
   actionFundDetail:function(e){
     if (this.hangOn) return
     const fundItem=e.currentTarget.dataset.item
-    this.setData({ [show]: false, fundDetailShow: true, fundItem})
+    this.setData({ [show]: false, maskShow: false, fundItem})
     this.voiceContext().playClick()
     //
     const that = this
     const userId = that.data.userData.userId
-    const fundId=fundItem.id
-    
-    if (that.data.canvasHeight && this.data.canvasWidth){
-      that.loadCanvas(userId,fundId)
-    }else{
-      const query = wx.createSelectorQuery()
-      query.select('#cvsWrap').boundingClientRect()
-      query.exec(function (res) {
-        that.setData({
-          canvasHeight: res[0].height,
-          canvasWidth: res[0].width
-        })
+    const fundId = fundItem.id
+    setTimeout(()=>{
+      this.setData({ fundDetailShow: true, maskShow: true })
+
+      if (that.data.canvasHeight && this.data.canvasWidth) {
         that.loadCanvas(userId, fundId)
-      })
-    }   
+      } else {
+        const query = wx.createSelectorQuery()
+        query.select('#cvsWrap').boundingClientRect()
+        query.exec(function (res) {
+          that.setData({
+            canvasHeight: res[0].height,
+            canvasWidth: res[0].width
+          })
+          that.loadCanvas(userId, fundId)
+        })
+      }  
+    },100)
   },
   loadCanvas(userId, fundId){
     const that=this

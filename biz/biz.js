@@ -34,7 +34,8 @@ function storeMixin(options) {
         if (!n) { //show event 
           setTimeout(() => {
             const userId = this.data.userData.userId
-            if (!that.data.maskShow && userId) {
+            const hour = this.data.userState.hours
+            if (!that.data.maskShow && userId && hour) {
               const { id: findEventId, category } = this.getEventStack().pop() || {}
               const stack = that.getEventStack()
               if (findEventId && category === 'plan') {
