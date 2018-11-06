@@ -168,7 +168,7 @@
           <!--common prop-->
           <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.coupleLimit)?"":"disable"}}' bindtap='actionCouple'>
             <image src='../../img/btn-6.png'></image>
-            <text>食色性也</text>
+            <text>儿女情长</text>
           </view>
         </view>
       </view>
