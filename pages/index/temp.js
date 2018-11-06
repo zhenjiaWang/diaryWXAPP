@@ -88,7 +88,7 @@ Page({
           }
         })
       })
-      const userId = '6461262883382648832'//app.globalData.userId TODO 
+      const userId = app.globalData.userId 
       const p3 = new Promise((resolve,reject)=>{
         wxGet(`/user/report/${userId}`,null,({data})=>{
           console.info('report get success ,and continue get comment ')
