@@ -54,7 +54,7 @@ function storeMixin(options) {
                             if (!that.data.maskShow) {//请求结束再次判断时候有其他弹出
                               that.showEvent(data)
                               if (Math.ceil(Math.random() * 100) < stack.continueOdds()) {
-                                stack.push({ category: 'random-serial' })
+                                stack.push({ category: 'random' })
                               }
                             }
                           }
@@ -81,17 +81,21 @@ function storeMixin(options) {
                           if (data.errorCode >= 0) {
                             if (!that.data.maskShow) {//请求结束再次判断时候有其他弹出
                               that.showEvent(data)
+                              
                               const randomPoint = Math.ceil(Math.random() * 100)
-                              if (randomPoint < stack.continueOdds()) {
-                                stack.push({ category: 'random-serial' })
+                              const odds = stack.continueOdds()
+                              if (randomPoint < odds) {
+                                stack.push({ category: 'random' })
+                                console.info(randomPoint, odds, 'push event')
                               }
                             }
                           }
-                        }, null, () => {//load fail callback
+                          that.setData({ hangOn: false })
+                        },  () => {//load fail callback
                           that.setData({ hangOn: false })
                         })
                     }
-                  }, null, () => {//findEvent fail callback
+                  },  () => {//findEvent fail callback
                     that.setData({ hangOn: false })
                   })
               }
@@ -100,14 +104,14 @@ function storeMixin(options) {
         }
       },
       'hangOn':function(n,o){
-        if(n){
-          const that=this
-          setTimeout(()=>{
-            that.setData({
-              hangOn:false
-            })
-          },1500)
-        }
+        // if(n){
+        //   const that=this
+        //   setTimeout(()=>{
+        //     that.setData({
+        //       hangOn:false
+        //     })
+        //   },3000)
+        // }
       }
     },
     closeTip: function () {

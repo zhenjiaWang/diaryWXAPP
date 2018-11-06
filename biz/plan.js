@@ -48,7 +48,7 @@ export default {
           ({ data }) => {
             if (data.errorCode >= 0) {
               if (Math.ceil(Math.random() * 100) > 35) {
-                that.getEventStack().push({ category: 'random-serial' })
+                that.getEventStack().push({ category: 'random-first' })
               } else {
                 that.getEventStack().push({ id: planId, category: 'plan' })
               }
