@@ -71,10 +71,11 @@ class EventStack{
   init=()=>{
     this.clear()
     wx.setStorage({ key, data: this.limit=0})
-   // wx.setStorage({ key: h_key,  data: ''})
+    wx.setStorage({ key: h_key,  data: ''})
   }
   clear=()=>{
     this.item=[]
+    this.happened = []
   }
   print=()=>{
     console.info(this.item.join(','))
