@@ -58,11 +58,14 @@ function storeMixin(options) {
                               }
                             }
                           }
-                        }, null, () => {//load complete callback
+                          that.setData({ hangOn: false })
+                        },  () => {//load complete callback
                           that.setData({ hangOn: false })
                         })
+                    }else{
+                      that.setData({ hangOn: false })
                     }
-                  }, null, () => {//findEvent complete callback
+                  },  () => {//findEvent complete callback
                     that.setData({ hangOn: false })
                   })
               } else if (category && category !== 'plan') {
@@ -94,6 +97,8 @@ function storeMixin(options) {
                         },  () => {//load fail callback
                           that.setData({ hangOn: false })
                         })
+                    } else {
+                      that.setData({ hangOn: false })
                     }
                   },  () => {//findEvent fail callback
                     that.setData({ hangOn: false })
