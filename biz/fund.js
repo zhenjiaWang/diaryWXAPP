@@ -13,6 +13,7 @@ export default {
     canvasHeight:null,
     canvasWidth:null,
     fundMoney:'',
+    diffMoney:'',
     sellMoney:'',
     buyMoney:''
   },
@@ -41,7 +42,8 @@ export default {
           fundItem: 0,
           sellMoney:'',
           buyMoney:'',
-          fundMoney:''
+          fundMoney:'',
+          diffMoney:''
         })
         setTimeout(()=>{
           const dl = new DrawKLine()
@@ -121,7 +123,8 @@ export default {
           const array = data.market['market']
           dl.drawNewLine(array, cvs, that.data.canvasWidth, that.data.canvasHeight)
           that.setData({
-            fundMoney: data.fundMoney
+            fundMoney: data.fundMoney,
+            diffMoney: data.diffMoney
           })
         }
       })

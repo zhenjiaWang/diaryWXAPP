@@ -583,7 +583,7 @@
                           <text>已经投资</text>
                       </text>
                       <text class="num-big">
-                          <text class="numFont color2">{{fundMoney}}</text>
+                          <text class="numFont color2">{{fundMoney||0}}</text>
                       </text>
                   </view>
               </view>
@@ -595,6 +595,17 @@
                       <text class="num-big">
                           <!-- <text class="numFont down">-34.3%</text> -->
                           <text class='numFont {{fundItem.increase>0?"up":"down"}}'>{{fundItem.increase}}%</text>
+                      </text>
+                  </view>
+              </view>
+              
+              <view class="one">
+                  <view class="one-inner clearfix">
+                      <text class='clearfix'>
+                          <text>盈亏</text>
+                      </text>
+                      <text class="num-big">
+                          <text class='numFont {{tools.isPositive(diffMoney)?"up":"down"}}'> {{diffMoney}}</text>
                       </text>
                   </view>
               </view>
