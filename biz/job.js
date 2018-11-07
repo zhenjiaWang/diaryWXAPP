@@ -20,7 +20,7 @@ export default {
     }
   },
   actionJob: function () {
-    if (this.hangOn) return 
+    if (this.data.hangOn && this.data.eventShow) return 
     showMaskNavigationBarColor()
     this.setData({ [show]: true, maskShow: true })
     this.voiceContext().playClick()
@@ -31,7 +31,7 @@ export default {
     this.voiceContext().playClick()
   },
   showMyJob:function(){
-    if (this.hangOn) return 
+    if (this.data.hangOn && this.data.eventShow) return 
     showMaskNavigationBarColor()
     this.setData({ [foldShow]: true, maskShow: true })
     this.voiceContext().playClick()

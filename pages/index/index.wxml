@@ -191,7 +191,7 @@
 <template is='popEvent' data='{{eventShow,eventItems,eventTitle}}'></template>
 
 <template is='popFund' data='{{fundShow,fundItems,userState}}'></template>
-<template is='popFundDetail' data='{{fundDetailShow,canvasHeight, canvasWidth,fundItem,userState,fundMoney,showCanvas,sellMoney,buyMoney}}'></template>
+<template is='popFundDetail' data='{{fundDetailShow,canvasHeight, canvasWidth,fundItem,userState,fundMoney,diffMoney,sellMoney,buyMoney}}'></template>
 
 
 

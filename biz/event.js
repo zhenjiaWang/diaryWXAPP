@@ -20,7 +20,7 @@ export default {
   },
   showEvent:function(data){
     if(data){
-      console.info(this)
+      //console.info(this)
       this.setData({
         eventShow: true,
         maskShow: true,

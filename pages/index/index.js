@@ -193,6 +193,9 @@ const options={
       that.setData({ submitFlag: true, maskShow: true })
       if (that.data.userState.score > 0 && that.data.userState.comment!==''){
         //这里有值了 直接跳转
+        wx.navigateTo({
+          url: './report',
+        })
       }else{
         wxPost(
           '/user/done',
