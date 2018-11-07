@@ -23,7 +23,7 @@ export default {
     }
   },
   actionCouple: function () {
-    if (this.hangOn) return 
+    if (this.data.hangOn && this.data.eventShow) return 
     const that = this
     that.voiceContext().playClick()
     wxGet('/couple/state',
@@ -42,7 +42,7 @@ export default {
     this.voiceContext().playClick()
   },
   showMyCouple: function () {
-    if (this.hangOn) return 
+    if (this.data.hangOn && this.data.eventShow) return 
     showMaskNavigationBarColor()
     this.setData({ [foldShow]: true, maskShow: true })
     this.voiceContext().playClick()
