@@ -59,6 +59,14 @@ var commentCode = function (comment){
   } return 4
 }
 
+var dynamicPrice = function (currentDay,price,offset) {
+  offset = offset * currentDay
+  offset = 100 + offset
+  price = price*offset/100
+  price = Math.round(price)
+  return price
+}
+
 module.exports={
   isEnableBtn: isEnableBtn,
   arrayContain: arrayContain,
@@ -66,5 +74,6 @@ module.exports={
   getCoupleStateName: getCoupleStateName,
   getCoupleStateAvatar: getCoupleStateAvatar,
   isCouple: isCouple,
-  commentCode: commentCode
+  commentCode: commentCode,
+  dynamicPrice: dynamicPrice
 }

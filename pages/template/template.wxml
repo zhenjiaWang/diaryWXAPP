@@ -44,7 +44,7 @@
   <view class='pop pop2' hidden='{{!planShow}}'>
     <view class='pop2-title clearfix'>
       <image src='../../img/btn-2.png' ></image>
-      <text>日常消遣</text>
+      <text>四处逛逛</text>
       <view class='off' bindtap='closePlan'>
         <image src='../../img/off.png'></image>
       </view>
@@ -53,7 +53,7 @@
       <view class='tip'>
           <view class='tip-inner'>
               <image src='../../img/t.png' mode='widthFix'></image>
-              <text>每次消耗 1 个小时</text>
+              <text>个人能力成长，每次消耗 1 个小时</text>
           </view>
       </view>
       <view class='feed {{tools.isEnableBtn(userState.hours,0)?"":"disable"}}' wx:for='{{planItems}}' wx:key='id' bindtap='applyPlan' data-id='{{item.id}}'>
@@ -77,7 +77,7 @@
       <view class='tip'>
           <view class='tip-inner'>
               <image src='../../img/t.png' mode='widthFix'></image>
-              <text >每次消耗 1 个小时，每日限 1 次</text>
+              <text >每次消耗 0 个小时，每日限 1 次</text>
           </view>
       </view>
       <view class='feed2 clearfix' wx:for='{{jobItems}}' wx:key='id'>
@@ -138,14 +138,14 @@
       <view class='tip'>
           <view class='tip-inner'>
               <image src='../../img/t.png' mode='widthFix'></image>
-              <text>每次消耗 1 个小时，每日限 1 次</text>
+              <text>定期增加快乐、人脉，每日限 1 次</text>
           </view>
       </view>
       <view class='feed2 clearfix' wx:for='{{houseItems}}' wx:key='id'>
           <view class='feed2-left'>
               <view class='job'>{{item.title}}</view>
-              <view class='money'>购买价格：{{item.buyPrice}}</view>
-              <view class='money money2'>出售价格：{{item.sellPrice}}</view>
+              <view class='money'>购买价格：{{tools.dynamicPrice(userState.currentDay,item.buyPrice,item.offsetBuy)}}</view>
+              <view class='money money2'>出售价格：{{tools.dynamicPrice(userState.currentDay,item.sellPrice,item.offsetSell)}}</view>
               <view>
                   <text>{{item.remarks}}</text>
                   <text>拥有：{{tools.getHaveNumber(userState.myHouseNumber,item.id)}}</text>
@@ -172,14 +172,14 @@
       <view class='tip'>
           <view class='tip-inner'>
               <image src='../../img/t.png' mode='widthFix'></image>
-              <text>每天会有日常维护费</text>
+              <text>增值不动产，资金流转时可抛售</text>
           </view>
       </view>
       <view class='feed2 clearfix' wx:for='{{houseItems}}' wx:key='id' wx:if='{{tools.arrayContain(userState.myHouseArray,item.id)}}'>
           <view class='feed2-left'>
               <view class='job'>{{item.title}}</view>
-              <view class='money'>购买价格：{{item.buyPrice}}</view>
-              <view class='money money2'>出售价格：{{item.sellPrice}}</view>
+              <view class='money'>购买价格：{{tools.dynamicPrice(userState.currentDay,item.buyPrice,item.offsetBuy)}}</view>
+              <view class='money money2'>出售价格：{{tools.dynamicPrice(userState.currentDay,item.sellPrice,item.offsetSell)}}</view>
               <view>
                   <text>{{item.remarks}}</text>
                   <text>拥有：{{tools.getHaveNumber(userState.myHouseNumber,item.id)}}</text>
@@ -206,14 +206,14 @@
       <view class='tip'>
           <view class='tip-inner'>
               <image src='../../img/t.png' mode='widthFix'></image>
-              <text>每次消耗 1 个小时，每日限 1 次</text>
+              <text>定期增加快乐、人脉，每日限 1 次</text>
           </view>
       </view>
       <view class='feed2 clearfix' wx:for='{{carItems}}' wx:key='id'>
           <view class='feed2-left'>
               <view class='job'>{{item.title}}</view>
-              <view class='money'>购买价格：{{item.buyPrice}}</view>
-              <view class='money money2'>出售价格：{{item.sellPrice}}</view>
+             <view class='money'>购买价格：{{tools.dynamicPrice(userState.currentDay,item.buyPrice,item.offsetBuy)}}</view>
+              <view class='money money2'>出售价格：{{tools.dynamicPrice(userState.currentDay,item.sellPrice,item.offsetSell)}}</view>
               <view>
                   <text>{{item.remarks}}</text>
                   <text>拥有：{{tools.getHaveNumber(userState.myCarNumber,item.id)}}</text>
@@ -240,15 +240,15 @@
       <view class='tip'>
           <view class='tip-inner'>
               <image src='../../img/t.png' mode='widthFix'></image>
-              <text>每天会有日常维护费</text>
+              <text>贬值不动产，资金流转时可抛售</text>
           </view>
       </view>
       
       <view class='feed2 clearfix' wx:for='{{carItems}}' wx:key='id' wx:if='{{tools.arrayContain(userState.myCarArray,item.id)}}'>
           <view class='feed2-left'>
               <view class='job'>{{item.title}}</view>
-              <view class='money'>购买价格：{{item.buyPrice}}</view>
-              <view class='money money2'>出售价格：{{item.sellPrice}}</view>
+             <view class='money'>购买价格：{{tools.dynamicPrice(userState.currentDay,item.buyPrice,item.offsetBuy)}}</view>
+              <view class='money money2'>出售价格：{{tools.dynamicPrice(userState.currentDay,item.sellPrice,item.offsetSell)}}</view>
               <view>
                   <text>{{item.remarks}}</text>
                   <text>拥有：{{tools.getHaveNumber(userState.myCarNumber,item.id)}}</text>
@@ -276,7 +276,7 @@
       <view class='tip'>
           <view class='tip-inner'>
               <image src='../../img/t.png' mode='widthFix'></image>
-              <text>每次消耗 1 个小时，每日限 1 次</text>
+              <text>每次消耗 0 个小时，每日限 1 次</text>
           </view>
       </view>
       <view class='feed2 clearfix' wx:for='{{clothesItems}}' wx:key='id'>
@@ -346,7 +346,7 @@
       <view class='tip'>
           <view class='tip-inner'>
               <image src='../../img/t.png' mode='widthFix'></image>
-              <text>每次消耗 1 个小时，每日限 1 次</text>
+              <text>每次消耗 0 个小时，每日限 1 次</text>
           </view>
       </view>
       <view class='feed2 clearfix' wx:for='{{luxuryItems}}' wx:key='id'>
@@ -416,7 +416,7 @@
       <view class='tip'>
           <view class='tip-inner'>
               <image src='../../img/t.png' mode='widthFix'></image>
-              <text>每次消耗 1 个小时，每日限 1 次</text>
+              <text>每次消耗 0 个小时，每日限 1 次</text>
           </view>
       </view>
       <view class='feed2 clearfix' wx:for="{{luckItems}}" wx:key="id">
@@ -439,7 +439,7 @@
   <view class='pop pop2' hidden='{{!coupleShow}}'>
     <view class='pop2-title clearfix'>
       <image src='../../img/btn-6.png' ></image>
-      <text>食色性也</text>
+      <text>儿女情长</text>
       <view class='off' bindtap='closeCouple'>
         <image src='../../img/off.png'></image>
       </view>
@@ -448,7 +448,7 @@
       <view class='tip'>
           <view class='tip-inner'>
               <image src='../../img/t.png' mode='widthFix'></image>
-              <text >每次消耗 1 个小时，每日限 1 次</text>
+              <text >每次消耗 0 个小时，每日限 1 次</text>
           </view>
       </view>
       <view class='feed2 clearfix' wx:for='{{coupleItems}}' wx:key='id'>
@@ -510,12 +510,14 @@
       </view>
     </view>
     <view class='pop-main'>
-      <view class='feed2 clearfix' wx:for='{{tipItems}}' wx:key='id'>
-        <view class='feed2-left' style="width:100%">
-          <view class='money'>{{item.title}}</view>
-          <view >{{item.remarks}}</view>
+      <block wx:for='{{tipItems}}' wx:key='id'>
+        <view class='feed2 clearfix' wx:if='{{userData.gender==item.gender||item.gender==0}}' >
+          <view class='feed2-left' style="width:100%">
+              <view class='money'>{{item.title}}</view>
+              <view >{{item.remarks}}</view>
+          </view>
         </view>
-      </view>
+      </block>
     </view>
   </view>
 </template>
@@ -527,7 +529,7 @@
   <view class='pop pop2' hidden='{{!fundShow}}'>
     <view class='pop2-title clearfix'>
       <image src='../../img/btn-3.png' ></image>
-      <text>时来运转</text>
+      <text>理财投资</text>
       <view class='off' bindtap='closeFund'>
         <image src='../../img/off.png'></image>
       </view>
@@ -536,7 +538,7 @@
       <view class='tip'>
           <view class='tip-inner'>
               <image src='../../img/t.png' mode='widthFix'></image>
-              <text>每次消耗 1 个小时，每日限 1 次</text>
+              <text>每次消耗 0 个小时，每日限 1 次</text>
           </view>
       </view>
        <view class='feed2 clearfix' wx:for="{{fundItems}}" wx:key="id">
