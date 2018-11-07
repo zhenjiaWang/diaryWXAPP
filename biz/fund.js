@@ -13,6 +13,7 @@ export default {
     canvasHeight:null,
     canvasWidth:null,
     fundMoney:'',
+    diffMoney:'',
     sellMoney:'',
     buyMoney:''
   },
@@ -41,11 +42,15 @@ export default {
           fundItem: 0,
           sellMoney:'',
           buyMoney:'',
-          fundMoney:''
+          fundMoney:'',
+          diffMoney:''
         })
-        const dl = new DrawKLine()
-        const cvs = wx.createCanvasContext('kline')
-        dl.clearCanvas(cvs, this.data)
+        setTimeout(()=>{
+          const dl = new DrawKLine()
+          const cvs = wx.createCanvasContext('kline')
+          dl.clearCanvas(cvs, this.data)
+        },200)
+       
       }else{
         if(n && !this.data.fundItem){
           this.setData({//init
@@ -56,7 +61,7 @@ export default {
     }
   },
   actionFund: function () {
-    if (this.hangOn) return
+    if (this.data.hangOn && this.data.eventShow) return 
     showMaskNavigationBarColor()
     this.setData({ [show]: true, maskShow: true })
     this.voiceContext().playClick()
@@ -82,28 +87,31 @@ export default {
     this.voiceContext().playClick()
   },
   actionFundDetail:function(e){
-    if (this.hangOn) return
+    if (this.data.hangOn && this.data.eventShow) return 
     const fundItem=e.currentTarget.dataset.item
-    this.setData({ [show]: false, fundDetailShow: true, fundItem})
+    this.setData({ [show]: false, maskShow: false, fundItem})
     this.voiceContext().playClick()
     //
     const that = this
     const userId = that.data.userData.userId
-    const fundId=fundItem.id
-    
-    if (that.data.canvasHeight && this.data.canvasWidth){
-      that.loadCanvas(userId,fundId)
-    }else{
-      const query = wx.createSelectorQuery()
-      query.select('#cvsWrap').boundingClientRect()
-      query.exec(function (res) {
-        that.setData({
-          canvasHeight: res[0].height,
-          canvasWidth: res[0].width
-        })
+    const fundId = fundItem.id
+    setTimeout(()=>{
+      this.setData({ fundDetailShow: true, maskShow: true })
+
+      if (that.data.canvasHeight && this.data.canvasWidth) {
         that.loadCanvas(userId, fundId)
-      })
-    }   
+      } else {
+        const query = wx.createSelectorQuery()
+        query.select('#cvsWrap').boundingClientRect()
+        query.exec(function (res) {
+          that.setData({
+            canvasHeight: res[0].height,
+            canvasWidth: res[0].width
+          })
+          that.loadCanvas(userId, fundId)
+        })
+      }  
+    },100)
   },
   loadCanvas(userId, fundId){
     const that=this
@@ -115,7 +123,8 @@ export default {
           const array = data.market['market']
           dl.drawNewLine(array, cvs, that.data.canvasWidth, that.data.canvasHeight)
           that.setData({
-            fundMoney: data.fundMoney
+            fundMoney: data.fundMoney,
+            diffMoney: data.diffMoney
           })
         }
       })
@@ -148,7 +157,7 @@ export default {
           { userId, fundId, money: amount},
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.getEventStack().push({ category: 'random-fund-buy' })
+              //that.getEventStack().push({ category: 'random-fund-buy' })
               that.setData({ submitFlag: false, 'fundDetailShow': false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data, true)
             }
@@ -179,7 +188,7 @@ export default {
           { userId, fundId, money: amount },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.getEventStack().push({ category: 'random-fund-sell' })
+             // that.getEventStack().push({ category: 'random-fund-sell' })
               that.setData({ submitFlag: false, 'fundDetailShow': false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data, true)
             }

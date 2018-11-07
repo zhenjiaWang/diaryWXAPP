@@ -22,7 +22,7 @@ export default {
     }
   },
   actionClothes: function () {
-    if (this.hangOn) return 
+    if (this.data.hangOn && this.data.eventShow) return 
     showMaskNavigationBarColor()
     this.setData({ [show]: true, maskShow: true })
     this.voiceContext().playClick()
@@ -33,7 +33,7 @@ export default {
     this.voiceContext().playClick()
   },
   showMyClothes: function () {
-    if (this.hangOn) return 
+    if (this.data.hangOn && this.data.eventShow) return 
     showMaskNavigationBarColor()
     this.setData({ [foldShow]: true, maskShow: true })
     this.voiceContext().playClick()
@@ -85,7 +85,7 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.getEventStack().push({ category: 'random-clothes' })
+            //  that.getEventStack().push({ category: 'random-clothes' })
               that.setData({ submitFlag: false, [foldShow]: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }

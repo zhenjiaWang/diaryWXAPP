@@ -174,7 +174,7 @@ const options={
               that.setData({ maskShow: false })
             },function(){
               that.getEventStack().init()
-              that.getEventStack().push({ category: 'random-nextDay' })
+             // that.getEventStack().push({ category: 'random' })
               that.voiceContext().playResult()
               that.setData({ submitFlag: false, maskShow: true, dialogShow: true, dialogResult: data.resultArray })
             })
@@ -191,23 +191,31 @@ const options={
     } else {
       that.voiceContext().playClick()
       that.setData({ submitFlag: true, maskShow: true })
-      wxPost(
-        '/user/done',
-        {
-          userId: that.data.userData.userId
-        },
-        ({ data }) => {
-          if (data.errorCode >= 0) {
-            that.voiceContext().playNextDay()
-            that.blackScreen('show', '完...', function () {
-              that.setData({ maskShow: false })
-            }, function () {
-              that.setData({ submitFlag: false, maskShow: false })
-            })
+      if (that.data.userState.score > 0 && that.data.userState.comment!==''){
+        //这里有值了 直接跳转
+        wx.navigateTo({
+          url: './report',
+        })
+      }else{
+        wxPost(
+          '/user/done',
+          {
+            userId: that.data.userData.userId
+          },
+          ({ data }) => {
+            if (data.errorCode >= 0) {
+              that.voiceContext().playNextDay()
+              that.blackScreen('show', '完...', function () {
+                that.setData({ maskShow: false })
+              }, function () {
+                that.setData({ submitFlag: false, maskShow: false })
+              })
+            }
+            console.info(data)
           }
-          console.info(data)
-        }
-      )
+        )
+      }
+      
     }
   },
   viewRankingList:()=>{

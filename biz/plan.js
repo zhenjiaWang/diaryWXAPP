@@ -20,7 +20,7 @@ export default {
     }
   },
   actionPlan: function () {
-    if (this.hangOn) return 
+    if (this.data.hangOn && this.data.eventShow) return 
     showMaskNavigationBarColor()
     this.setData({ [show]: true, maskShow: true })
     this.voiceContext().playClick()
@@ -47,7 +47,11 @@ export default {
           },
           ({ data }) => {
             if (data.errorCode >= 0) {
-              that.getEventStack().push({ id:planId, category:'plan'})
+              if (Math.ceil(Math.random() * 100) > 35) {
+                that.getEventStack().push({ category: 'random-first' })
+              } else {
+                that.getEventStack().push({ id: planId, category: 'plan' })
+              }
               that.setData({
                 findEventId:planId,
                 findEventType:'plan',

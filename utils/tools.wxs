@@ -9,6 +9,10 @@ var arrayContain = function (array, obj) {
   }
   return false
 }
+var keyContain=function(obj,key){
+  return obj[key]?true:false
+}
+
 var getHaveNumber = function (obj, key) {
   if (obj){
     return obj[key] ? obj[key] : 0
@@ -59,6 +63,19 @@ var commentCode = function (comment){
   } return 4
 }
 
+var dynamicPrice = function (currentDay,price,offset) {
+  offset = offset * currentDay
+  offset = 100 + offset
+  price = price*offset/100
+  price = Math.round(price)
+  return price
+}
+
+var isPositive = function (str1) {
+  var num1 = (str1 + '').split(',').join('')
+  return parseFloat(num1) > 0
+}
+
 module.exports={
   isEnableBtn: isEnableBtn,
   arrayContain: arrayContain,
@@ -66,5 +83,8 @@ module.exports={
   getCoupleStateName: getCoupleStateName,
   getCoupleStateAvatar: getCoupleStateAvatar,
   isCouple: isCouple,
-  commentCode: commentCode
+  commentCode: commentCode,
+  dynamicPrice: dynamicPrice,
+  isPositive: isPositive,
+  keyContain: keyContain
 }

@@ -163,7 +163,10 @@ class DrawKLine {
       }
       ctx.stroke()
     })
-    ctx.draw()
+    setTimeout(()=>{
+      ctx.draw()
+    },500)
+  
   }
 }
 

@@ -3,12 +3,12 @@ const app = getApp()
 const { setWatcher } = require("../../utils/watcher.js");
 import { DrawKLine } from '../../utils/DrawKLine.js'
 const { wxGet} = require('../../utils/common.js')
-const descriptHeight=350
+const descriptHeight=500
 const abilityHeight=330
 Page({
   data: {
-    canvasWidth:null,
-    canvasHeight:null,
+    canvasWidth:375,
+    canvasHeight:900,
     screenHeight:null,
     userInfo: {},
     hasUserInfo: false,
@@ -18,17 +18,17 @@ Page({
     wx.showLoading({
       title: '数据生成中...',
     })
-    let canvasWidth, canvasHeight, screenHeight
+    let   screenHeight
     const totalHeight = abilityHeight + descriptHeight
     wx.getSystemInfo({
       success: function (res) {
-        canvasWidth = res.windowWidth
+       
         screenHeight = res.windowHeight 
-        canvasHeight = res.windowHeight > totalHeight ? res.windowHeight : totalHeight
+       // canvasHeight = res.windowHeight > totalHeight ? res.windowHeight : totalHeight
       },
     })
    
-    this.setData({ canvasWidth, canvasHeight, screenHeight })
+    this.setData({ screenHeight })
     setWatcher(this)
     if (app.globalData.userInfo) {
       this.setData({
@@ -53,7 +53,7 @@ Page({
         }
       })
     }
-   // this.draw()
+    //this.draw()
   },
   watch: {
     'userInfo': {
@@ -67,12 +67,12 @@ Page({
     if (url) {
       const p1 = new Promise((resolve, reject) => {
         wx.getImageInfo({
-          src: url,
+          src: 'https://img.jinrongzhushou.com/common/hun_qrcode.jpg',
           success: res => {
             resolve(res)
           },
           fail: error => {
-            reject(error)
+            reject('avatar qrcode fail')
           }
         })
       })
@@ -84,31 +84,31 @@ Page({
             resolve(res)
           },
           fail: err => {
-            reject(err)
+            reject('get qrcode fail')
           }
         })
       })
-      const userId = '6461262883382648832'//app.globalData.userId TODO 
+      const userId = app.globalData.userId 
       const p3 = new Promise((resolve,reject)=>{
         wxGet(`/user/report/${userId}`,null,({data})=>{
           console.info('report get success ,and continue get comment ')
           if (data.data.comment) {
             wx.getImageInfo({
-              src: data.data.comment,
+              src: `https://img.jinrongzhushou.com/common/${data.data.comment}.png`,
               success: (res) => {
                 console.info('get user comment success')
                 data.data.comment = res.path
                 resolve(data)
               },
               fail: err => {
-                reject(err)
+                reject('get user comment fail')
               }
             })
           }else{
             resolve(data)
           }  
         },(error)=>{
-          reject(error)
+          reject('report get fail')
         })
 
       })
@@ -147,7 +147,7 @@ Page({
     comment = '../../img/feng.png',
     ability= '',
     job='',
-    connections= ''}={}){
+    connections= '',text}={}){
     let { canvasWidth, canvasHeight}=this.data
     const ctx = wx.createCanvasContext('share')
     let usedHeight = 15 //已使用的高度
@@ -187,7 +187,7 @@ Page({
     ctx.setFontSize(pointFontSize)
     ctx.setFillStyle('#FFFFFF')
     ctx.setTextAlign('right')
-    ctx.fillText(point, starX + pointLength - 5, usedHeight + _r + pointFontSize - 15)
+    ctx.fillText(score, starX + pointLength - 5, usedHeight + _r + pointFontSize - 15)
     ctx.restore()
     ctx.setFontSize(14)
     ctx.setFillStyle('#FFFFFF')
@@ -195,50 +195,51 @@ Page({
 
 
     //draw prop
-    usedHeight += 20 + _r * 2//头像直径+padding
-    const itemPd = 10// 属性间距
-    const itemH = 20 //属性高度
-    const itemR = 10 //圆角半径
-    const tripleW = (canvasWidth - padding * 2 - itemPd * 2) / 3
-    //line 1
-    this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '金 钱', money)
-    this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '投资财富', fund)
-    this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '能力才干', ability)
+     usedHeight +=10+ _r * 2//头像直径+padding
+    // const itemPd = 10// 属性间距
+    // const itemH = 20 //属性高度
+    // const itemR = 10 //圆角半径
+    // const tripleW = (canvasWidth - padding * 2 - itemPd * 2) / 3
+    // //line 1
+    // this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '金 钱', money)
+    // this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '投资财富', fund)
+    // this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '能力才干', ability)
 
-    //line 2
-    usedHeight += itemH + 10
-    this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '快 乐', happy)
-    this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '健康', health )
-    this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '人 脉', connections)
+    // //line 2
+    // usedHeight += itemH + 10
+    // this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '快 乐', happy)
+    // this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '健康', health )
+    // this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '人 脉', connections)
 
-    //line 3  
-    usedHeight += itemH + 10
-    this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '社会经验', experience)
-    this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR,'正 义', positive)
+    // //line 3  
+    // usedHeight += itemH + 10
+    // this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '社会经验', experience)
+    // this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR,'正 义', positive)
 
-    const doubleW = (canvasWidth - padding * 2 - itemPd) / 2
-    //line 4
-    usedHeight += itemH + 10
-    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '座 驾', car)
-    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '房 产', house)
+    // const doubleW = (canvasWidth - padding * 2 - itemPd) / 2
+    // //line 4
+    // usedHeight += itemH + 10
+    // this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '座 驾', car)
+    // this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '房 产', house)
 
-    //line 5
-    usedHeight += itemH + 10
-    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '伴 侣',couple)
-    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '工 作', job)
+    // //line 5
+    // usedHeight += itemH + 10
+    // this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '伴 侣',couple)
+    // this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '工 作', job)
 
 
     //description
-    usedHeight += itemH + 10
-    ctx.drawImage('../../img/survival-txt.png', padding, usedHeight, titleWidth, descriptHeight-100)
+  //  usedHeight += itemH + 10
+    const maxTextWidth = titleWidth - 40
+    const textHeight = this.calcTextHeight(text, maxTextWidth,ctx)
+    ctx.drawImage('../../img/survival-txt.png', padding, usedHeight, titleWidth, textHeight+100)
     usedHeight += 40
 
     ctx.setTextAlign('left')
     ctx.setFillStyle('#000')
-    let str = '你在北京各种产业投资了0金钱，一旦钱包被偷了就倾家荡产了,你在北京各种产业投资了0金钱'
-    for(let x=0;x<3;x++){
-      const h = this.drawText(ctx, str, padding + 20, usedHeight, 10, titleWidth - 40)
-      usedHeight+=h-10
+    for(let x=0;x<text.length;x++){
+      const h = this.drawText(ctx, text[x], padding + 20, usedHeight, 10, maxTextWidth)
+      usedHeight+=h
     }
    
     
@@ -248,7 +249,7 @@ Page({
     let q_r = 45//二维码圆半径
     let q_d = q_r * 2//二维码尺寸
     const q_center = padding + q_r
-    const bottom = 330 + 250+30
+    const bottom = canvasHeight -120
     
     ctx.arc(q_center, bottom+q_r, q_r, 0, 2 * Math.PI);
     ctx.clip()
@@ -263,41 +264,65 @@ Page({
     ctx.fillText('马上开始鬼混吧!', padding + q_d + 15, bottom + 70)
 
     ctx.draw()
-
-    const that=this
-    setTimeout(()=>{
-      wx.canvasToTempFilePath({
-        canvasId: 'share',
-        fileType: 'jpg',
-        success: (res) => {
-          that.setData({
-            canvasSaveimg: res.tempFilePath
-          })
-        }, complete: function (err) {
-          console.info(err)
-          wx.hideLoading()
-        }
-      })
-    },500)
+    wx.hideLoading()
+    // const that=this
+    // setTimeout(()=>{
+    //   wx.canvasToTempFilePath({
+    //     canvasId: 'share',
+    //     fileType: 'jpg',
+    //     success: (res) => {
+    //       that.setData({
+    //         canvasSaveimg: res.tempFilePath
+    //       })
+    //     }, complete: function (err) {
+    //       console.info(err)
+    //       wx.hideLoading()
+    //     }
+    //   })
+    // },500)
    
   },
   drawText (ctx, str, x,initHeight, titleHeight, canvasWidth) {
-    var lineWidth = 0;
+    var lineWidth = 0
     var lastSubStrIndex = 0; //每次开始截取的字符串的索引
     for (let i = 0; i < str.length; i++) {
-      lineWidth += ctx.measureText(str[i]).width;
+      lineWidth += ctx.measureText(str[i]).width
       if (lineWidth > canvasWidth) {
-        ctx.fillText(str.substring(lastSubStrIndex, i), x, initHeight);//
-        initHeight += 20;//20为字体的高度
-        lineWidth = 0;
-        lastSubStrIndex = i;
+        ctx.fillText(str.substring(lastSubStrIndex, i), x, initHeight)//
+        initHeight += 20//字体的高度
+        lineWidth = 0
+        lastSubStrIndex = i
         titleHeight += 30;
       }
       if (i == str.length - 1) {//绘制剩余部分
-        ctx.fillText(str.substring(lastSubStrIndex, i + 1), x, initHeight);
+        ctx.fillText(str.substring(lastSubStrIndex, i + 1), x, initHeight)
+        if (lastSubStrIndex===0){
+          titleHeight += 10 // titleHeight -initHeight(字体高度)
+        }
       }
     }
-    titleHeight = titleHeight + 10;
+    titleHeight = titleHeight + 10
+    return titleHeight
+  },
+  calcTextHeight(text, canvasWidth,ctx){
+    let titleHeight=0
+    let lineWidth = 0, lastSubStrIndex = 0
+    text.forEach((str)=>{
+      for (let i = 0; i < str.length; i++) {
+        lineWidth += ctx.measureText(str[i]).width
+        if (lineWidth > canvasWidth) {
+          lineWidth = 0
+          lastSubStrIndex = i
+          titleHeight += 30;
+        }
+        if (i == str.length - 1) {//绘制剩余部分
+          if (lastSubStrIndex === 0) {
+            titleHeight += 10 // titleHeight -initHeight(字体高度)
+          }
+        }
+      }
+      titleHeight = titleHeight + 10
+    })
     return titleHeight
   },
   roundRect(ctx, x, y, w, h, r,prop,point) {

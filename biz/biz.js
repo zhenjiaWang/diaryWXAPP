@@ -34,7 +34,8 @@ function storeMixin(options) {
         if (!n) { //show event 
           setTimeout(() => {
             const userId = this.data.userData.userId
-            if (!that.data.maskShow && userId) {
+            const hour = this.data.userState.hours
+            if (!that.data.maskShow && userId && hour && hour !==6) {
               const { id: findEventId, category } = this.getEventStack().pop() || {}
               const stack = that.getEventStack()
               if (findEventId && category === 'plan') {
@@ -43,23 +44,33 @@ function storeMixin(options) {
                   { userId, findEventId },
                   ({ data }) => {
                     const eventId = data['eventId']
+                    if (stack.isHappened(eventId)){
+                      return 
+                    }
                     if (data.errorCode >= 0) {
                       wxGet('/userEvent/load',
                         { userId, eventId },
                         ({ data }) => {
                           if (data.errorCode >= 0) {
                             if (!that.data.maskShow) {//请求结束再次判断时候有其他弹出
+                              that.hiddenDialog()//如果有dialog显示,关闭dialog
                               that.showEvent(data)
+                              setTimeout(()=>{
+                                that.hiddenDialog()//如果有dialog显示,关闭dialog
+                              },500)
                               if (Math.ceil(Math.random() * 100) < stack.continueOdds()) {
-                                stack.push({ category: 'random-serial' })
+                                stack.push({ category: 'random' })
                               }
                             }
                           }
-                        }, null, () => {//load complete callback
+                          that.setData({ hangOn: false })
+                        },  () => {//load complete callback
                           that.setData({ hangOn: false })
                         })
+                    }else{
+                      that.setData({ hangOn: false })
                     }
-                  }, null, () => {//findEvent complete callback
+                  },  () => {//findEvent complete callback
                     that.setData({ hangOn: false })
                   })
               } else if (category && category !== 'plan') {
@@ -67,6 +78,9 @@ function storeMixin(options) {
                   { userId },
                   ({ data }) => {
                     const eventId = data['eventId']
+                    if (stack.isHappened(eventId)) {
+                      return
+                    }
                     if (data.errorCode >= 0) {
                       that.setData({ hangOn: true })
                       wxGet('/userEvent/load',
@@ -74,18 +88,27 @@ function storeMixin(options) {
                         ({ data }) => {
                           if (data.errorCode >= 0) {
                             if (!that.data.maskShow) {//请求结束再次判断时候有其他弹出
+                              that.hiddenDialog()//如果有dialog显示,关闭dialog
                               that.showEvent(data)
+                              setTimeout(() => {
+                                that.hiddenDialog()//如果有dialog显示,关闭dialog
+                              }, 500)
                               const randomPoint = Math.ceil(Math.random() * 100)
-                              if (randomPoint < stack.continueOdds()) {
-                                stack.push({ category: 'random-serial' })
+                              const odds = stack.continueOdds()
+                              if (randomPoint < odds) {
+                                stack.push({ category: 'random' })
+                                console.info(randomPoint, odds, 'push event')
                               }
                             }
                           }
-                        }, null, () => {//load fail callback
+                          that.setData({ hangOn: false })
+                        },  () => {//load fail callback
                           that.setData({ hangOn: false })
                         })
+                    } else {
+                      that.setData({ hangOn: false })
                     }
-                  }, null, () => {//findEvent fail callback
+                  },  () => {//findEvent fail callback
                     that.setData({ hangOn: false })
                   })
               }
@@ -100,7 +123,7 @@ function storeMixin(options) {
             that.setData({
               hangOn:false
             })
-          },1500)
+          },5000)
         }
       }
     },
@@ -188,6 +211,26 @@ function storeMixin(options) {
           doneCallback()
         }
       }, 3500)
+    },
+    hiddenDialog:function(){
+      this.setData({
+        //maskShow:false,
+        carShow:false,
+        myCarShow:false,
+        clothesShow:false,
+        myClothesShow:false,
+        coupleShow: false,
+        myCoupleShow: false,
+        fundShow: false,
+        houseShow: false,
+        myHouseShow: false,
+        jobShow: false,
+        myJobShow: false,
+        luckShow:false,
+        luxuryShow: false,
+        myLuxuryShow: false,
+        planShow: false
+      })
     }
   }
   for (let k in options) {
