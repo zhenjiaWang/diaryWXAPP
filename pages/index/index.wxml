@@ -47,7 +47,10 @@
             <block wx:else>
               <text>{{item.text}}</text>
             </block>
-            <image src='../../img/arrow-up.png' style='width:20rpx;' mode='widthFix'></image>
+            <block wx:if='{{item.value==="fund"}}'>
+              <image wx:if='{{userState["diffFundMoney"]>0}}' src='../../img/arrow-up.png' style='width:20rpx;' mode='widthFix'></image>
+              <image wx:elif='{{userState["diffFundMoney"]<0}}' src='../../img/arrow-down.png' style='width:20rpx;' mode='widthFix'></image>
+            </block>
             <text class='num-big'>
                 <text wx:if='{{userState[item.value+"Length"] <= 3}}' class='numFont font60 color{{userState[item.value+"Color"]}}'>{{userState[item.value]}}</text>
                 <text wx:elif='{{userState[item.value+"Length"] <= 7}}'  class='numFont font40 color{{userState[item.value+"Color"]}}'>{{userState[item.value]}}</text>
