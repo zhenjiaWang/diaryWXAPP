@@ -177,7 +177,7 @@
 </view>
 <!-- 随机事件弹出begin -->
 <view class='mask' hidden='{{!maskShow}}'></view>
-<template is='popTip' data='{{tipShow,tipItems,userState}}'></template>
+<template is='popTip' data='{{tipShow,tipItems,userData}}'></template>
 <template is='popNight' data='{{nightClass,nightText}}'></template>
 <template is='popDialog' data='{{dialogShow,dialogResult,dialogBtn}}'></template>
 <template is='popJob' data='{{jobShow,jobItems,userState}}'></template>
