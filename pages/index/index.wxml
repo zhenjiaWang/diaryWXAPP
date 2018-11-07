@@ -125,7 +125,7 @@
           <image src='../../img/ques.png' class='ask' bindtap='actionTip'></image>
         </view>
         <view class='right-inner'>
-          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.jobLimit)?"":"disable"}}' bindtap='actionJob'>
+          <view class='btn-box clearfix {{tools.isEnableBtn(1,userState.jobLimit)?"":"disable"}}' bindtap='actionJob'>
             <image src='../../img/btn-1.png'></image>
             <text>找份工作</text>
           </view>
@@ -133,40 +133,40 @@
             <image src='../../img/btn-2.png'></image>
             <text>四处逛逛</text>
           </view>
-          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.fundLimit)?"":"disable"}}' bindtap='actionFund'>
+          <view class='btn-box clearfix {{tools.isEnableBtn(1,userState.fundLimit)?"":"disable"}}' bindtap='actionFund'>
             <image src='../../img/btn-3.png'></image>
             <text>理财投资</text>
           </view>
-          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.luckLimit)?"":"disable"}}' bindtap='actionLuck'>
+          <view class='btn-box clearfix {{tools.isEnableBtn(1,userState.luckLimit)?"":"disable"}}' bindtap='actionLuck'>
             <image src='../../img/btn-4.png'></image>
             <text>时来运转</text>
           </view>
 
           <!--male prop-->
-          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.houseLimit)?"":"disable"}}' 
+          <view class='btn-box clearfix {{tools.isEnableBtn(1,userState.houseLimit)?"":"disable"}}' 
           bindtap='actionHouse' wx:if="{{userData.gender==1}}">
             <image src='../../img/btn-8.png'></image>
             <text>购房置业</text>
           </view>
-          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.carLimit)?"":"disable"}}' 
+          <view class='btn-box clearfix {{tools.isEnableBtn(1,userState.carLimit)?"":"disable"}}' 
           bindtap='actionCar' wx:if="{{userData.gender==1}}">
             <image src='../../img/btn-9.png'></image>
             <text>座驾排场</text>
           </view>
 
           <!--female prop-->
-           <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.clothesLimit)?"":"disable"}}' 
+           <view class='btn-box clearfix {{tools.isEnableBtn(1,userState.clothesLimit)?"":"disable"}}' 
            bindtap='actionClothes' wx:if="{{userData.gender==2}}">
             <image src='../../img/btn-10.png'></image>
             <text>着装风格</text>
           </view>
-          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.luxuryLimit)?"":"disable"}}' 
+          <view class='btn-box clearfix {{tools.isEnableBtn(1,userState.luxuryLimit)?"":"disable"}}' 
           bindtap='actionLuxury' wx:if="{{userData.gender==2}}">
             <image src='../../img/btn-12.png'></image>
             <text>妆容排场</text>
           </view>
           <!--common prop-->
-          <view class='btn-box clearfix {{tools.isEnableBtn(userState.hours,userState.coupleLimit)?"":"disable"}}' bindtap='actionCouple'>
+          <view class='btn-box clearfix {{tools.isEnableBtn(1,userState.coupleLimit)?"":"disable"}}' bindtap='actionCouple'>
             <image src='../../img/btn-6.png'></image>
             <text>儿女情长</text>
           </view>
