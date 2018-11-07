@@ -551,7 +551,7 @@
                 </view>
                 <view>{{item.remarks}}</view>
             </view>
-            <view class='btn-mid' class='btn-mid {{tools.isEnableBtn(userState.hours,userState.fundLimit)?"":"disable"}}' bindtap='actionFundDetail' data-item='{{item}}'>去看看</view>
+            <view class='btn-mid' class='btn-mid {{tools.isEnableBtn(1,userState.fundLimit)?"":"disable"}}' bindtap='actionFundDetail' data-item='{{item}}'>去看看</view>
         </view>
        </view>
   </view>
