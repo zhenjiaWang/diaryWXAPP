@@ -59,7 +59,7 @@ export default {
     }
   },
   actionFund: function () {
-    if (this.hangOn) return
+    if (this.data.hangOn && this.data.eventShow) return 
     showMaskNavigationBarColor()
     this.setData({ [show]: true, maskShow: true })
     this.voiceContext().playClick()
@@ -85,7 +85,7 @@ export default {
     this.voiceContext().playClick()
   },
   actionFundDetail:function(e){
-    if (this.hangOn) return
+    if (this.data.hangOn && this.data.eventShow) return 
     const fundItem=e.currentTarget.dataset.item
     this.setData({ [show]: false, maskShow: false, fundItem})
     this.voiceContext().playClick()

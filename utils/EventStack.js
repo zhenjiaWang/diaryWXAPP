@@ -57,6 +57,9 @@ class EventStack{
     }
   }
   push = (event) => {
+    if (this.item.length>0){//保证事件只有一个,不会空闲时间弹出一系列的偶遇 //TODO 
+      return 
+    }
     if (this.item.length < this.maxTime) {
       this.item.push(event)
       const { category } = event
