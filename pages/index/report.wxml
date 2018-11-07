@@ -21,7 +21,7 @@
                 <text class='font30'>分</text>
             </view>
         </view>
-        <view class='item-box clearfix'>
+        <!-- <view class='item-box clearfix'>
             <view class="one">
                 <view class="one-inner clearfix">
                     <text class='clearfix'>
@@ -107,8 +107,8 @@
                     </text>
                 </view>
             </view>
-        </view>
-        <view class='item-box item-box2 clearfix'>
+        </view> -->
+        <!-- <view class='item-box item-box2 clearfix'>
             <view class="one">
                 <view class="one-inner clearfix">
                     <text class='clearfix'>
@@ -153,7 +153,9 @@
                     </text>
                 </view>
             </view>
-        </view>
+        </view> -->
+        <button class='begin-btn begin-btn2' bindtap="backHome">分享给好友</button>
+        <button class='begin-btn begin-btn2' bindtap="backHome">保存分享图</button>
         <view class='survival-txt'>
             <view>你遇事能躲就躲，是个对社会好物正能量贡献的人</view>
             <view>你在北京各种产业投资了0金钱，一旦钱包被偷了就倾家荡产了</view>
@@ -163,7 +165,10 @@
             <view>你没有座驾，出门全靠双腿</view>
             <view>你现在整天游手好闲，没有工作</view>
             <view>你没有座驾，出门全靠双腿</view>
+            <view>你没有座驾，出门全靠双腿</view>
+            <view>你没有座驾，出门全靠双腿</view>
+            <view>你没有座驾，出门全靠双腿</view>
+            <view>你没有座驾，出门全靠双腿</view>
         </view>
-        <button class='begin-btn begin-btn2' bindtap="backHome">返回首页</button>
     </view>
 </view>
