@@ -510,12 +510,14 @@
       </view>
     </view>
     <view class='pop-main'>
-      <view class='feed2 clearfix' wx:for='{{tipItems}}' wx:key='id'>
-        <view class='feed2-left' style="width:100%">
-          <view class='money'>{{item.title}}</view>
-          <view >{{item.remarks}}</view>
+      <block wx:for='{{tipItems}}' wx:key='id'>
+        <view class='feed2 clearfix' wx:if='{{userData.gender==item.gender||item.gender==0}}' >
+          <view class='feed2-left' style="width:100%">
+              <view class='money'>{{item.title}}</view>
+              <view >{{item.remarks}}</view>
+          </view>
         </view>
-      </view>
+      </block>
     </view>
   </view>
 </template>
