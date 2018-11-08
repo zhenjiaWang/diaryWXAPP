@@ -38,7 +38,6 @@ const options={
      userData: app.globalData.userData,
      hasAuth:app.globalData.hasAuth
    })
-
    voice = new Voice() 
 
     if (app.globalData.userData) {
@@ -225,7 +224,7 @@ const options={
   },
   viewReport:()=>{
     wx.navigateTo({
-      url: './temp',
+      url: './report',
     })
   }
 }

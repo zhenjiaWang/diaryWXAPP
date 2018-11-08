@@ -8,7 +8,7 @@ const abilityHeight=330
 Page({
   data: {
     canvasWidth:375,
-    canvasHeight:900,
+    canvasHeight:null,
     screenHeight:null,
     userInfo: {},
     hasUserInfo: false,
@@ -143,12 +143,12 @@ Page({
     score= '',
     money='',
     car='',
-    fund= '',
+    fundMoney= '',
     comment = '../../img/feng.png',
     ability= '',
     job='',
-    connections= '',text}={}){
-    let { canvasWidth, canvasHeight}=this.data
+    connections= '',text=[]}={}){
+    let { canvasWidth}=this.data
     const ctx = wx.createCanvasContext('share')
     let usedHeight = 15 //已使用的高度
     const padding = 20// 距左宽度
@@ -156,6 +156,12 @@ Page({
     const rankWidth = 85//评级宽度
     const rankMargin = 25 //距离point宽度
     const pointFontSize = 25
+    const maxTextWidth = titleWidth - 40//desc文本宽度
+    const descHeight = this.calcTextHeight(text, maxTextWidth, ctx) + 90
+    this.setData({
+      canvasHeight: abilityHeight + descHeight+80 //属性+描述+二维码
+    })
+    let { canvasHeight } = this.data
     //draw bg
     ctx.drawImage('../../img/body-bg.jpg', 0, 0, canvasWidth, canvasHeight += 15)
     //draw title
@@ -173,7 +179,7 @@ Page({
     ctx.stroke()
     ctx.drawImage(avatar, padding, usedHeight, _d, _d)
     ctx.restore()
-    ctx.drawImage(comment, center + 22, usedHeight + _r - 40, rankWidth, 40)
+    ctx.drawImage(comment, center + 22, usedHeight + _r - 30, rankWidth, 36)
     ctx.setFillStyle('#f6de4b')
     ctx.setFontSize(14)
     ctx.fillText(nickName, center + 40, usedHeight + _r +20)
@@ -187,6 +193,7 @@ Page({
     ctx.setFontSize(pointFontSize)
     ctx.setFillStyle('#FFFFFF')
     ctx.setTextAlign('right')
+    ctx.setFontSize(35)
     ctx.fillText(score, starX + pointLength - 5, usedHeight + _r + pointFontSize - 15)
     ctx.restore()
     ctx.setFontSize(14)
@@ -195,45 +202,52 @@ Page({
 
 
     //draw prop
-     usedHeight +=10+ _r * 2//头像直径+padding
-    // const itemPd = 10// 属性间距
-    // const itemH = 20 //属性高度
-    // const itemR = 10 //圆角半径
-    // const tripleW = (canvasWidth - padding * 2 - itemPd * 2) / 3
-    // //line 1
-    // this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '金 钱', money)
-    // this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '投资财富', fund)
-    // this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '能力才干', ability)
+     usedHeight +=20+ _r * 2//头像直径+padding
+    const itemPd = 10// 属性间距
+    const itemH = 20 //属性高度
+    const itemR = 10 //圆角半径
+    const tripleW = (canvasWidth - padding * 2 - itemPd * 2) / 3
+    const doubleW = (canvasWidth - padding * 2 - itemPd) / 2
 
-    // //line 2
-    // usedHeight += itemH + 10
-    // this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '快 乐', happy)
-    // this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '健康', health )
-    // this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '人 脉', connections)
+    //line 1
+    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '金 钱', money)
+    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '投资财富', fundMoney)
 
-    // //line 3  
-    // usedHeight += itemH + 10
-    // this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '社会经验', experience)
-    // this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR,'正 义', positive)
+    //line 2
+    usedHeight += itemH + 10
+    this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '快 乐', happy)
+    this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '健康', health )
+    this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '人 脉', connections)
 
-    // const doubleW = (canvasWidth - padding * 2 - itemPd) / 2
-    // //line 4
-    // usedHeight += itemH + 10
-    // this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '座 驾', car)
-    // this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '房 产', house)
+    //line 3  
+    usedHeight += itemH + 10
+    this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '社会经验', experience)
+    this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR,'正 义', positive)
 
-    // //line 5
-    // usedHeight += itemH + 10
-    // this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '伴 侣',couple)
-    // this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '工 作', job)
+    this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '能力才干', ability)
+
+    //line 4
+    usedHeight += itemH + 10
+    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '座 驾', car)
+    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '房 产', house)
+
+    //line 5
+    usedHeight += itemH + 10
+    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '伴 侣',couple)
+    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '工 作', job)
 
 
     //description
   //  usedHeight += itemH + 10
-    const maxTextWidth = titleWidth - 40
-    const textHeight = this.calcTextHeight(text, maxTextWidth,ctx)
-    ctx.drawImage('../../img/survival-txt.png', padding, usedHeight, titleWidth, textHeight+100)
-    usedHeight += 40
+    
+    const descTop = 18, descBottom = 18
+    
+    console.info(padding, usedHeight, titleWidth, descTop)
+    ctx.drawImage('../../img/desc-top.png', padding, usedHeight, titleWidth, descTop)
+    ctx.drawImage('../../img/desc-mid.png', padding, usedHeight + descTop, titleWidth, descHeight-descTop*2)
+    ctx.drawImage('../../img/desc-bottom.png', padding, usedHeight + descHeight - descTop, titleWidth, descBottom)
+
+    usedHeight += 30
 
     ctx.setTextAlign('left')
     ctx.setFillStyle('#000')
@@ -301,7 +315,7 @@ Page({
         }
       }
     }
-    titleHeight = titleHeight + 10
+    titleHeight = titleHeight + 4
     return titleHeight
   },
   calcTextHeight(text, canvasWidth,ctx){
@@ -321,7 +335,7 @@ Page({
           }
         }
       }
-      titleHeight = titleHeight + 10
+      titleHeight = titleHeight + 4
     })
     return titleHeight
   },
