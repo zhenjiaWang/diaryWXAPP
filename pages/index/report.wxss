@@ -1,2 +1,5 @@
 /* pages/index/report.wxss */
 @import '../../common/index.wxss';
+.body-bg{
+    overflow-y: auto;
+}

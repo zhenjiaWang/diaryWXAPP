@@ -545,7 +545,7 @@
             <view class='feed2-left'>
                 <view class='job'>{{item.title}}</view>
                 <view class='money'>
-                    <text>{{tools.arrayContain(userState.myFundArray,item.id)?'已投资':'未投资'}}</text>
+                    <text class='{{tools.arrayContain(userState.myFundArray,item.id)?"":"disable"}}'>{{tools.arrayContain(userState.myFundArray,item.id)?'已投资':'未投资'}}</text>
                     <text class='percent {{item.increase>0?"up":"down"}}'>{{item.increase}}%</text>
                     <image src='../../img/arrow-{{item.increase>0?"up":"down"}}.png' mode='widthFix'></image>
                 </view>
