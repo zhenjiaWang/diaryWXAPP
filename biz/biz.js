@@ -52,7 +52,7 @@ function storeMixin(options) {
                         { userId, eventId },
                         ({ data }) => {
                           if (data.errorCode >= 0) {
-                            if (!that.data.maskShow) {//请求结束再次判断时候有其他弹出
+                            if (!that.data.maskShow && hour && hour !== 6) {//请求结束再次判断时候有其他弹出
                               that.hiddenDialog()//如果有dialog显示,关闭dialog
                               that.showEvent(data)
                               setTimeout(()=>{
@@ -87,7 +87,7 @@ function storeMixin(options) {
                         { userId, eventId },
                         ({ data }) => {
                           if (data.errorCode >= 0) {
-                            if (!that.data.maskShow) {//请求结束再次判断时候有其他弹出
+                            if (!that.data.maskShow && hour && hour !== 6) {//请求结束再次判断时候有其他弹出
                               that.hiddenDialog()//如果有dialog显示,关闭dialog
                               that.showEvent(data)
                               setTimeout(() => {
