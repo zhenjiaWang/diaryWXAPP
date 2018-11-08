@@ -1,12 +1,12 @@
-const host = 'https://img.jinrongzhushou.com/audio'
+const host = 'sound'
 const bgm = `${host}/background.mp3`
 const result = `${host}/result.mp3`
-const nextDay = `${host}/gongji.mp3`
-const click = `${host}/click3.mp3`
-const lose = `${host}/wuya.mp3`
+const nextDay = `${host}/nextDay.wav`
+const click = `${host}/click.wav`
+const money = `${host}/money.mp3`
 const win = `${host}/win.mp3`
 const fail = `${host}/fail.mp3`
-
+const event = `${host}/event.mp3`
 class Voice {
   constructor() {
     this.context = wx.createInnerAudioContext()
@@ -15,16 +15,21 @@ class Voice {
   destroy=()=>{
     this.context.destroy()
   }
+  playEvent = () => {
+    this.context.src = event
+    this.context.play()
+  }
   playNextDay = () => {
     this.context.src = nextDay
     this.context.play()
   }
   playClick = () => {
+    console.info(click)
     this.context.src = click
     this.context.play()
   }
-  playLose = () => {
-    this.context.src = lose
+  playMoney = () => {
+    this.context.src = money
     this.context.play()
   }
   playWin = () => {
