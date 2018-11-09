@@ -13,8 +13,9 @@
                     <image src='{{commentImg}}' mode='widthFix'></image>
                 </view>
                 <view class='r-name'>
-                    <text>王振佳</text>
-                    <image src='../../img/icon-gilr.png' mode='widthFix'></image>
+                    <text>{{userInfo.nickName}}</text>
+                    <image wx:if='{{userInfo.gender==2}}' src='../../img/icon-gilr.png' mode='widthFix'></image>
+                    <image wx:if='{{userInfo.gender==1}}'src='../../img/icon-men.png' mode='widthFix'></image>
                 </view>
             </view>
             <view class='pull-right'>
@@ -30,7 +31,7 @@
                         <text class='pull-right'>钱</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">{{prop.money}}</text>
+                        <text class="numFont color2" style='font-size:36rpx;'>{{prop.money}}</text>
                     </text>
                 </view>
             </view>
@@ -40,7 +41,7 @@
                         <text class='pull-left'>投资财富</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">{{prop.fundMoney}}</text>
+                        <text class="numFont color2" style='font-size:36rpx;'>{{prop.fundMoney}}</text>
                     </text>
                 </view>
             </view>
