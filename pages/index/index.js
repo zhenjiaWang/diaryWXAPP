@@ -20,7 +20,6 @@ const options={
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
   onShow:function(){
-    console.info('111')
     this.setData({
       hasUserInfo:false,
       submitFlag: false
