@@ -16,7 +16,7 @@
     <button class='begin-btn' open-type='getUserInfo' lang='zh_CN' bindgetuserinfo='gameStart'>开始混</button>
     
     <view class='begin-btn begin-btn2' bindtap='viewRankingList'>排行榜</view>
-    <view class='begin-btn begin-btn2' bindtap='viewReport'>temp生存结果</view>
+    <!-- <view class='begin-btn begin-btn2' bindtap='viewReport'>temp生存结果</view> -->
 
 </view>
 <view class='game-main' wx:if='{{hasUserInfo}}'>

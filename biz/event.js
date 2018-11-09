@@ -19,8 +19,10 @@ export default {
     }
   },
   showEvent:function(data){
-    if(data){
+    const hour = this.data.userState.hours
+    if (data && hour && hour !== 6){
       //console.info(this)
+      this.voiceContext().playEvent()
       this.setData({
         eventShow: true,
         maskShow: true,
