@@ -178,7 +178,7 @@ Page({
     //draw bg
     ctx.drawImage('../../img/body-bg.jpg', 0, 0, canvasWidth, canvasHeight += 15)
     //draw title
-    ctx.drawImage('../../img/scjg.png', padding, usedHeight, titleWidth, usedHeight += 50)
+    ctx.drawImage('../../img/slogan.png', padding, usedHeight, titleWidth, usedHeight += 50)
     //draw avatar & rank
     usedHeight += 30//头像圆形上方,圆点需要+半径
     ctx.save()
