@@ -181,6 +181,7 @@
 </view>
 <!-- 随机事件弹出begin -->
 <view class='mask' hidden='{{!maskShow}}'></view>
+<view class='float-img'><image mode='widthFix'></image></view>
 <template is='popTip' data='{{tipShow,tipItems,userData}}'></template>
 <template is='popNight' data='{{nightClass,nightText}}'></template>
 <template is='popDialog' data='{{dialogShow,dialogResult,dialogBtn}}'></template>
