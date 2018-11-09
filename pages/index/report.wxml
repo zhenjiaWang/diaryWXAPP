@@ -15,6 +15,7 @@
                     <!-- <image src='../../img/lu.png' mode='widthFix'></image> -->
                     <!-- <image src='../../img/hun.png' mode='widthFix'></image> -->
                 </view>
+                <view class='r-name'>王振佳</view>
             </view>
             <view class='pull-right'>
                 <text class='numFont font72'>231782908</text>

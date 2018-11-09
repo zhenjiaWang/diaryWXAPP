@@ -580,3 +580,9 @@ text.num-big {
     width: 65%;
     height: auto;
 }
+.r-name{
+    position: relative;
+    left: 120rpx;
+    top: -40rpx;
+    font-size: 30rpx;
+}
