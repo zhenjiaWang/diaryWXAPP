@@ -12,6 +12,10 @@
                 <view class='tag-img'>
                     <image src='{{commentImg}}' mode='widthFix'></image>
                 </view>
+                <view class='r-name'>
+                    <text>王振佳</text>
+                    <image src='../../img/icon-gilr.png' mode='widthFix'></image>
+                </view>
             </view>
             <view class='pull-right'>
                 <text class='numFont font72'>{{score}}</text>

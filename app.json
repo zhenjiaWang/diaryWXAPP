@@ -1,10 +1,11 @@
 {
   "pages": [
+      "pages/index/report",
     "pages/index/index",
     "pages/template/template",
     "pages/logs/logs",
     "pages/index/rankingList",
-    "pages/index/report",
+    
     "pages/index/temp"
   ],
   "window": {
