@@ -16,7 +16,15 @@ const options={
     userState: false,
     userData:false,
     hasUserInfo: false,
+    hasLogin:false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
+  },
+  onShow:function(){
+    console.info('111')
+    this.setData({
+      hasUserInfo:false,
+      submitFlag: false
+    })
   },
   onUnload:function(){
     if (voice){
@@ -89,17 +97,25 @@ const options={
         }
       })
       that.setData({ nightClass: 'show' })
-      app.appLogin().then(() => {
-        if (app.globalData.userData.userId) {
-          that.setData({
-            userData: app.globalData.userData,
-            
-            submitFlag:false
-          })
-          that.start()
-          that.resData()
-        }
-      })
+      if (!this.data.hasLogin) {
+        app.appLogin().then(() => {
+          if (app.globalData.userData.userId) {
+            that.setData({
+              userData: app.globalData.userData,
+              hasLogin:true,
+              submitFlag: false
+            })
+            that.start()
+            that.resData()
+          }
+        })
+      } else {
+        that.setData({
+          submitFlag: false
+        })
+        that.start()
+        that.resData()
+      }
     }
   },
   resData: function () {
@@ -189,7 +205,8 @@ const options={
       return false
     } else {
       that.voiceContext().playClick()
-      that.setData({ submitFlag: true, maskShow: true })
+      // that.setData({ submitFlag: true, maskShow: true })
+      that.setData({ submitFlag: true })
       if (that.data.userState.score > 0 && that.data.userState.comment!==''){
         //这里有值了 直接跳转
         wx.navigateTo({

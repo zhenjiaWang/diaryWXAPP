@@ -18,15 +18,15 @@
                 <text class='font30'>分</text>
             </view>
         </view>
-        <!-- <view class='item-box clearfix'>
-            <view class="one">
+         <view class='item-box item-box2 clearfix'>
+             <view class="one">
                 <view class="one-inner clearfix">
                     <text class='clearfix'>
                         <text class='pull-left'>金</text>
                         <text class='pull-right'>钱</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">100</text>
+                        <text class="numFont color2">{{prop.money}}</text>
                     </text>
                 </view>
             </view>
@@ -36,20 +36,12 @@
                         <text class='pull-left'>投资财富</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">100</text>
+                        <text class="numFont color2">{{prop.fundMoney}}</text>
                     </text>
                 </view>
             </view>
-            <view class="one">
-                <view class="one-inner clearfix">
-                    <text class='clearfix'>
-                        <text class='pull-left'>能力才干</text>
-                    </text>
-                    <text class="num-big">
-                        <text class="numFont color2">100</text>
-                    </text>
-                </view>
-            </view>
+        </view>
+        <view class='item-box clearfix'>
             <view class="one">
                 <view class="one-inner clearfix">
                     <text class='clearfix'>
@@ -57,18 +49,18 @@
                         <text class='pull-right'>乐</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">100</text>
+                        <text class="numFont color2">{{prop.happy}}</text>
                     </text>
                 </view>
             </view>
             <view class="one">
                 <view class="one-inner clearfix">
                     <text class='clearfix'>
-                        <text class='pull-left'>正</text>
-                        <text class='pull-right'>直</text>
+                        <text class='pull-left'>健</text>
+                        <text class='pull-right'>康</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">100</text>
+                        <text class="numFont color2">{{prop.health}}</text>
                     </text>
                 </view>
             </view>
@@ -79,7 +71,7 @@
                         <text class='pull-right'>脉</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">100</text>
+                        <text class="numFont color2">{{prop.connections}}</text>
                     </text>
                 </view>
             </view>
@@ -89,23 +81,34 @@
                         <text class='pull-left'>社会经验</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">100</text>
+                        <text class="numFont color2">{{prop.experience}}</text>
                     </text>
                 </view>
             </view>
             <view class="one">
                 <view class="one-inner clearfix">
                     <text class='clearfix'>
-                        <text class='pull-left'>争</text>
+                        <text class='pull-left'>正</text>
                         <text class='pull-left'>气</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">100</text>
+                        <text class="numFont color2">{{prop.positive}}</text>
                     </text>
                 </view>
             </view>
-        </view> -->
-        <!-- <view class='item-box item-box2 clearfix'>
+
+            <view class="one">
+                <view class="one-inner clearfix">
+                    <text class='clearfix'>
+                        <text class='pull-left'>能力才干</text>
+                    </text>
+                    <text class="num-big">
+                        <text class="numFont color2">{{prop.ability}}</text>
+                    </text>
+                </view>
+            </view>
+        </view>
+        <view class='item-box item-box2 clearfix'>
             <view class="one">
                 <view class="one-inner clearfix">
                     <text class='clearfix'>
@@ -113,7 +116,7 @@
                         <text class='pull-left'>驾</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">宝马X5M</text>
+                        <text class="numFont color2">{{prop.car}}</text>
                     </text>
                 </view>
             </view>
@@ -124,7 +127,7 @@
                         <text class='pull-left'>产</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">二环300平米loft</text>
+                        <text class="numFont color2">{{prop.house}}</text>
                     </text>
                 </view>
             </view>
@@ -135,7 +138,7 @@
                         <text class='pull-left'>侣</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">Angelababy</text>
+                        <text class="numFont color2">{{prop.couple}}</text>
                     </text>
                 </view>
             </view>
@@ -146,11 +149,11 @@
                         <text class='pull-left'>作</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">CEO</text>
+                        <text class="numFont color2">{{prop.job}}</text>
                     </text>
                 </view>
             </view>
-        </view> -->
+        </view>
         <view class='clearfix'>
             <button class='begin-btn begin-btn2' style='float:left;'  open-type="share">分享给好友</button>
             <button class='begin-btn begin-btn' style='color:#fff;float:right;margin-top:20rpx;'bindtap="saveAsImg">保存分享图</button>

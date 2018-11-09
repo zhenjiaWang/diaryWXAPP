@@ -14,8 +14,9 @@ Page({
     hasUserInfo: false,
     canvasSaveimg: '',
     commentImg:null,
-    score:null,
-    text:[]
+    score:'',
+    text:[],
+    prop:''
   },
   onLoad: function (options) {
     wx.showLoading({
@@ -99,7 +100,8 @@ Page({
               that.setData({
                 commentImg,
                 score:data.data.score,
-                text:data.data.text
+                text:data.data.text,
+                prop:data.data
               })
             wx.getImageInfo({
               src: commentImg ,
@@ -157,7 +159,8 @@ Page({
     comment = '../../img/feng.png',
     ability = '',
     job = '',
-    connections = '', text = [] } = {}) {
+    connections = '',
+    text = [] } = {}) {
     let { canvasWidth } = this.data
     const ctx = wx.createCanvasContext('share')
     let usedHeight = 15 //已使用的高度
@@ -169,7 +172,7 @@ Page({
     const maxTextWidth = titleWidth - 40//desc文本宽度
     const descHeight = this.calcTextHeight(text, maxTextWidth, ctx) + 90
     this.setData({
-      canvasHeight: abilityHeight + descHeight + 80 //属性+描述+二维码
+      canvasHeight: abilityHeight + descHeight + 120 //属性+描述+二维码
     })
     let { canvasHeight } = this.data
     //draw bg
@@ -246,9 +249,8 @@ Page({
     this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '伴 侣', couple)
     this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '工 作', job)
 
-
     //description
-    //  usedHeight += itemH + 10
+    usedHeight += itemH + 10
 
     const descTop = 18, descBottom = 18
 
