@@ -159,7 +159,7 @@
                 </view>
             </view>
         </view>
-        <view class='clearfix'>
+        <view class='clearfix' wx:if="{{!hideButton}}">
             <button class='begin-btn begin-btn2' style='float:left;'  open-type="share">分享给好友</button>
             <button class='begin-btn begin-btn' style='color:#fff;float:right;margin-top:20rpx;'bindtap="saveAsImg">保存分享图</button>
         </view>
@@ -173,4 +173,4 @@
     </view>
 </view>
 <canvas canvas-id="share" style='width:{{canvasWidth}}px; height:{{canvasHeight}}px;transform: translateX(-200%);'></canvas>
-<view wx:if='{{shareImgShow}}'class='float-img' style='z-index:9999999;'><image src='{{shareImgSrc}}' mode='widthFix'></image><view class='float-info'>已保存到系统相册，请分享</view></view>
+<view wx:if='{{shareImgShow}}'class='float-img' style='z-index:9999999;' bindtap='closeShow'><image src='{{shareImgSrc}}' mode='widthFix'></image><view class='float-info'>已保存到系统相册，请分享</view></view>
