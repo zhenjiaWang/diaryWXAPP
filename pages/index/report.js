@@ -2,9 +2,9 @@
 const app = getApp()
 const { setWatcher } = require("../../utils/watcher.js");
 import { DrawKLine } from '../../utils/DrawKLine.js'
-const { wxGet } = require('../../utils/common.js')
+const { wxGet,wxPost } = require('../../utils/common.js')
 const descriptHeight = 500
-const abilityHeight = 330
+const abilityHeight = 380
 Page({
   data: {
     canvasWidth: 375,
@@ -29,12 +29,11 @@ Page({
     wx.getSystemInfo({
       success: function (res) {
         screenHeight = res.windowHeight
-        // canvasHeight = res.windowHeight > totalHeight ? res.windowHeight : totalHeight
-      },
+      }
     })
 
     this.setData({ screenHeight })
-    setWatcher(this)
+    //setWatcher(this)
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -59,18 +58,34 @@ Page({
       })
     }
     //this.draw()
+    const userId=wx.getStorageSync('userId')
+    if(userId){
+      wxPost('/user/done',{userId},({data})=>{
+        if (data.errorCode === 0) {
+          const { comment }=data
+          console.info(data.comment)
+          const { avatarUrl, nickName } = data.userData
+          this.getImageInfo(avatarUrl, nickName, userId, comment)
+        }
+      })
+    }else{
+      wx.hideLoading()
+      wx.showToast({
+        title: '未找到相关用户ID,请重启小程序',
+      })
+    }
   },
   watch: {
     'userInfo': {
       handler(value) {
-        this.getImageInfo(value.avatarUrl, value.nickName)
+       // this.getImageInfo(value.avatarUrl, value.nickName)
       }
     }
   },
-  getImageInfo(url, nickName) {//  图片缓存本地的方法
+  getImageInfo(url, nickName, userId, commentUrl) {//  图片缓存本地的方法
     const that = this
     if (url) {
-      const p1 = new Promise((resolve, reject) => {
+      const avatar = new Promise((resolve, reject) => {
         wx.getImageInfo({
           src: url,
           success: res => {
@@ -81,7 +96,7 @@ Page({
           }
         })
       })
-      const p2 = new Promise((resolve, reject) => {
+      const qrCode = new Promise((resolve, reject) => {
         wx.getImageInfo({
           src: 'https://img.jinrongzhushou.com/common/hun_qrcode.jpg',
           success: (res) => {
@@ -93,48 +108,47 @@ Page({
           }
         })
       })
-      const userId = app.globalData.userId
-      const p3 = new Promise((resolve, reject) => {
+      const report = new Promise((resolve, reject) => {
         wxGet(`/user/report/${userId}`, null, ({ data }) => {
-          console.info('report get success ,and continue get comment ')
           if (data.data.comment) {
-            const commentImg = `https://img.jinrongzhushou.com/common/${data.data.comment}.png`
-              that.setData({
-                commentImg,
-                score:data.data.score,
-                text:data.data.text,
-                prop:data.data
-              })
-            wx.getImageInfo({
-              src: commentImg ,
-              success: (res) => {
-                console.info('get user comment success')
-                data.data.comment = res.path
-                resolve(data)
-              },
-              fail: err => {
-                reject('get user comment fail')
-              }
+            that.setData({
+              score:data.data.score,
+              text:data.data.text,
+              prop:data.data
             })
-          } else {
-            resolve(data)
           }
+          resolve(data)
         }, (error) => {
           reject('report get fail')
         })
-
+      })
+      const comment = new Promise((resolve, reject) => {
+        const commentImg = `https://img.jinrongzhushou.com/common/${commentUrl}.png`
+        that.setData({ commentImg})
+        wx.getImageInfo({
+          src: commentImg,
+          success: res => {
+            resolve(res)
+          },
+          fail: error => {
+            reject('get comment img  fail')
+          }
+        })
       })
 
-      Promise.all([p1, p2, p3]).then((result) => {
+      Promise.all([avatar, qrCode, report, comment]).then((result) => {
         const avatarResult = result[0]
         const qrcodeResult = result[1]
         const reportResult = result[2]
+        const commentResult = result[3]
         //
-        if (avatarResult.errMsg === 'getImageInfo:ok' && qrcodeResult.errMsg === 'getImageInfo:ok' && reportResult.errorCode >= 0) {
+        if (avatarResult.errMsg === 'getImageInfo:ok' && qrcodeResult.errMsg === 'getImageInfo:ok' && reportResult.errorCode >= 0 && commentResult.errMsg === 'getImageInfo:ok') {
 
           that.draw({
-            avatar: avatarResult.path, nickName,
-            qrCodeImg: qrcodeResult.path
+            avatar: avatarResult.path, 
+            nickName,
+            qrCodeImg: qrcodeResult.path,
+            comment: commentResult.path
           }, reportResult.data)
         }
       }).catch((error) => {
@@ -145,6 +159,7 @@ Page({
   draw({
     avatar = '../../img/scjg.png',
     qrCodeImg = '../../img/scjg.png',
+    comment = '../../img/feng.png',
     point = '23178208',
     nickName = '张三'
   } = {}, {
@@ -158,7 +173,6 @@ Page({
     money = '',
     car = '',
     fundMoney = '',
-    comment = '../../img/feng.png',
     ability = '',
     job = '',
     connections = '',
@@ -180,7 +194,7 @@ Page({
     //draw bg
     ctx.drawImage('../../img/body-bg.jpg', 0, 0, canvasWidth, canvasHeight += 15)
     //draw title
-    ctx.drawImage('../../img/slogan.png', padding, usedHeight, titleWidth, usedHeight += 50)
+    ctx.drawImage('../../img/slogan.png', padding, usedHeight, titleWidth, usedHeight += 100)
     //draw avatar & rank
     usedHeight += 30//头像圆形上方,圆点需要+半径
     ctx.save()
@@ -397,17 +411,20 @@ Page({
 
   },
   saveAsImg: function () {
+    const that=this
     wx.canvasToTempFilePath({
       canvasId: 'share',
       fileType: 'jpg',
       success: function (res) {
+        const path=res.tempFilePath
         wx.saveImageToPhotosAlbum({
-          filePath: res.tempFilePath,
+          filePath: path,
           success(res) {
             wx.hideLoading();
-            wx.showToast({
-              title: '保存成功',
-            });
+            that.setData({
+              shareImgShow: true,
+              shareImgSrc: path
+            })
           },
           fail() {
             wx.hideLoading()
@@ -419,6 +436,12 @@ Page({
   backHome: function () {
     wx.navigateBack({
       delta: 1
+    })
+  },
+  closeShow:function(){
+    this.setData({
+      shareImgShow: false,
+      shareImgSrc: ''
     })
   }
 })

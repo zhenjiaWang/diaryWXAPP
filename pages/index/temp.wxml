@@ -9,6 +9,7 @@
     <button class='btn' open-type="share">分享好友</button> -->
     <canvas canvas-id="share" style='width:{{canvasWidth}}px; height:{{canvasHeight}}px;'></canvas>
 
+<view wx:if='{{shareImgShow}}'class='float-img' style='z-index:9999999;' bindtap='closeShow'><image src='{{shareImgSrc}}' mode='widthFix'></image><view class='float-info'>已保存到系统相册，请分享</view></view>
 </view>
 <!-- 
  <canvas canvas-id="share" style='width:{{canvasWidth}}px; height:{{canvasHeight}}px;transform: translateX(-200%);'></canvas> -->
