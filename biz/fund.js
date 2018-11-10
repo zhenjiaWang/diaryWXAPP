@@ -159,7 +159,7 @@ export default {
             if (data.errorCode >= 0) {
               //that.getEventStack().push({ category: 'random-fund-buy' })
               that.setData({ submitFlag: false, 'fundDetailShow': false, dialogShow: true, dialogResult: data.resultArray })
-              that.resultVoice(data, true)
+              that.voiceContext().playMoney()
             }
           }
         )
@@ -190,7 +190,7 @@ export default {
             if (data.errorCode >= 0) {
              // that.getEventStack().push({ category: 'random-fund-sell' })
               that.setData({ submitFlag: false, 'fundDetailShow': false, dialogShow: true, dialogResult: data.resultArray })
-              that.resultVoice(data, true)
+              that.voiceContext().playMoney()
             }
           }
         )
