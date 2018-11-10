@@ -11,17 +11,25 @@ var voice=false
 const eventStack = new EventStack()
 
 const options={
-  data: {
-    attrList: [],
-    userState: false,
-    userData:false,
-    hasUserInfo: false,
-    hasLogin:false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
-  },
   onShow:function(){
-    this.setData({
-      hasUserInfo:false,
+    const that = this
+    wx.getSetting({
+      success: res => {
+        if (res.authSetting['scope.userInfo']) {
+          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+          app.globalData.hasAuth = true
+          that.setData({
+            hasAuth: app.globalData.hasAuth
+          })
+        } else {
+          app.globalData.hasAuth = false
+          that.setData({
+            hasAuth: app.globalData.hasAuth
+          })
+        }
+      }
+    })
+    that.setData({
       submitFlag: false
     })
   },
@@ -39,26 +47,26 @@ const options={
     return eventStack
   },
   onLoad: function () {
-   const that=this
-   setWatcher(that)
-   that.setData({
-     userData: app.globalData.userData,
-     hasAuth:app.globalData.hasAuth
-   })
-   voice = new Voice() 
-
+    wx.showLoading({
+      title: '请稍等...',
+      mask: true
+    })
+    const that=this
+    setWatcher(that)
     if (app.globalData.userData) {
-      this.setData({
+      that.setData({
         userData: app.globalData.userData,
-        //hasUserInfo: true
+        hasAuth: app.globalData.hasAuth
       })
-    } else if (this.data.canIUse) {
+    } else if (that.data.canIUse) {
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
       // 所以此处加入 callback 以防止这种情况
       app.userInfoReadyCallback = res => {
-        this.setData({
-          userData: res.userInfo,
-          //hasUserInfo: true
+        app.globalData.userData = res.userInfo
+        app.globalData.hasAuth = true
+        that.setData({
+          userData: app.globalData.userData,
+          hasAuth: app.globalData.hasAuth
         })
       }
     } else {
@@ -66,26 +74,58 @@ const options={
       wx.getUserInfo({
         success: res => {
           app.globalData.userData = res.userInfo
+          app.globalData.hasAuth = true
           that.setData({
-            userData: res.userInfo,
-            //hasUserInfo: true
+            userData: app.globalData.userData,
+            hasAuth: app.globalData.hasAuth
           })
         }
       })
     }
-  },
-  gameStart: function (e){
-    if(!e.detail.userInfo){
-      wx.reLaunch({
-        url: '../index/index?authReject=true'
+    
+    voice = new Voice()
+    setTimeout(function () {
+      that.setData({
+        waitLoading: false
       })
-      return
-    }
-    app.globalData.userData = e.detail.userInfo
+      wx.hideLoading()
+    }, 1000)
+  },
+  gameAuth:function(e){
     const that = this
     if (that.data.submitFlag) {
       return false
     }else{
+      that.voiceContext().playClick()
+      that.setData({ submitFlag: true })
+      if (!e.detail.userInfo) {
+        wx.reLaunch({
+          url: '../index/index?authReject=true'
+        })
+        return
+      }
+      app.globalData.userData = e.detail.userInfo
+      app.globalData.hasAuth = true
+      wx.showLoading({
+        title: '请稍等...',
+        mask: true
+      })
+      setTimeout(function () {
+        that.setData({
+          userData: app.globalData.userData,
+          hasAuth: app.globalData.hasAuth,
+          submitFlag: false
+        })
+        wx.hideLoading()
+      }, 1000)
+    }
+  },
+  gameStart: function (e){
+    const that = this
+    if (that.data.submitFlag) {
+      return false
+    }else{
+      that.voiceContext().playClick()
       that.setData({submitFlag:true })
       wx.setNavigationBarColor({
         frontColor: '#ffffff',
@@ -144,6 +184,7 @@ const options={
     wxPost('/user/start',
       { userId: that.data.userData.userId },
       ({ data }) => {
+        that.voiceContext().playNextDay()
         parseUserState(data,that)
         setTimeout(function () {
           that.setData({ nightText: data.nightText, hasUserInfo: true })
@@ -204,32 +245,40 @@ const options={
       return false
     } else {
       that.voiceContext().playClick()
-      // that.setData({ submitFlag: true, maskShow: true })
-      that.setData({ submitFlag: true })
-      if (that.data.userState.score > 0 && that.data.userState.comment!==''){
-        //这里有值了 直接跳转
-        wx.navigateTo({
-          url: './report',
-        })
-      }else{
-        wxPost(
-          '/user/done',
-          {
-            userId: that.data.userData.userId
-          },
-          ({ data }) => {
-            if (data.errorCode >= 0) {
-              that.voiceContext().playNextDay()
-              that.blackScreen('show', '完...', function () {
-                that.setData({ maskShow: false })
-              }, function () {
-                that.setData({ submitFlag: false, maskShow: false })
-              })
-            }
-            console.info(data)
-          }
-        )
-      }
+      that.setData({ submitFlag: true})
+      wx.navigateTo({
+        url: './report',
+        complete: () => {
+          that.setData({ submitFlag: false })
+          wx.hideLoading()
+        }
+      })
+      // if (that.data.userState.score > 0 && that.data.userState.comment !== '') {
+
+      // } else {
+      //   wx.showLoading({
+      //     title: '请稍等...',
+      //     mask: true
+      //   })
+      //   wxPost(
+      //     '/user/done',
+      //     {
+      //       userId: that.data.userData.userId
+      //     },
+      //     ({ data }) => {
+      //       if (data.errorCode >= 0) {
+      //         wx.navigateTo({
+      //           url: './report',
+      //           complete: () => {
+      //             that.setData({ submitFlag: false })
+      //             wx.hideLoading()
+      //           }
+      //         })
+      //       }
+      //       console.info(data)
+      //     }
+      //   )
+      // }
       
     }
   },

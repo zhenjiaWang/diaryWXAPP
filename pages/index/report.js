@@ -16,7 +16,9 @@ Page({
     commentImg:null,
     score:'',
     text:[],
-    prop:''
+    prop:'',
+    shareImgShow: false,
+    shareImgSrc: ''
   },
   onLoad: function (options) {
     wx.showLoading({

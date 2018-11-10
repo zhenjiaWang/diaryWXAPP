@@ -2,26 +2,37 @@
 <wxs src="../../utils/tools.wxs" module="tools" />
 <view class='body-bg' wx:if='{{!hasUserInfo}}'>
     <view class='img-auto'><image src='../../img/slogan.png' mode='widthFix'></image></view>
-    <view class='text-center user-img-box'><view class='user-img'><image src='{{userData.avatarUrl||"../../img/photo-no.png"}}'></image></view></view>
-    <view class='text-center user-name' style='position:relative;'>
-        <text>{{userData.nickName}}</text>
+    
+    <block wx:if='{{!waitLoading}}'>
+      <view class='text-center user-img-box'>
+        <view class='user-img'>
+          <image wx:if='{{hasAuth}}' src='{{userData.avatarUrl||"../../img/photo-no.png"}}'></image>
+          <image wx:elif='{{!hasAuth}}' src='../../img/photo-no.png'></image>
+        </view>
+      </view>
+      <view class='text-center user-name' style='position:relative;'>
+        <text wx:if='{{hasAuth}}'>{{userData.nickName}}</text>
+        <text wx:elif='{{!hasAuth}}'>需要你的公开头像和昵称</text>
         <image wx:if='{{userData.gender==2}}' src='../../img/icon-gilr.png' mode='widthFix'></image>
-        <image wx:if='{{userData.gender==1}}'src='../../img/icon-men.png' mode='widthFix'></image>
+        <image wx:elif='{{userData.gender==1}}'src='../../img/icon-men.png' mode='widthFix'></image>
         <view class='tag-img' style='position:absolute;left:430rpx;top:-60rpx;'>
             <!-- <image src='../../img/qiong.png' mode='widthFix'></image> -->
             <image src='../../img/feng.png' mode='widthFix'></image>
             <!-- <image src='../../img/lu.png' mode='widthFix'></image> -->
             <!-- <image src='../../img/hun.png' mode='widthFix'></image> -->
         </view>
-    </view>
-    <view class='begin-txt-box'>
-        <view class='begin-txt-main'>
-            <text>体验北漂生活，生存不仅需要朋友和金钱，更需要对社会、人性的了解。三分靠努力，七分靠打拼，剩下九十分靠天意！混在北京，是好是坏，都能混的下去。</text>
-        </view>
-    </view>
-    <button class='begin-btn' open-type='getUserInfo' lang='zh_CN' bindgetuserinfo='gameStart'>开始混</button>
+      </view>
+      <view class='begin-txt-box'>
+          <view class='begin-txt-main'>
+              <text>体验北漂生活，生存不仅需要朋友和金钱，更需要对社会、人性的了解。三分靠努力，七分靠打拼，剩下九十分靠天意！混在北京，是好是坏，都能混的下去。</text>
+          </view>
+      </view>
+      <button wx:if='{{hasAuth}}' class='begin-btn' bindtap='gameStart'>开始混</button>
+      <view wx:if='{{hasAuth}}' class='begin-btn begin-btn2' bindtap='viewRankingList'>排行榜</view>
+      <button wx:if='{{!hasAuth}}' class='begin-btn' open-type='getUserInfo' lang='zh_CN' bindgetuserinfo='gameAuth'>去授权</button>
+    </block>
     
-    <view class='begin-btn begin-btn2' bindtap='viewRankingList'>排行榜</view>
+    
     <!-- <view class='begin-btn begin-btn2' bindtap='viewReport'>temp生存结果</view> -->
 
 </view>
@@ -187,7 +198,7 @@
 </view>
 <!-- 随机事件弹出begin -->
 <view class='mask' hidden='{{!maskShow}}'></view>
-<view class='float-img' style='z-index:9999999;' title="这个style可以去掉"><image mode='widthFix'></image><view class='float-info'>已保存到系统相册，请分享</view></view>
+
 <template is='popTip' data='{{tipShow,tipItems,userData}}'></template>
 <template is='popNight' data='{{nightClass,nightText}}'></template>
 <template is='popDialog' data='{{dialogShow,dialogResult,dialogBtn}}'></template>
