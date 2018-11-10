@@ -282,14 +282,11 @@ const options={
       })
     }
   },
-  viewRankingList:()=>{
+  viewRankingList: function (){
+    const that = this
+    that.voiceContext().playClick()
     wx.navigateTo({
       url: './rankingList',
-    })
-  },
-  viewReport:()=>{
-    wx.navigateTo({
-      url: './report',
     })
   }
 }
