@@ -15,11 +15,8 @@
         <text wx:elif='{{!hasAuth}}'>需要你的公开头像和昵称</text>
         <image wx:if='{{userData.gender==2}}' src='../../img/icon-gilr.png' mode='widthFix'></image>
         <image wx:elif='{{userData.gender==1}}'src='../../img/icon-men.png' mode='widthFix'></image>
-        <view class='tag-img' style='position:absolute;left:430rpx;top:-60rpx;'>
-            <!-- <image src='../../img/qiong.png' mode='widthFix'></image> -->
-            <image src='../../img/feng.png' mode='widthFix'></image>
-            <!-- <image src='../../img/lu.png' mode='widthFix'></image> -->
-            <!-- <image src='../../img/hun.png' mode='widthFix'></image> -->
+        <view class='tag-img' style='position:absolute;left:430rpx;top:-60rpx;' wx:if='{{lastComment}}'>
+            <image src='https://img.jinrongzhushou.com/common/{{lastComment}}.png' mode='widthFix'></image>
         </view>
       </view>
       <view class='begin-txt-box'>
@@ -44,7 +41,7 @@
     <image class='icon-1' src='../../img/icon-2.png' mode="widthFix"></image>
     <text class='num-box'>今日还剩<text class='numFont font60 color1'>{{userState.hours}}</text>小时</text>
     <button wx:if='{{userState.days>0}}' class='next-day {{userState.hours>0?"disable":""}}' bindtap='nextDay'></button>
-    <button wx:if='{{userState.days==0}}' class='end {{userState.hours>0?"disable":""}}' bindtap='done'></button>
+    <button wx:if='{{userState.days==0}}' class='end {{userState.hours>0||userState.score>0?"disable":""}}' bindtap='done'></button>
 
   </view>
   <view class='game-info clearfix'>

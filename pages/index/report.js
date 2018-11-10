@@ -11,7 +11,6 @@ Page({
     canvasHeight: 800,
     screenHeight: null,
     userInfo: {},
-    hasUserInfo: false,
     canvasSaveimg: '',
     commentImg:null,
     score:'',
@@ -19,11 +18,12 @@ Page({
     prop:'',
     shareImgShow: false,
     shareImgSrc: '',
-    hideButton:false
+    hideButton:false,
+    dataDone:false
   },
   onLoad: function (options) {
     wx.showLoading({
-      title: '数据生成中...',
+      title: '请稍等...',
     })
     let screenHeight
     const totalHeight = abilityHeight + descriptHeight
@@ -32,52 +32,23 @@ Page({
         screenHeight = res.windowHeight
       }
     })
-
     this.setData({ screenHeight })
-    //setWatcher(this)
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse) {
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
-    } else {
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-        }
-      })
-    }
-    //this.draw()
+   
     const userId=wx.getStorageSync('userId')
     const viewId=options.userId
-    if (viewId && viewId!==userId){//ranklist view sb
+    if (viewId && viewId!==userId){
       this.setData({ hideButton:true})
-      wxGet('', { userId: viewId},({data})=>{//TODO  请求sb的用户信息
+      wxGet('/user/info', { userId: viewId},({data})=>{
         if(data.errorCode===0){
-          //TODO  补充信息
-          const { comment } = data
-          const { avatarUrl, nickName } = data.userData
-
-          this.getImageInfo(avatarUrl, nickName, viewId, comment)
+          this.setData({ userInfo: data.userData })
+          this.getImageInfo(data.userData.avatarUrl, data.userData.nickName, viewId, data.userData.lastComment)
         }
       })
     }else if(userId){//report 
       wxPost('/user/done',{userId},({data})=>{
         if (data.errorCode === 0) {
-          const { comment }=data
-          const { avatarUrl, nickName } = data.userData
-          this.getImageInfo(avatarUrl, nickName, userId, comment)
+          this.setData({ userInfo: data.userData })
+          this.getImageInfo(data.userData.avatarUrl, data.userData.nickName, userId, data.comment)
         }
       })
     }else{
@@ -95,6 +66,13 @@ Page({
     }
   },
   getImageInfo(url, nickName, userId, commentUrl) {//  图片缓存本地的方法
+    console.info('url=' + url)
+    console.info('nickName=' + nickName)
+
+    console.info('userId=' + userId)
+
+    console.info('commentUrl=' + commentUrl)
+
     const that = this
     if (url) {
       const avatar = new Promise((resolve, reject) => {
@@ -147,15 +125,17 @@ Page({
           }
         })
       })
-
+      
       Promise.all([avatar, qrCode, report, comment]).then((result) => {
+        
         const avatarResult = result[0]
         const qrcodeResult = result[1]
         const reportResult = result[2]
         const commentResult = result[3]
+        
         //
         if (avatarResult.errMsg === 'getImageInfo:ok' && qrcodeResult.errMsg === 'getImageInfo:ok' && reportResult.errorCode >= 0 && commentResult.errMsg === 'getImageInfo:ok') {
-
+          
           that.draw({
             avatar: avatarResult.path, 
             nickName,
@@ -319,22 +299,9 @@ Page({
 
     ctx.draw()
     wx.hideLoading()
-    // const that=this
-    // setTimeout(()=>{
-    //   wx.canvasToTempFilePath({
-    //     canvasId: 'share',
-    //     fileType: 'jpg',
-    //     success: (res) => {
-    //       that.setData({
-    //         canvasSaveimg: res.tempFilePath
-    //       })
-    //     }, complete: function (err) {
-    //       console.info(err)
-    //       wx.hideLoading()
-    //     }
-    //   })
-    // },500)
-
+    this.setData({
+      dataDone: true
+    })
   },
   drawText(ctx, str, x, initHeight, titleHeight, canvasWidth) {
     var lineWidth = 0
@@ -424,6 +391,9 @@ Page({
   },
   saveAsImg: function () {
     const that=this
+    wx.showLoading({
+      title: '生成长图中...',
+    })
     wx.canvasToTempFilePath({
       canvasId: 'share',
       fileType: 'jpg',

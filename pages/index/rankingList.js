@@ -9,6 +9,9 @@ Page({
     lastUpdate:''
   },
   onLoad: function (options) {
+    wx.showLoading({
+      title: '请稍等...',
+    })
     this.setData({
       lastUpdate:formatTime(new Date())
     })
@@ -17,28 +20,26 @@ Page({
     wxGet(`/user/rankings/${userId}`, null, ({ data }) => {
       if (data.errorCode >= 0) {
         const { list, myData } = data
-        list.forEach((o)=>{
-          o['commentImg'] = that.commentImg(o)
-        })
-        myData['commentImg'] = that.commentImg(myData)
         that.setData({
           list,myData
         })
       }
+    },null,()=>{
+      wx.hideLoading()
     })
   },
-  commentImg: ({ comment})=>{
-    let img=''
-    if (comment ==='碌碌无为'){
-      img = 'lu.png'
-    } else if (comment === '风生水起') {
-      img='feng.png'
-    } else if(comment === '穷困潦倒'){
-      img = 'qiong.png'
-    } else if (comment === '混王之王') {
-      img = 'hun.png'
+  viewMyReport: () => {
+    wx.navigateTo({
+      url: './report',
+    })
+  },
+  viewReport: (e) => {
+    let userId = e.currentTarget.dataset.id
+    if (userId){
+      wx.navigateTo({
+        url: './report?userId='+userId,
+      })
     }
-    return img
   },
   backHome:function(){
     wx.navigateBack({
