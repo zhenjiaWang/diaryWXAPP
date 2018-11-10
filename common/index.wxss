@@ -592,3 +592,16 @@ text.num-big {
     position: relative;
     top: 5rpx;
 }
+.float-info{
+    line-height: 60rpx;
+    position: absolute;
+    background: rgba(255,255,255,.9);
+    color: #000;
+    border-radius:5px;
+    text-align: center;
+    left:150rpx;
+    right:150rpx;
+    bottom:50rpx;
+    z-index: 91;
+    font-size:28rpx;
+}

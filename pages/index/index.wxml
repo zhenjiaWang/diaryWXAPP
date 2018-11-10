@@ -3,10 +3,16 @@
 <view class='body-bg' wx:if='{{!hasUserInfo}}'>
     <view class='img-auto'><image src='../../img/slogan.png' mode='widthFix'></image></view>
     <view class='text-center user-img-box'><view class='user-img'><image src='{{userData.avatarUrl||"../../img/photo-no.png"}}'></image></view></view>
-    <view class='text-center user-name'>
+    <view class='text-center user-name' style='position:relative;'>
         <text>{{userData.nickName}}</text>
         <image wx:if='{{userData.gender==2}}' src='../../img/icon-gilr.png' mode='widthFix'></image>
         <image wx:if='{{userData.gender==1}}'src='../../img/icon-men.png' mode='widthFix'></image>
+        <view class='tag-img' style='position:absolute;left:430rpx;top:-60rpx;'>
+            <!-- <image src='../../img/qiong.png' mode='widthFix'></image> -->
+            <image src='../../img/feng.png' mode='widthFix'></image>
+            <!-- <image src='../../img/lu.png' mode='widthFix'></image> -->
+            <!-- <image src='../../img/hun.png' mode='widthFix'></image> -->
+        </view>
     </view>
     <view class='begin-txt-box'>
         <view class='begin-txt-main'>
@@ -178,7 +184,7 @@
 </view>
 <!-- 随机事件弹出begin -->
 <view class='mask' hidden='{{!maskShow}}'></view>
-<view class='float-img'><image mode='widthFix'></image></view>
+<view class='float-img' style='z-index:9999999;' title="这个style可以去掉"><image mode='widthFix'></image><view class='float-info'>已保存到系统相册，请分享</view></view>
 <template is='popTip' data='{{tipShow,tipItems,userData}}'></template>
 <template is='popNight' data='{{nightClass,nightText}}'></template>
 <template is='popDialog' data='{{dialogShow,dialogResult,dialogBtn}}'></template>
