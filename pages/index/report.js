@@ -18,7 +18,8 @@ Page({
     text:[],
     prop:'',
     shareImgShow: false,
-    shareImgSrc: ''
+    shareImgSrc: '',
+    hideButton:false
   },
   onLoad: function (options) {
     wx.showLoading({
@@ -59,11 +60,22 @@ Page({
     }
     //this.draw()
     const userId=wx.getStorageSync('userId')
-    if(userId){
+    const viewId=options.userId
+    if (viewId && viewId!==userId){//ranklist view sb
+      this.setData({ hideButton:true})
+      wxGet('', { userId: viewId},({data})=>{//TODO  请求sb的用户信息
+        if(data.errorCode===0){
+          //TODO  补充信息
+          const { comment } = data
+          const { avatarUrl, nickName } = data.userData
+
+          this.getImageInfo(avatarUrl, nickName, viewId, comment)
+        }
+      })
+    }else if(userId){//report 
       wxPost('/user/done',{userId},({data})=>{
         if (data.errorCode === 0) {
           const { comment }=data
-          console.info(data.comment)
           const { avatarUrl, nickName } = data.userData
           this.getImageInfo(avatarUrl, nickName, userId, comment)
         }
