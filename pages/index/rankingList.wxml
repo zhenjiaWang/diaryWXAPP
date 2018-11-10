@@ -4,12 +4,12 @@
 <view class='body-bg' style='display:;'>
     <view class='img-auto'><image src='../../img/phb.png' mode='widthFix' style='margin-top:10rpx;'></image></view>
     <view class='game-main game-phb'>
-        <view class='top-title tab-title clearfix'>
+        <!-- <view class='top-title tab-title clearfix'>
             <view class='active'>综合评分排行</view>
             <view>金钱排行</view>
             <view>投资排行</view>
-        </view>
-        <view class='top-title'>
+        </view> -->
+        <view class='top-title' bindtap='viewMyReport'>
             <view class='pull-left view1'>
                 <view><text class='numFont font40 color2'>{{myData.seq}}</text></view>
                 <view><text class='font24 color2'>我的排名</text></view>
@@ -21,7 +21,7 @@
                     </view>
                 </view>
                 <view class='font26'>{{myData.nickName}}</view>
-                <view class='tag-png'><image src='{{myData.comment}}' mode='widthFix' wx:if="{{myData.comment}}"></image></view>
+                <view class='tag-png'><image src='https://img.jinrongzhushou.com/common/{{myData.comment}}-j.png' mode='widthFix' wx:if="{{myData.comment}}"></image></view>
             </view>
             <view class='view3'>
                 <text class='numFont font54'>{{myData.score||'-- '}}</text>
@@ -35,12 +35,12 @@
                     <text>上次更新时间：{{lastUpdate}}</text>
                 </view>
                 <view class='phb-list'>
-                    <view class='list-one clearfix' wx:for="{{list}}" wx:key="id">
+                    <view class='list-one clearfix' wx:for="{{list}}" wx:key="id" bindtap='viewReport' data-id="{{item.id}}">
                         <view class='pull-left view1'>
                             <image src='../../img/p-1.png' mode='widthFix' wx:if="{{index===0}}"></image>
-                            <image src='../../img/p-2.png' mode='widthFix' wx:if="{{index===1}}"></image>
-                            <image src='../../img/p-3.png' mode='widthFix' wx:if="{{index===2}}"></image>
-                            <view wx:if="{{index>2}}"><text class='numFont font60 color2'>{{index+1}}</text></view>
+                            <image src='../../img/p-2.png' mode='widthFix' wx:elif="{{index===1}}"></image>
+                            <image src='../../img/p-3.png' mode='widthFix' wx:elif="{{index===2}}"></image>
+                            <view wx:elif="{{index>2}}"><text class='numFont font60 color2'>{{index+1}}</text></view>
                         </view>
                         <view class='pull-left view2 clearfix'>
                             <view class='text-center user-img-box'>
@@ -49,7 +49,9 @@
                                 </view>
                             </view>
                             <view class='font26'>{{item.nickName}}</view>
-                            <view class='tag-png'><image src='{{item.comment}}' mode='widthFix' wx:if='{{item.comment}}' ></image></view>
+                            <view class='tag-png'>
+                              <image src='https://img.jinrongzhushou.com/common/{{item.comment}}-j.png' mode='widthFix' wx:if='{{item.comment}}' ></image>
+                            </view>
                         </view>
                         <view class=' view3'>
                             <text class='numFont font43'>{{item.score||'--'}}</text>
@@ -59,6 +61,5 @@
                 </view>
             </view>
         </view>
-        <button class='begin-btn begin-btn2' bindtap='backHome'>返回首页</button>
     </view>
 </view>
