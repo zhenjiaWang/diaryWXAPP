@@ -12,6 +12,14 @@ import fund from './fund.js'
 const { wxGet, parseUserState, showMaskNavigationBarColor,closeMaskNavigationBarColor } = require('../utils/common.js')
 
 const commonData = {
+  attrList: [],
+  userState: false,
+  userData: false,
+  hasUserInfo: false,
+  hasLogin: false,
+  hasAuth: false,
+  waitLoading: true,
+  canIUse: wx.canIUse('button.open-type.getUserInfo'),
   nightClass:'',
   nightText:'',
   submitFlag: false,
