@@ -14,6 +14,8 @@ const { wxGet, parseUserState, showMaskNavigationBarColor,closeMaskNavigationBar
 const commonData = {
   attrList: [],
   lastComment:'',
+  currentDays:1,
+  currentHours:1,
   userState: false,
   userData: false,
   hasUserInfo: false,
