@@ -10,12 +10,12 @@
           <image wx:elif='{{!hasAuth}}' src='../../img/photo-no.png'></image>
         </view>
       </view>
-      <view class='text-center user-name' style='position:relative;'>
+      <view class='text-center user-name' style='position:relative;' bindtap='viewMyReport'>
         <text wx:if='{{hasAuth}}'>{{userData.nickName}}</text>
         <text wx:elif='{{!hasAuth}}'>需要你的公开头像和昵称</text>
         <image wx:if='{{userData.gender==2}}' src='../../img/icon-gilr.png' mode='widthFix'></image>
         <image wx:elif='{{userData.gender==1}}'src='../../img/icon-men.png' mode='widthFix'></image>
-        <view class='tag-img' style='position:absolute;left:430rpx;top:-60rpx;' wx:if='{{lastComment}}'>
+        <view class='tag-img' style='position:absolute;left:430rpx;top:-60rpx;' wx:if='{{lastComment&&currentDays==0&&currentHours==0}}'>
             <image src='https://img.jinrongzhushou.com/common/{{lastComment}}.png' mode='widthFix'></image>
         </view>
       </view>
@@ -24,7 +24,7 @@
               <text>体验北漂生活，生存不仅需要朋友和金钱，更需要对社会、人性的了解。三分靠努力，七分靠打拼，剩下九十分靠天意！混在北京，是好是坏，都能混的下去。</text>
           </view>
       </view>
-      <button wx:if='{{hasAuth}}' class='begin-btn' bindtap='gameStart'>开始混</button>
+      <button wx:if='{{hasAuth}}' class='begin-btn' bindtap='gameStart'>{{(lastComment&&currentDays==0&&currentHours==0)?"重新混":"开始混"}}</button>
       <view wx:if='{{hasAuth}}' class='begin-btn begin-btn2' bindtap='viewRankingList'>排行榜</view>
       <button wx:if='{{!hasAuth}}' class='begin-btn' open-type='getUserInfo' lang='zh_CN' bindgetuserinfo='gameAuth'>去授权</button>
     </block>

@@ -107,7 +107,7 @@ const options={
       },
       ({ data }) => {
         if (data.errorCode === 0) {
-          that.setData({ lastComment: data.userData.lastComment})
+          that.setData({ lastComment: data.userData.lastComment, currentDays: data.userData.days, currentHours: data.userData.hours})
         }
       },null,()=>{
         that.setData({
@@ -288,6 +288,13 @@ const options={
     wx.navigateTo({
       url: './rankingList',
     })
+  },
+  viewMyReport: function () {
+    if (this.data.lastComment && this.data.currentDays == 0 && this.data.currentHours == 0){
+      wx.navigateTo({
+        url: './report',
+      })
+    }
   }
 }
 
