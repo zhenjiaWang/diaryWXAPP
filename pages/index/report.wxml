@@ -1,7 +1,7 @@
 <!--pages/index/report.wxml-->
-<view class='body-bg' style='display:;'>
+<view class='body-bg'>
     <view class='img-auto'><image src='../../img/scjg.png' mode='widthFix'></image></view>
-    <view class='game-main survival-main'>
+    <view class='game-main survival-main' hidden='{{!dataDone}}'>
         <view class='survival clearfix'>
             <view class='pull-left clearfix'>
                 <view class='user-img-box'>
@@ -15,7 +15,7 @@
                 <view class='r-name'>
                     <text>{{userInfo.nickName}}</text>
                     <image wx:if='{{userInfo.gender==2}}' src='../../img/icon-gilr.png' mode='widthFix'></image>
-                    <image wx:if='{{userInfo.gender==1}}'src='../../img/icon-men.png' mode='widthFix'></image>
+                    <image wx:elif='{{userInfo.gender==1}}'src='../../img/icon-men.png' mode='widthFix'></image>
                 </view>
             </view>
             <view class='pull-right'>
@@ -173,4 +173,5 @@
     </view>
 </view>
 <canvas canvas-id="share" style='width:{{canvasWidth}}px; height:{{canvasHeight}}px;transform: translateX(-200%);'></canvas>
-<view wx:if='{{shareImgShow}}'class='float-img' style='z-index:9999999;' bindtap='closeShow'><image src='{{shareImgSrc}}' mode='widthFix'></image><view class='float-info'>已保存到系统相册，请分享</view></view>
+<view class='mask' wx:if='{{shareImgShow}}'></view>
+<view wx:if='{{shareImgShow}}' class='float-img' style='z-index:9999999;' bindtap='closeShow'><image src='{{shareImgSrc}}' mode='widthFix'></image><view class='float-info'>已保存到系统相册，请分享</view></view>

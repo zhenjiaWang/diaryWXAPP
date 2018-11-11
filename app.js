@@ -9,6 +9,7 @@ App({
     wx.setStorageSync('logs', logs)
     
 
+    
     const that = this
     
     wx.checkSession({
@@ -21,6 +22,20 @@ App({
         } else {
           that.globalData.userId = userId
           console.info('userId from storage')
+        }
+        const code = wx.getStorageSync("code")
+        if (!code) {
+          wx.login({
+            success: res => {
+              // 发送 res.code 到后台换取 openId, sessionKey, unionId
+              console.info('openId' + res.code)
+              that.globalData.code = res.code
+            }
+          })
+          console.info('code been deleted ,reWxLogin')
+        } else {
+          that.globalData.code = code
+          console.info('code from storage')
         }
       },
       fail: function () {
@@ -57,7 +72,8 @@ App({
   globalData: {
     hasAuth:false,
     userData:null,
-    userId:''
+    userId:'',
+    code:''
   },
   appLogin: function () {
     const that=this
@@ -80,6 +96,7 @@ App({
             ({ data }) => {
               if (data.errorCode === 0) {
                 wx.setStorageSync('userId', data.userData.userId)
+                wx.setStorageSync('code', res.code)
                 that.globalData.userId = data.userData.userId
                 that.globalData.userData = data.userData
               }

@@ -421,7 +421,7 @@ text.num-big {
     text-shadow:0 0 1px #000, 0 0 1px #000, 0 0 1px #000, 0 0 1px #000, 0 0 1px #000;
 }
 .phb-list{
-    height:570rpx;
+    height:auto;
     overflow-y: scroll;
     text-shadow:0 0 1px #000, 0 0 1px #000, 0 0 1px #000, 0 0 1px #000, 0 0 1px #000;
 }
@@ -547,9 +547,9 @@ text.num-big {
 }
 .game-phb .tab-title view.active{color:#f5d83f;}
 .game-phb .begin-txt-box .begin-txt-main {
-    height:530rpx;
+    min-height:530rpx;
+    height: auto;
 }
-.phb-list{height:490rpx;}
 .txt-top,.txt-bottom{
     margin-bottom: 0!important;
     height:30rpx;
@@ -575,6 +575,7 @@ text.num-big {
     left:0;
     z-index: 90;
     text-align: center;
+    background: rgba(0,0,0,.7);
 }
 .float-img image{
     width: 65%;
