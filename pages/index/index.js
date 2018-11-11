@@ -82,14 +82,39 @@ const options={
         }
       })
     }
-    
     voice = new Voice()
-    setTimeout(function () {
-      that.setData({
-        waitLoading: false
+    if (!app.globalData.code){
+      console.info('1')
+      wx.login({
+        success: res => {
+          // 发送 res.code 到后台换取 openId, sessionKey, unionId
+          app.globalData.code = res.code
+          that.loadGame()
+        }
       })
-      wx.hideLoading()
-    }, 1000)
+    }else{
+      that.loadGame()
+    }
+    console.info(app.globalData.code)
+    
+  },
+  loadGame:function(){
+    const that = this
+    wxGet('/user/info',
+      {
+        'userId': app.globalData.userId,
+        'code': app.globalData.code
+      },
+      ({ data }) => {
+        if (data.errorCode === 0) {
+          that.setData({ lastComment: data.userData.lastComment})
+        }
+      },null,()=>{
+        that.setData({
+          waitLoading: false
+        })
+        wx.hideLoading()
+      })
   },
   gameAuth:function(e){
     const that = this
@@ -250,46 +275,18 @@ const options={
         url: './report',
         complete: () => {
           that.setData({ submitFlag: false })
-          wx.hideLoading()
+          setTimeout(function () {
+            that.setData({ hasUserInfo: false })
+          }, 2000)
         }
       })
-      // if (that.data.userState.score > 0 && that.data.userState.comment !== '') {
-
-      // } else {
-      //   wx.showLoading({
-      //     title: '请稍等...',
-      //     mask: true
-      //   })
-      //   wxPost(
-      //     '/user/done',
-      //     {
-      //       userId: that.data.userData.userId
-      //     },
-      //     ({ data }) => {
-      //       if (data.errorCode >= 0) {
-      //         wx.navigateTo({
-      //           url: './report',
-      //           complete: () => {
-      //             that.setData({ submitFlag: false })
-      //             wx.hideLoading()
-      //           }
-      //         })
-      //       }
-      //       console.info(data)
-      //     }
-      //   )
-      // }
-      
     }
   },
-  viewRankingList:()=>{
+  viewRankingList: function (){
+    const that = this
+    that.voiceContext().playClick()
     wx.navigateTo({
       url: './rankingList',
-    })
-  },
-  viewReport:()=>{
-    wx.navigateTo({
-      url: './report',
     })
   }
 }
