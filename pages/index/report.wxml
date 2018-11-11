@@ -121,7 +121,7 @@
                         <text class='pull-left'>驾</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">{{prop.car}}</text>
+                        <text class="numFont color2">{{prop.carTitle?prop.carTitle[0]:""}}</text>
                     </text>
                 </view>
             </view>
@@ -132,7 +132,7 @@
                         <text class='pull-left'>产</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">{{prop.house}}</text>
+                        <text class="numFont color2">{{prop.houseTitle?prop.houseTitle[0]:""}}</text>
                     </text>
                 </view>
             </view>
@@ -143,7 +143,7 @@
                         <text class='pull-left'>侣</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">{{prop.couple}}</text>
+                        <text class="numFont color2">{{prop.coupleTitle}}</text>
                     </text>
                 </view>
             </view>
@@ -154,7 +154,7 @@
                         <text class='pull-left'>作</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">{{prop.job}}</text>
+                        <text class="numFont color2">{{prop.jobTitle}}</text>
                     </text>
                 </view>
             </view>

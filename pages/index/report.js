@@ -103,7 +103,7 @@ Page({
           if (data.data.comment) {
             that.setData({
               score:data.data.score,
-              text:data.data.text,
+              text: data.data.commentText,
               prop:data.data
             })
           }
@@ -155,20 +155,20 @@ Page({
     point = '23178208',
     nickName = '张三'
   } = {}, {
-    couple = '左手',
+    coupleTitle = '左手',
     happy = '',
     health = '',
     positive = '',
     experience = '',
-    house = '',
+    houseTitle = [],
     score = '',
     money = '',
-    car = '',
+    carTitle = [],
     fundMoney = '',
     ability = '',
-    job = '',
+    jobTitle = '',
     connections = '',
-    text = [] } = {}) {
+    commentText = [] } = {}) {
     let { canvasWidth } = this.data
     const ctx = wx.createCanvasContext('share')
     let usedHeight = 15 //已使用的高度
@@ -178,7 +178,7 @@ Page({
     const rankMargin = 25 //距离point宽度
     const pointFontSize = 25
     const maxTextWidth = titleWidth - 40//desc文本宽度
-    const descHeight = this.calcTextHeight(text, maxTextWidth, ctx) + 90
+    const descHeight = this.calcTextHeight(commentText, maxTextWidth, ctx) + 90
     this.setData({
       canvasHeight: abilityHeight + descHeight + 120 //属性+描述+二维码
     })
@@ -249,13 +249,13 @@ Page({
 
     //line 4
     usedHeight += itemH + 10
-    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '座 驾', car)
-    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '房 产', house)
+    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '座 驾', carTitle ? carTitle[0]:'')
+    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '房 产', houseTitle ? houseTitle[0]:'')
 
     //line 5
     usedHeight += itemH + 10
-    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '伴 侣', couple)
-    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '工 作', job)
+    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '伴 侣', coupleTitle)
+    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '工 作', jobTitle)
 
     //description
     usedHeight += itemH + 10
@@ -271,8 +271,8 @@ Page({
 
     ctx.setTextAlign('left')
     ctx.setFillStyle('#000')
-    for (let x = 0; x < text.length; x++) {
-      const h = this.drawText(ctx, text[x], padding + 20, usedHeight, 10, maxTextWidth)
+    for (let x = 0; x < commentText.length; x++) {
+      const h = this.drawText(ctx, commentText[x], padding + 20, usedHeight, 10, maxTextWidth)
       usedHeight += h
     }
 
@@ -325,10 +325,10 @@ Page({
     titleHeight = titleHeight + 4
     return titleHeight
   },
-  calcTextHeight(text, canvasWidth, ctx) {
+  calcTextHeight(commentText, canvasWidth, ctx) {
     let titleHeight = 0
     let lineWidth = 0, lastSubStrIndex = 0
-    text.forEach((str) => {
+    commentText.forEach((str) => {
       for (let i = 0; i < str.length; i++) {
         lineWidth += ctx.measureText(str[i]).width
         if (lineWidth > canvasWidth) {
