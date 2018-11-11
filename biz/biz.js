@@ -42,12 +42,13 @@ function storeMixin(options) {
         if (!n) { //show event 
           setTimeout(() => {
             const userId = this.data.userData.userId
-            const hour = this.data.userState.hours
+            let hour = this.data.userState.hours
+            hour=parseInt(hour)
             if (!that.data.maskShow && userId && hour && hour !==6) {
               const { id: findEventId, category } = this.getEventStack().pop() || {}
               const stack = that.getEventStack()
               if (findEventId && category === 'plan') {
-                that.setData({ hangOn: true })
+               // that.setData({ hangOn: true })
                 wxGet('/user/plan/findEvent',
                   { userId, findEventId },
                   ({ data }) => {
@@ -60,7 +61,7 @@ function storeMixin(options) {
                         { userId, eventId },
                         ({ data }) => {
                           if (data.errorCode >= 0) {
-                            if (!that.data.maskShow && hour && hour !== 6) {//请求结束再次判断时候有其他弹出
+                            if (!that.data.maskShow) {//请求结束再次判断时候有其他弹出
                               that.hiddenDialog()//如果有dialog显示,关闭dialog
                               that.showEvent(data)
                               setTimeout(()=>{
@@ -90,12 +91,13 @@ function storeMixin(options) {
                       return
                     }
                     if (data.errorCode >= 0) {
-                      that.setData({ hangOn: true })
+                     // that.setData({ hangOn: true })
                       wxGet('/userEvent/load',
                         { userId, eventId },
                         ({ data }) => {
                           if (data.errorCode >= 0) {
-                            if (!that.data.maskShow && hour && hour !== 6) {//请求结束再次判断时候有其他弹出
+                            if (!that.data.maskShow) {//请求结束再次判断时候有其他弹出  
+                              //console.info(this.data.userState)
                               that.hiddenDialog()//如果有dialog显示,关闭dialog
                               that.showEvent(data)
                               setTimeout(() => {
@@ -105,7 +107,7 @@ function storeMixin(options) {
                               const odds = stack.continueOdds()
                               if (randomPoint < odds) {
                                 stack.push({ category: 'random' })
-                                console.info(randomPoint, odds, 'push event')
+                                console.info(randomPoint, odds, ' still push event')
                               }
                             }
                           }
@@ -119,6 +121,10 @@ function storeMixin(options) {
                   },  () => {//findEvent fail callback
                     that.setData({ hangOn: false })
                   })
+              }
+            }else{
+              if(!hour || hour===6){
+                console.info('wrong time for show event and hour = '+hour)
               }
             }
           }, 1500)
