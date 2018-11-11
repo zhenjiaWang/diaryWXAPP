@@ -19,7 +19,8 @@ export default {
     }
   },
   showEvent:function(data){
-    const hour = this.data.userState.hours
+    let hour = this.data.userState.hours
+    hour=parseInt(hour)
     if (data && hour && hour !== 6){
       //console.info(this)
       this.voiceContext().playEvent()
