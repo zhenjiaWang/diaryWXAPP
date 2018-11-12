@@ -14,7 +14,7 @@
                 <view><text class='numFont font40 color2'>{{myData.seq}}</text></view>
                 <view><text class='font24 color2'>我的排名</text></view>
             </view>
-            <view class='pull-left view2 clearfix'>
+            <view class='pull-left view2 clearfix' style='height:auto;'>
                 <view class='text-center user-img-box'>
                     <view class='user-img'>
                         <image src='{{myData.avatarUrl}}'></image>
@@ -48,14 +48,17 @@
                                     <image src='{{item.avatarUrl}}'></image>
                                 </view>
                             </view>
-                            <view class='font26'>{{item.nickName}}</view>
+                            <view class='font26'>{{item.nickName}}<image src='../../../img/icon-gilr.png' mode='widthFix' style='width:30rpx;'></image></view>
                             <view class='tag-png'>
                               <image src='https://img.jinrongzhushou.com/common/{{item.comment}}-j.png' mode='widthFix' wx:if='{{item.comment}}' ></image>
                             </view>
                         </view>
                         <view class=' view3'>
-                            <text class='numFont font43'>{{item.score||'--'}}</text>
-                            <text class='font24'>分</text>
+                            <view style='height:30rpx;margin-top:-15rpx;'>
+                                <text class='numFont font43'>{{item.score||'--'}}</text>
+                                <text class='font24'>分</text>
+                            </view>
+                            <view style='margin-top:10rpx;'>999赞</view>
                         </view>
                     </view>
                 </view>
