@@ -404,7 +404,7 @@ text.num-big {
     margin:20rpx 0;
 }
 .game-phb .begin-txt-box .begin-txt-main{
-    height:600rpx;
+    /* height:600rpx; */
 }
 .game-phb .begin-txt-box + .begin-btn2,.survival-main .begin-btn2{color:#fff;margin-top:20rpx;}
 .phb-title{
@@ -421,11 +421,10 @@ text.num-big {
     text-shadow:0 0 1px #000, 0 0 1px #000, 0 0 1px #000, 0 0 1px #000, 0 0 1px #000;
 }
 .phb-list{
-    height:auto;
-    overflow-y: scroll;
+    /* min-height:570rpx; */
+    /* overflow-y: scroll; */
     text-shadow:0 0 1px #000, 0 0 1px #000, 0 0 1px #000, 0 0 1px #000, 0 0 1px #000;
 }
-
 .phb-list .view1{
     width: 70rpx!important;
     text-align: center;
@@ -488,14 +487,14 @@ text.num-big {
 }
 .item-box .one .one-inner text{
     width: auto;
-    font-size:26rpx;
+    font-size:24rpx;
     font-weight: normal;
     text-shadow:0 0 1px #000, 0 0 1px #000, 0 0 1px #000, 0 0 1px #000, 0 0 1px #000;
 }
-.item-box .one .one-inner text:nth-child(2){padding-left:16rpx;}
+.item-box .one .one-inner text:nth-child(2){padding-left:20rpx;}
 .item-box .one .one-inner .numFont{font-size:36rpx;}
 .item-box2 .one{width:330rpx;}
-.item-box2 .one .one-inner .numFont{font-size:24rpx;}
+.item-box2 .one .one-inner .numFont{font-size:28rpx;}
 .item-box3{padding-top:30rpx;}
 .item-box3 .one{width: 298rpx;}
 .item-box3 .one .one-inner {height:60rpx;line-height: 60rpx;margin-bottom:20rpx;}
@@ -547,9 +546,9 @@ text.num-big {
 }
 .game-phb .tab-title view.active{color:#f5d83f;}
 .game-phb .begin-txt-box .begin-txt-main {
-    min-height:530rpx;
-    height: auto;
+    height:530rpx;
 }
+.phb-list{height:490rpx;}
 .txt-top,.txt-bottom{
     margin-bottom: 0!important;
     height:30rpx;
@@ -575,7 +574,6 @@ text.num-big {
     left:0;
     z-index: 90;
     text-align: center;
-    background: rgba(0,0,0,.7);
 }
 .float-img image{
     width: 65%;
@@ -606,3 +604,4 @@ text.num-big {
     z-index: 91;
     font-size:28rpx;
 }
+.phb-list .user-img-box + .font26 image{width: 30rpx;vertical-align: -4rpx;margin-right:10rpx;}

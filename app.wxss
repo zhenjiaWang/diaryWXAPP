@@ -345,6 +345,7 @@ page{overflow: hidden;}
 .color1{color:#8fc673;}
 .color2{color:#f6de4b;}
 .color3{color:#ed7c7c;}
+.color4{color:#eb9bf2;}
 .top-title .numFont{padding:0 4rpx;}
 
 .text-center{text-align: center!important;}
