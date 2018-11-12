@@ -21,7 +21,7 @@
                     </view>
                 </view>
                 <view class='font26'>{{myData.nickName}}</view>
-                <view class='tag-png'><image src='https://img.jinrongzhushou.com/common/{{myData.comment}}-j.png' mode='widthFix' wx:if="{{myData.comment}}"></image></view>
+                <view class='tag-png'><image src='../../../img/{{myData.comment}}-j.png' mode='widthFix' wx:if="{{myData.comment}}"></image></view>
             </view>
             <view class='view3'>
                 <text class='numFont font54'>{{myData.score||'-- '}}</text>
@@ -48,9 +48,9 @@
                                     <image src='{{item.avatarUrl}}'></image>
                                 </view>
                             </view>
-                            <view class='font26'><image src='../../../img/icon-gilr.png' mode='widthFix' style='width:30rpx;'></image>{{item.nickName}}</view>
+                            <view class='font26'><image src='../../../img/icon-men.png' mode='widthFix' style='width:30rpx;'></image>{{item.nickName}}</view>
                             <view class='tag-png'>
-                              <image src='https://img.jinrongzhushou.com/common/{{item.comment}}-j.png' mode='widthFix' wx:if='{{item.comment}}' ></image>
+                              <image src='../../../img/{{item.comment}}-j.png' mode='widthFix' wx:if='{{item.comment}}' ></image>
                             </view>
                         </view>
                         <view class=' view3'>
