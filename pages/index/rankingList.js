@@ -6,7 +6,8 @@ Page({
   data: {
     list:[],
     myData: null,
-    lastUpdate:''
+    lastUpdate:'',
+    show:false
   },
   onLoad: function (options) {
     wx.showLoading({
@@ -25,7 +26,12 @@ Page({
         })
       }
     },null,()=>{
-      wx.hideLoading()
+      setTimeout(function () {
+        wx.hideLoading()
+        that.setData({
+          show: true
+        })
+      }, 500)
     })
   },
   viewMyReport: () => {

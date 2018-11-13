@@ -56,7 +56,7 @@
               <text>个人能力成长，每次消耗 1 个小时</text>
           </view>
       </view>
-      <view class='feed {{tools.isEnableBtn(userState.hours,0)?"":"disable"}}' wx:for='{{planItems}}' wx:key='id' bindtap='applyPlan' data-id='{{item.id}}'>
+      <view class='feed {{tools.isEnableMoneyBtn(userState.hours,userState.money,item.title)?"":"disable"}}' wx:for='{{planItems}}' wx:key='id' bindtap='applyPlan' data-id='{{item.id}}'>
           <view>{{item.remarks}}</view>
           <view>{{item.title}}</view>
       </view>
@@ -455,12 +455,12 @@
         <view class='feed2-left'>
           <view class='job'>{{item.title}}</view>
           <view class='money'>
-            <text>{{tools.getCoupleStateName(coupleState,item.id)}}</text>
+            <text class='{{tools.isCouple(coupleState,item.id)?"":"disable"}}'>{{tools.getCoupleStateName(coupleState,item.id)}}</text>
             <image wx:if='{{tools.isCouple(coupleState,item.id)}}' src='{{tools.getCoupleStateAvatar(coupleState,item.id)}}' class='user-photo' mode='widthFix'></image>
           </view>
           <view>{{item.remarks}}</view>
         </view>
-        <view wx:if='{{userState.myCoupleId===item.id}}' class='mf-btn2 {{tools.isEnableBtn(userState.hours,userState.coupleLimit)?"":"disable"}}' 
+        <view wx:if='{{userState.myCoupleId===item.id}}' class='mf-btn2 {{tools.isEnableBtn(1,userState.coupleLimit)?"":"disable"}}' 
         bindtap='breakUp' data-id='{{item.id}}'></view>
         <view wx:else class='mf-btn  {{tools.isEnableBtn(1,userState.coupleLimit)?"":"disable"}}' bindtap='relationship' data-id='{{item.id}}'></view>
       </view>
@@ -615,11 +615,11 @@
           </view>
           <view class='chart-input clearfix'>
               <input type='digit' placeholder='请输入买入金额' bindinput='bindBuyInput' value='{{buyMoney}}' style="text-indent:10rpx"></input>
-              <button class='begin-btn  {{tools.isEnableBtn(userState.hours,userState.fundLimit)?"":"disable"}}' bindtap='applyFundBuy' data-id="{{fundItem.id}}">确认买入</button>
+              <button class='begin-btn  {{tools.isEnableBtn(1,userState.fundLimit)?"":"disable"}}' bindtap='applyFundBuy' data-id="{{fundItem.id}}">确认买入</button>
           </view>
           <view class='chart-input clearfix'>
               <input type='digit' placeholder='请输入卖出金额'bindinput='bindSellInput' value='{{sellMoney}}' style="text-indent:10rpx"></input>
-              <button class='begin-btn begin-btn2  {{tools.isEnableBtn(userState.hours,userState.fundLimit)?"":"disable"}}' bindtap='applyFundSell' data-id="{{fundItem.id}}" data-money='{{fundMoney}}'>确认卖出</button>
+              <button class='begin-btn begin-btn2  {{tools.isEnableBtn(1,userState.fundLimit)?"":"disable"}}' bindtap='applyFundSell' data-id="{{fundItem.id}}" data-money='{{fundMoney}}'>确认卖出</button>
           </view>
       </view>
   </view>

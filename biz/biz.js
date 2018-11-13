@@ -179,18 +179,6 @@ function storeMixin(options) {
           parseUserState(data, that)
           closeMaskNavigationBarColor()
           that.setData({maskShow:false,dialogShow:false})
-          // const eventType = that.data.findEventType 
-          // if (eventType){
-          //   wxGet(`/user/${eventType}/findEvent`,
-          //     {
-          //       userId: that.data.userData.userId,
-          //       findEventId: that.data.findEventId,
-          //     },
-          //     ({ data }) => {
-          //       console.info(data)
-          //     })
-          // }
-         
         })
     },
     blackScreen:function(showClass,text,blackCallback,doneCallback){
