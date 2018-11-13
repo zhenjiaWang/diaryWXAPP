@@ -53,6 +53,7 @@ const options={
     })
     const that=this
     setWatcher(that)
+    console.info('onLoad=' + app.globalData.userData)
     if (app.globalData.userData) {
       that.setData({
         userData: app.globalData.userData,
@@ -108,6 +109,9 @@ const options={
       ({ data }) => {
         if (data.errorCode === 0) {
           that.setData({ lastComment: data.userData.lastComment, currentDays: data.userData.days, currentHours: data.userData.hours})
+          if (!that.userData){
+            that.setData({ userData: data.userData})
+          }
         }
       },null,()=>{
         that.setData({
@@ -121,7 +125,6 @@ const options={
     if (that.data.submitFlag) {
       return false
     }else{
-      that.voiceContext().playClick()
       that.setData({ submitFlag: true })
       if (!e.detail.userInfo) {
         wx.reLaunch({
@@ -150,7 +153,6 @@ const options={
     if (that.data.submitFlag) {
       return false
     }else{
-      that.voiceContext().playClick()
       that.setData({submitFlag:true })
       wx.setNavigationBarColor({
         frontColor: '#ffffff',
@@ -283,8 +285,6 @@ const options={
     }
   },
   viewRankingList: function (){
-    const that = this
-    that.voiceContext().playClick()
     wx.navigateTo({
       url: './rankingList',
     })

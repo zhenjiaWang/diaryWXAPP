@@ -315,7 +315,7 @@ page{overflow: hidden;}
     border-radius:50rpx;
     background: rgba(0, 0, 0, .2);
     color:#fff;
-    font-size:32rpx;
+    font-size:30rpx;
     line-height: 66rpx;
     text-shadow: 0 0 1px #000,                   0 0 1px #000,                   0 0 1px #000,                   0 0 1px #000,                   0 0 1px #000;
 }

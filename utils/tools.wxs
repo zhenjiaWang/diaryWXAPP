@@ -1,6 +1,18 @@
 var isEnableBtn=function(hour,limitCount){
   return (hour==0||limitCount==1)?false:true
 }
+var isEnableMoneyBtn = function (hour, money, reqMoney) {
+  var reqCal = reqMoney.substring(0,1)
+  var reqMoney = reqMoney.substring(1)
+  reqMoney = parseFloat(reqMoney)
+  if(reqCal==='花'){
+    reqMoney = 0 + reqMoney
+  }else{
+    reqMoney = 0 - reqMoney
+  }
+  var money = parseFloat((money + '').replace(',', ''))
+  return (hour == 0 || money < reqMoney) ? false : true
+}
 var arrayContain = function (array, obj) {
   if(array&&obj){
     for (var i = 0; i < array.length; i++) {
@@ -78,6 +90,7 @@ var isPositive = function (str1) {
 
 module.exports={
   isEnableBtn: isEnableBtn,
+  isEnableMoneyBtn: isEnableMoneyBtn,
   arrayContain: arrayContain,
   getHaveNumber: getHaveNumber,
   getCoupleStateName: getCoupleStateName,
