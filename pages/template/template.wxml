@@ -2,6 +2,8 @@
 <template name="popNight">
   <view class='night {{nightClass}}'>
     <view class='text-center'>{{nightText}}</view>
+        <view class='text-center'>{{nightText}}</view>
+<view class='float-info'>已保存到系统相册，请分享</view>
   </view>
 </template>
 <template name="popDialog">

@@ -7,6 +7,7 @@ const money = `${host}/money.mp3`
 const win = `${host}/win.mp3`
 const fail = `${host}/fail.mp3`
 const event = `${host}/event.mp3`
+const over = `${host}/over.mp3`
 class Voice {
   constructor() {
     this.context = wx.createInnerAudioContext()
@@ -14,6 +15,10 @@ class Voice {
   }
   destroy=()=>{
     this.context.destroy()
+  }
+  playOver = () => {
+    this.context.src = over
+    this.context.play()
   }
   playEvent = () => {
     this.context.src = event

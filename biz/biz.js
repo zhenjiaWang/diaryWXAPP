@@ -172,14 +172,26 @@ function storeMixin(options) {
     },
     dialogOK:function(){
       const that=this
-      that.voiceContext().playClick()
-      wxGet('/user/refresh/' + that.data.userData.userId,
-        false,
-        ({ data }) => {
-          parseUserState(data, that)
-          closeMaskNavigationBarColor()
-          that.setData({maskShow:false,dialogShow:false})
-        })
+      if (that.data.userState.live) {
+        that.voiceContext().playClick()
+        wxGet('/user/refresh/' + that.data.userData.userId,
+          false,
+          ({ data }) => {
+            parseUserState(data, that)
+            closeMaskNavigationBarColor()
+            if (data.userState.live) {
+              that.setData({ maskShow: false, dialogShow: false })
+            } else {
+              that.setData({ maskShow: false, dialogShow: false })
+              that.voiceContext().playOver()
+              setTimeout(function () {
+                that.setData({ maskShow: true, dialogShow: true,dialogResult: data.resultArray })
+              }, 2000)
+            }
+          })
+      }else{
+        that.done()
+      }
     },
     blackScreen:function(showClass,text,blackCallback,doneCallback){
       const that = this
