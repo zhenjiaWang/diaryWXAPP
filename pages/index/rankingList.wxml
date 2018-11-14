@@ -5,9 +5,11 @@
     <view class='img-auto'><image src='../../img/phb.png' mode='widthFix' style="margin-top:10rpx;height:auto" ></image></view>
     <view class='game-main game-phb'>
         <!-- <view class='top-title tab-title clearfix'>
-            <view class='active'>综合评分排行</view>
-            <view>金钱排行</view>
-            <view>投资排行</view>
+            <view class='active'>综合</view>
+            <view>金钱</view>
+            <view>投资</view>
+            <view>金钱</view>
+            <view>投资</view>
         </view> -->
         <view class='top-title' bindtap='viewMyReport' hidden="{{!show}}">
             <view class='pull-left view1'>

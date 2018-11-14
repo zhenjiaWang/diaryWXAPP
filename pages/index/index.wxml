@@ -44,7 +44,7 @@
     <button wx:if='{{userState.days==0}}' class='end {{userState.hours>0||userState.score>0?"disable":""}}' bindtap='done'></button>
 
   </view>
-  <view class='game-info clearfix'>
+  <view class='game-info clearfix {{userState.live?"":"disable"}}'>
     <view class='pull-left'>
       <view class='pull-left-inner'>
         <view class='title-img'>
