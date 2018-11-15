@@ -31,7 +31,7 @@
                         <text class='pull-right'>钱</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2" style='font-size:36rpx;'>{{prop.money}}</text>
+                        <text class="numFont color{{prop.moneyColor}}" style='font-size:36rpx;'>{{prop.money}}</text>
                     </text>
                 </view>
             </view>
@@ -41,7 +41,7 @@
                         <text class='pull-left'>投资财富</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2" style='font-size:36rpx;'>{{prop.fundMoney}}</text>
+                        <text class="numFont color{{prop.moneyColor}}" style='font-size:36rpx;'>{{prop.fundMoney}}</text>
                     </text>
                 </view>
             </view>
@@ -54,7 +54,7 @@
                         <text class='pull-right'>乐</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">{{prop.happy}}</text>
+                        <text class="numFont color{{prop.happyColor}}">{{prop.happy}}</text>
                     </text>
                 </view>
             </view>
@@ -65,7 +65,7 @@
                         <text class='pull-right'>康</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">{{prop.health}}</text>
+                        <text class="numFont color{{prop.healthColor}}">{{prop.health}}</text>
                     </text>
                 </view>
             </view>
@@ -76,7 +76,7 @@
                         <text class='pull-right'>脉</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">{{prop.connections}}</text>
+                        <text class="numFont color{{prop.connectionsColor}}">{{prop.connections}}</text>
                     </text>
                 </view>
             </view>
@@ -86,7 +86,7 @@
                         <text class='pull-left'>社会经验</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">{{prop.experience}}</text>
+                        <text class="numFont color{{prop.experienceColor}}">{{prop.experience}}</text>
                     </text>
                 </view>
             </view>
@@ -97,7 +97,7 @@
                         <text class='pull-left'>气</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">{{prop.positive}}</text>
+                        <text class="numFont color{{prop.positiveColor}}">{{prop.positive}}</text>
                     </text>
                 </view>
             </view>
@@ -108,7 +108,7 @@
                         <text class='pull-left'>能力才干</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">{{prop.ability}}</text>
+                        <text class="numFont color{{prop.abilityColor}}">{{prop.ability}}</text>
                     </text>
                 </view>
             </view>
@@ -121,7 +121,7 @@
                         <text class='pull-left'>驾</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">{{prop.carTitle?prop.carTitle[0]:""}}</text>
+                        <text class=" color2">{{prop.carTitle?prop.carTitle[0]:""}}</text>
                     </text>
                 </view>
             </view>
@@ -132,7 +132,7 @@
                         <text class='pull-left'>产</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">{{prop.houseTitle?prop.houseTitle[0]:""}}</text>
+                        <text class=" color2">{{prop.houseTitle?prop.houseTitle[0]:""}}</text>
                     </text>
                 </view>
             </view>
@@ -143,7 +143,7 @@
                         <text class='pull-left'>侣</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">{{prop.coupleTitle}}</text>
+                        <text class=" color2">{{prop.coupleTitle}}</text>
                     </text>
                 </view>
             </view>
@@ -154,7 +154,7 @@
                         <text class='pull-left'>作</text>
                     </text>
                     <text class="num-big">
-                        <text class="numFont color2">{{prop.jobTitle}}</text>
+                        <text class=" color2">{{prop.jobTitle}}</text>
                     </text>
                 </view>
             </view>
@@ -173,5 +173,5 @@
     </view>
 </view>
 <canvas canvas-id="share" style='width:{{canvasWidth}}px; height:{{canvasHeight}}px;transform: translateX(-200%);'></canvas>
-<view class='mask' wx:if='{{shareImgShow}}'></view>
+<view class='mask' wx:if='{{shareImgShow}}' style='z-index:9999999;'></view>
 <view wx:if='{{shareImgShow}}' class='float-img' style='z-index:9999999;' bindtap='closeShow'><image src='{{shareImgSrc}}' mode='widthFix'></image><view class='float-info'>已保存到系统相册，请分享</view></view>

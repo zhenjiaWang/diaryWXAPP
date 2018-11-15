@@ -61,6 +61,9 @@ App({
               if (this.userInfoReadyCallback) {
                 this.userInfoReadyCallback(res)
               }
+            },
+            fail:()=>{
+              console.log('fail')
             }
           })
         }else{

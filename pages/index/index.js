@@ -9,7 +9,6 @@ const app = getApp()
 
 var voice=false
 const eventStack = new EventStack()
-
 const options={
   onShow:function(){
     const that = this
@@ -43,7 +42,7 @@ const options={
       return voice
     }
   },
-  getEventStack:function(){
+  getEventStack: function () {
     return eventStack
   },
   onLoad: function () {
@@ -53,6 +52,7 @@ const options={
     })
     const that=this
     setWatcher(that)
+    console.info('onLoad=' + app.globalData.userData)
     if (app.globalData.userData) {
       that.setData({
         userData: app.globalData.userData,
@@ -108,6 +108,9 @@ const options={
       ({ data }) => {
         if (data.errorCode === 0) {
           that.setData({ lastComment: data.userData.lastComment, currentDays: data.userData.days, currentHours: data.userData.hours})
+          if (!that.userData){
+            that.setData({ userData: data.userData})
+          }
         }
       },null,()=>{
         that.setData({
@@ -121,7 +124,6 @@ const options={
     if (that.data.submitFlag) {
       return false
     }else{
-      that.voiceContext().playClick()
       that.setData({ submitFlag: true })
       if (!e.detail.userInfo) {
         wx.reLaunch({
@@ -150,7 +152,6 @@ const options={
     if (that.data.submitFlag) {
       return false
     }else{
-      that.voiceContext().playClick()
       that.setData({submitFlag:true })
       wx.setNavigationBarColor({
         frontColor: '#ffffff',
@@ -209,6 +210,9 @@ const options={
     wxPost('/user/start',
       { userId: that.data.userData.userId },
       ({ data }) => {
+        if(data.newGame){
+          that.getEventStack().init(true)
+        }
         that.voiceContext().playNextDay()
         parseUserState(data,that)
         setTimeout(function () {
@@ -253,7 +257,7 @@ const options={
             that.blackScreen('show','过了一夜...',function(){
               that.setData({ maskShow: false })
             },function(){
-              that.getEventStack().init()
+              that.getEventStack().init(false)
              // that.getEventStack().push({ category: 'random' })
               that.voiceContext().playResult()
               that.setData({ submitFlag: false, maskShow: true, dialogShow: true, dialogResult: data.resultArray })
@@ -283,8 +287,6 @@ const options={
     }
   },
   viewRankingList: function (){
-    const that = this
-    that.voiceContext().playClick()
     wx.navigateTo({
       url: './rankingList',
     })
