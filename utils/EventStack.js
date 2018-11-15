@@ -73,14 +73,22 @@ class EventStack{
       console.info(`EventStack:event size overflow ${this.item.length} !`)
     }
   }
-  init=()=>{
-    this.clear()
+  addMaxCount = () => {
+    this.maxTime = this.maxTime+1
+    console.info('addMaxCount=' + this.maxTime)
+  }
+  init=(newGame)=>{
+    this.clear(newGame)
     wx.setStorage({ key, data: this.limit=0})
     wx.setStorage({ key: h_key,  data: ''})
   }
-  clear=()=>{
+  clear = (newGame)=>{
     this.item=[]
-    this.happened = []
+    this.maxTime = maxEventInDay
+    console.info('clear=' + this.maxTime)
+    if (newGame){
+      this.happened = []
+    }
   }
   print=()=>{
     console.info(this.item.join(','))
