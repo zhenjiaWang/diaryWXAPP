@@ -32,7 +32,14 @@ export default {
   },
   applyPlan: function (e) {
     const that = this
-    if (that.data.submitFlag) {
+    if (that.data.submitFlag || that.data.userState.hours==0) {
+      wx.showModal({
+        title: '提示',
+        content: '当前不能操作',
+        success(res) {
+          
+        }
+      })
       return false
     } else {
       that.voiceContext().playClick()

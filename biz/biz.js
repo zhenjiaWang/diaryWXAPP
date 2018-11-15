@@ -57,6 +57,7 @@ function storeMixin(options) {
                   ({ data }) => {
                     const eventId = data['eventId']
                     if (stack.isHappened(eventId)){
+                      stack.addMaxCount()
                       return 
                     }
                     if (data.errorCode >= 0) {
@@ -91,6 +92,7 @@ function storeMixin(options) {
                   ({ data }) => {
                     const eventId = data['eventId']
                     if (stack.isHappened(eventId)) {
+                      stack.addMaxCount()
                       return
                     }
                     if (data.errorCode >= 0) {

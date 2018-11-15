@@ -9,7 +9,6 @@ const app = getApp()
 
 var voice=false
 const eventStack = new EventStack()
-
 const options={
   onShow:function(){
     const that = this
@@ -43,7 +42,7 @@ const options={
       return voice
     }
   },
-  getEventStack:function(){
+  getEventStack: function () {
     return eventStack
   },
   onLoad: function () {
@@ -211,6 +210,9 @@ const options={
     wxPost('/user/start',
       { userId: that.data.userData.userId },
       ({ data }) => {
+        if(data.newGame){
+          that.getEventStack().init(true)
+        }
         that.voiceContext().playNextDay()
         parseUserState(data,that)
         setTimeout(function () {
@@ -255,7 +257,7 @@ const options={
             that.blackScreen('show','过了一夜...',function(){
               that.setData({ maskShow: false })
             },function(){
-              that.getEventStack().init()
+              that.getEventStack().init(false)
              // that.getEventStack().push({ category: 'random' })
               that.voiceContext().playResult()
               that.setData({ submitFlag: false, maskShow: true, dialogShow: true, dialogResult: data.resultArray })

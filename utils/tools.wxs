@@ -10,7 +10,6 @@ var isEnableMoneyBtn = function (hour, money, reqMoney) {
   }else{
     reqMoney = 0 - reqMoney
   }
-  var money = parseFloat((money + '').replace(',', ''))
   return (hour == 0 || money < reqMoney) ? false : true
 }
 var arrayContain = function (array, obj) {

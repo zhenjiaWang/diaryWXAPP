@@ -32,6 +32,13 @@ export default {
   applyLuck: function (e) {
     const that = this
     if (that.data.userState.luckLimit == 1 && that.data.submitFlag) {
+      wx.showModal({
+        title: '提示',
+        content: '当前不能操作',
+        success(res) {
+
+        }
+      })
       return false
     } else {
       that.voiceContext().playClick()

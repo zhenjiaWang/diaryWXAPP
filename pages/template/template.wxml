@@ -3,7 +3,7 @@
   <view class='night {{nightClass}}'>
     <view class='text-center'>{{nightText}}</view>
         <view class='text-center'>{{nightText}}</view>
-<view class='float-info'>已保存到系统相册，请分享</view>
+<view class='float-info' style='background:none;color:#ffffff;left:140rpx;right:140rpx;'>四处逛逛,生活节奏慢点可能触发偶遇</view>
   </view>
 </template>
 <template name="popDialog">
@@ -58,7 +58,7 @@
               <text>个人能力成长，每次消耗 1 个小时</text>
           </view>
       </view>
-      <view class='feed {{tools.isEnableMoneyBtn(userState.hours,userState.money,item.title)?"":"disable"}}' wx:for='{{planItems}}' wx:key='id' bindtap='applyPlan' data-id='{{item.id}}'>
+      <view class='feed {{tools.isEnableMoneyBtn(userState.hours,userState.moneyNumber,item.title)?"":"disable"}}' wx:for='{{planItems}}' wx:key='id' bindtap='applyPlan' data-id='{{item.id}}'>
           <view>{{item.remarks}}</view>
           <view>{{item.title}}</view>
       </view>
