@@ -235,6 +235,53 @@ const options={
             that.setData({ maskShow: true, dialogShow: true, dialogResult: data.resultArray })
             that.resultVoice(data)
           }
+          // setInterval(function(){
+          //   if(that.data.jobA==0){
+          //     that.setData({ jobA:1})
+          //   }else{
+          //     that.setData({ jobA: 0 })
+          //   }
+          // },1500)
+          // setInterval(function () {
+          //   if (that.data.fundA == 0) {
+          //     that.setData({ fundA: 1 })
+          //     that.actionFund()
+          //   } else {
+          //     that.setData({ fundA: 0 })
+          //     that.closeFund()
+          //   }
+          // }, 5600)
+          // setInterval(function () {
+          //   if (that.data.carA == 0) {
+          //     that.setData({ carA: 1 })
+          //     that.actionCar()
+          //   } else {
+          //     that.setData({ carA: 0 })
+          //     that.closeCar()
+          //   }
+          // }, 2000)
+          // setInterval(function () {
+          //   if (that.data.houseA == 0) {
+          //     that.setData({ houseA: 1 })
+          //   } else {
+          //     that.setData({ houseA: 0 })
+          //   }
+          // }, 3000)
+          // setInterval(function () {
+          //   if (that.data.coupleA == 0) {
+          //     that.setData({ coupleA: 1 })
+              
+          //   } else {
+          //     that.setData({ coupleA: 0 })
+          //   }
+          // }, 3800)
+          // setInterval(function () {
+          //   if (that.data.luckA == 0) {
+          //     that.setData({ luckA: 1 })
+          //   } else {
+          //     that.setData({ luckA: 0 })
+          //   }
+          // }, 4400)
         }, 3500)
       }
     )
