@@ -143,7 +143,7 @@
           <image src='../../img/ques.png' class='ask' bindtap='actionTip'></image>
         </view>
         <view class='right-inner'>
-          <view class='btn-box clearfix {{userState.jobLimit==0?"":"disable"}}' bindtap='actionJob'>
+          <view class='btn-box disable clearfix {{userState.jobLimit==0?"":"disable"}}' bindtap='actionJob'>
             <image src='../../img/btn-1.png'></image>
             <text>找份工作</text>
           </view>
