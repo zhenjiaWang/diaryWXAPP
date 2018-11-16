@@ -1,4 +1,5 @@
-var isEnableBtn=function(hour,limitCount){
+var isEnableBtn=function(hour,limitCount,key){
+  console.log('isEnableBtn='+hour+':'+limitCount+':'+key)
   return (hour==0||limitCount==1)?false:true
 }
 var isEnableMoneyBtn = function (hour, money, reqMoney) {
