@@ -288,7 +288,9 @@ const options={
   },
   nextDay:function(){
     const that = this
-    if (that.data.userState.hour >0 && that.data.submitFlag) {
+    
+
+    if (that.data.userState.hours >0 || that.data.submitFlag) {
       return false
     } else {
       that.voiceContext().playClick()
