@@ -173,12 +173,12 @@
           </view>
 
           <!--female prop-->
-           <view class='btn-box clearfix {{tools.isEnableBtn(1,userState.clothesLimit)?"":"disable"}}' 
+           <view class='btn-box clearfix {{userState.clothesLimit==0?"":"disable"}}' 
            bindtap='actionClothes' wx:if="{{userData.gender==2}}">
             <image src='../../img/btn-10.png'></image>
             <text>着装风格</text>
           </view>
-          <view class='btn-box clearfix {{tools.isEnableBtn(1,userState.luxuryLimit)?"":"disable"}}' 
+          <view class='btn-box clearfix {{userState.luxuryLimit==0?"":"disable"}}' 
           bindtap='actionLuxury' wx:if="{{userData.gender==2}}">
             <image src='../../img/btn-12.png'></image>
             <text>妆容排场</text>
