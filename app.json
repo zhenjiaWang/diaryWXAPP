@@ -4,8 +4,7 @@
     "pages/template/template",
     "pages/logs/logs",
     "pages/index/rankingList",
-    "pages/index/report",
-    "pages/index/temp"
+    "pages/index/report"
   ],
   "window": {
     "backgroundTextStyle": "light",

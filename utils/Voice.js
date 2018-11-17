@@ -1,4 +1,4 @@
-const host = 'sound'
+const host = 'https://img.jinrongzhushou.com/audio'
 const bgm = `${host}/background.mp3`
 const result = `${host}/result.mp3`
 const nextDay = `${host}/nextDay.wav`
