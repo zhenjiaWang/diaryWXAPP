@@ -60,7 +60,7 @@
                                 <text class='numFont font43'>{{item.score||'--'}}</text>
                                 <text class='font24'>分</text>
                             </view>
-                            <view class='like active'><view></view><text>98</text></view>
+                            <!-- <view class='like active'><view></view><text>98</text></view> -->
                         </view>
                     </view>
                 </view>

@@ -78,16 +78,18 @@
           <view class='one' wx:if="{{userData.gender==1}}">
             <view class='one-inner clearfix'>
               <text>我的房产</text>
-              <view class='menu-btn {{userState.myHouseArray.length>0?"":"disable"}}' bindtap='showMyHouse'>
-                <image src='../../img/icon-menu.png'></image>
+              <view class='menu-btn'>
+                <image wx:if='{{userState.myHouseArray.length>0}}'src='../../img/icon-menu.png' bindtap='showMyHouse'></image>
+                <image wx:else src='../../img/icon-menu-dis.png'></image>
               </view>
             </view>
           </view>
           <view class='one'  wx:if="{{userData.gender==1}}">
             <view class='one-inner clearfix'>
               <text>我的座驾</text>
-              <view class='menu-btn {{userState.myCarArray.length>0?"":"disable"}}' bindtap='showMyCar'>
-                <image src='../../img/icon-menu.png'></image>
+              <view class='menu-btn'>
+                <image wx:if='{{userState.myCarArray.length>0}}'src='../../img/icon-menu.png' bindtap='showMyCar'></image>
+                <image wx:else src='../../img/icon-menu-dis.png'></image>
               </view>
             </view>
           </view>
@@ -95,16 +97,18 @@
            <view class='one' wx:if="{{userData.gender==2}}">
             <view class='one-inner clearfix'>
               <text>我的华服</text>
-              <view class='menu-btn {{userState.myClothesArray.length>0?"":"disable"}}' bindtap='showMyClothes'>
-                <image src='../../img/icon-menu.png'></image>
+              <view class='menu-btn'>
+                <image wx:if='{{userState.myClothesArray.length>0}}'src='../../img/icon-menu.png' bindtap='showMyClothes'></image>
+                <image wx:else src='../../img/icon-menu-dis.png'></image>
               </view>
             </view>
           </view>
           <view class='one'  wx:if="{{userData.gender==2}}">
             <view class='one-inner clearfix'>
               <text>我的排场</text>
-              <view class='menu-btn {{userState.myLuxuryArray.length>0?"":"disable"}}' bindtap='showMyLuxury'>
-                <image src='../../img/icon-menu.png'></image>
+              <view class='menu-btn'>
+                <image wx:if='{{userState.myLuxuryArray.length>0}}'src='../../img/icon-menu.png' bindtap='showMyLuxury'></image>
+                <image wx:else src='../../img/icon-menu-dis.png'></image>
               </view>
             </view>
           </view>
@@ -115,8 +119,9 @@
               <text class='pull-left'>伴</text>
               <text class='pull-right'>侣</text>
               </text>
-              <view class='menu-btn {{userState.myCoupleId.length>0?"":"disable"}}' bindtap='showMyCouple'>
-                <image src='../../img/icon-menu.png'></image>
+              <view class='menu-btn'>
+                <image wx:if='{{userState.myCoupleId.length>0}}'src='../../img/icon-menu.png' bindtap='showMyCouple'></image>
+                <image wx:else src='../../img/icon-menu-dis.png'></image>
               </view>
             </view>
           </view>
@@ -126,8 +131,9 @@
               <text class='pull-left'>工</text>
               <text class='pull-right'>作</text>
               </text>
-              <view class='menu-btn {{userState.myJobId.length>0?"":"disable"}}' bindtap='showMyJob'>
-                <image src='../../img/icon-menu.png'></image>
+              <view class='menu-btn'>
+                <image wx:if='{{userState.myJobId.length>0}}'src='../../img/icon-menu.png' bindtap='showMyJob'></image>
+                <image wx:else src='../../img/icon-menu-dis.png'></image>
               </view>
             </view>
           </view>
