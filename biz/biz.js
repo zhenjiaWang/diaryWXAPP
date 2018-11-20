@@ -28,6 +28,7 @@ const commonData = {
   submitFlag: false,
   maskShow: false,
   dialogShow:false,
+  dialogPic: 'jieguo',
   dialogResult:'',
   dialogBtn:'确 定',
   tipShow: false,
@@ -182,7 +183,7 @@ function storeMixin(options) {
             parseUserState(data, that)
             closeMaskNavigationBarColor()
             if (data.userState.live) {
-              that.setData({ maskShow: false, dialogShow: false })
+              that.setData({ maskShow: false, dialogShow: false, dialogPic: 'jieguo' })
             } else {
               that.setData({ maskShow: false, dialogShow: false })
               that.voiceContext().playOver()

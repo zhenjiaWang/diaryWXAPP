@@ -204,7 +204,7 @@
 
 <template is='popTip' data='{{tipShow,tipItems,userData}}'></template>
 <template is='popNight' data='{{nightClass,nightText}}'></template>
-<template is='popDialog' data='{{dialogShow,dialogResult,dialogBtn}}'></template>
+<template is='popDialog' data='{{dialogShow,dialogResult,dialogBtn,dialogPic}}'></template>
 <template is='popJob' data='{{jobShow,jobItems,userState}}'></template>
 <template is='popPlan' data='{{planShow,planItems,userState}}'></template>
 <template is='popHouse' data='{{houseShow,houseItems,userState}}'></template>

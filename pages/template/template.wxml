@@ -9,7 +9,7 @@
 <template name="popDialog">
   <view class='pop pop-result' hidden='{{!dialogShow}}'>
     <view class='story' style=''>
-      <view class='text-center'><image src='../../img/jieguo.png' mode='widthFix'></image></view>
+      <view class='text-center'><image src='../../img/{{dialogPic}}.png' mode='widthFix'></image></view>
       <view class='game-result clearfix'>
             <view class='result-one' wx:for='{{dialogResult}}' wx:key='*this'>
                 <view class='title'>{{item.text}}</view>
