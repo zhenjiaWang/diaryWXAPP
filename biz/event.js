@@ -19,6 +19,7 @@ export default {
     }
   },
   showEvent:function(data){
+    wx.hideLoading()
     let hour = this.data.userState.hours
     hour=parseInt(hour)
     if (data && hour && hour !== 6){
