@@ -45,8 +45,9 @@ function storeMixin(options) {
         const that=this
         if (!n) { //show event 
           setTimeout(() => {
-            const userId = this.data.userData.userId
+            // const userId = this.data.userData.userId
             let hour = this.data.userState.hours
+            let { userId, gender } = this.data.userData
             hour=parseInt(hour)
             if (!that.data.maskShow && userId && hour && hour !==6) {
               const { id: findEventId, category } = this.getEventStack().pop() || {}
@@ -100,7 +101,7 @@ function storeMixin(options) {
                       return
                     }
                     wx.showLoading({
-                      title: '骚年留步...',
+                      title: `${gender === 1 ? '骚年' : '少女'}留步...`,
                     })
                     if (data.errorCode >= 0) {
                      // that.setData({ hangOn: true })
