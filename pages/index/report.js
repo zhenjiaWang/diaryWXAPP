@@ -5,6 +5,10 @@ import { DrawKLine } from '../../utils/DrawKLine.js'
 const { wxGet,wxPost } = require('../../utils/common.js')
 const descriptHeight = 500
 const abilityHeight = 380
+const color1 = '#8fc673'
+const color2 = '#f6de4b'
+const color3 = '#ed7c7c'
+const color4 = '#eb9bf2'
 Page({
   data: {
     canvasWidth: 375,
@@ -73,8 +77,11 @@ Page({
 
     console.info('commentUrl=' + commentUrl)
 
+    commentUrl = `../../img/${commentUrl}.png`
     const that = this
     if (url) {
+      that.setData({ commentImg: commentUrl })
+
       const avatar = new Promise((resolve, reject) => {
         wx.getImageInfo({
           src: url,
@@ -100,11 +107,31 @@ Page({
       })
       const report = new Promise((resolve, reject) => {
         wxGet(`/user/report/${userId}`, null, ({ data }) => {
-          if (data.data.comment) {
+          if (data.errorCode==0) {
+            for (var i = 0; i < data.attrList.length; i++) {
+              let v = data.data[data.attrList[i]['value']]
+              if (data.attrList[i]['value'] === 'money' || data.attrList[i]['value'] === 'fund') {
+                data.data[data.attrList[i]['value'] + 'Color'] = '2'
+              } else if (data.attrList[i]['value'] === 'health') {
+                if (v < 60) {
+                  data.data[data.attrList[i]['value'] + 'Color'] = '3'
+                } else {
+                  data.data[data.attrList[i]['value'] + 'Color'] = '1'
+                }
+              } else {
+                if (v < 80) {
+                  data.data[data.attrList[i]['value'] + 'Color'] = '3'
+                } else if (v > 250) {
+                  data.data[data.attrList[i]['value'] + 'Color'] = '4'
+                } else {
+                  data.data[data.attrList[i]['value'] + 'Color'] = '1'
+                }
+              }
+            }
             that.setData({
-              score:data.data.score,
-              text:data.data.text,
-              prop:data.data
+              score: data.data.score,
+              text: data.data.commentText,
+              prop: data.data
             })
           }
           resolve(data)
@@ -112,35 +139,20 @@ Page({
           reject('report get fail')
         })
       })
-      const comment = new Promise((resolve, reject) => {
-        const commentImg = `https://img.jinrongzhushou.com/common/${commentUrl}.png`
-        that.setData({ commentImg})
-        wx.getImageInfo({
-          src: commentImg,
-          success: res => {
-            resolve(res)
-          },
-          fail: error => {
-            reject('get comment img  fail')
-          }
-        })
-      })
-      
-      Promise.all([avatar, qrCode, report, comment]).then((result) => {
+     
+      Promise.all([avatar, qrCode, report]).then((result) => {
         
         const avatarResult = result[0]
         const qrcodeResult = result[1]
         const reportResult = result[2]
-        const commentResult = result[3]
-        
-        //
-        if (avatarResult.errMsg === 'getImageInfo:ok' && qrcodeResult.errMsg === 'getImageInfo:ok' && reportResult.errorCode >= 0 && commentResult.errMsg === 'getImageInfo:ok') {
+       
+        if (avatarResult.errMsg === 'getImageInfo:ok' && qrcodeResult.errMsg === 'getImageInfo:ok' && reportResult.errorCode >= 0) {
           
           that.draw({
             avatar: avatarResult.path, 
             nickName,
             qrCodeImg: qrcodeResult.path,
-            comment: commentResult.path
+            comment: commentUrl
           }, reportResult.data)
         }
       }).catch((error) => {
@@ -155,20 +167,27 @@ Page({
     point = '23178208',
     nickName = '张三'
   } = {}, {
-    couple = '左手',
+    coupleTitle = '左手',
     happy = '',
     health = '',
     positive = '',
     experience = '',
-    house = '',
+    houseTitle = [],
     score = '',
     money = '',
-    car = '',
+    carTitle = [],
     fundMoney = '',
     ability = '',
-    job = '',
+    jobTitle = '',
     connections = '',
-    text = [] } = {}) {
+    commentText = [],
+    happyColor = '',
+    healthColor = '',
+    positiveColor = '',
+    experienceColor = '',
+    moneyColor='',
+    abilityColor='',
+    connectionsColor=''} = {}) {
     let { canvasWidth } = this.data
     const ctx = wx.createCanvasContext('share')
     let usedHeight = 15 //已使用的高度
@@ -178,7 +197,7 @@ Page({
     const rankMargin = 25 //距离point宽度
     const pointFontSize = 25
     const maxTextWidth = titleWidth - 40//desc文本宽度
-    const descHeight = this.calcTextHeight(text, maxTextWidth, ctx) + 90
+    const descHeight = this.calcTextHeight(commentText, maxTextWidth, ctx) + 90
     this.setData({
       canvasHeight: abilityHeight + descHeight + 120 //属性+描述+二维码
     })
@@ -231,31 +250,31 @@ Page({
     const doubleW = (canvasWidth - padding * 2 - itemPd) / 2
 
     //line 1
-    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '金 钱', money)
-    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '投资财富', fundMoney)
+    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '金 钱', money, moneyColor)
+    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '投资财富', fundMoney, moneyColor)
 
     //line 2
     usedHeight += itemH + 10
-    this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '快 乐', happy)
-    this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '健康', health)
-    this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '人 脉', connections)
+    this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '快 乐', happy, happyColor)
+    this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '健康', health,healthColor)
+    this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '人 脉', connections,connectionsColor)
 
     //line 3  
     usedHeight += itemH + 10
-    this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '社会经验', experience)
-    this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '正 义', positive)
+    this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '社会经验', experience,experienceColor)
+    this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '正 义', positive,positiveColor)
 
-    this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '能力才干', ability)
+    this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '能力才干', ability,abilityColor)
 
     //line 4
     usedHeight += itemH + 10
-    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '座 驾', car)
-    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '房 产', house)
+    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '座 驾', carTitle ? carTitle[0]:'',2)
+    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '房 产', houseTitle ? houseTitle[0]:'',2)
 
     //line 5
     usedHeight += itemH + 10
-    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '伴 侣', couple)
-    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '工 作', job)
+    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '伴 侣', coupleTitle,2)
+    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '工 作', jobTitle,2)
 
     //description
     usedHeight += itemH + 10
@@ -271,8 +290,8 @@ Page({
 
     ctx.setTextAlign('left')
     ctx.setFillStyle('#000')
-    for (let x = 0; x < text.length; x++) {
-      const h = this.drawText(ctx, text[x], padding + 20, usedHeight, 10, maxTextWidth)
+    for (let x = 0; x < commentText.length; x++) {
+      const h = this.drawText(ctx, commentText[x], padding + 20, usedHeight, 10, maxTextWidth)
       usedHeight += h
     }
 
@@ -325,10 +344,10 @@ Page({
     titleHeight = titleHeight + 4
     return titleHeight
   },
-  calcTextHeight(text, canvasWidth, ctx) {
+  calcTextHeight(commentText, canvasWidth, ctx) {
     let titleHeight = 0
     let lineWidth = 0, lastSubStrIndex = 0
-    text.forEach((str) => {
+    commentText.forEach((str) => {
       for (let i = 0; i < str.length; i++) {
         lineWidth += ctx.measureText(str[i]).width
         if (lineWidth > canvasWidth) {
@@ -346,7 +365,7 @@ Page({
     })
     return titleHeight
   },
-  roundRect(ctx, x, y, w, h, r, prop, point) {
+  roundRect(ctx, x, y, w, h, r, prop, point,colorIndex) {
     ctx.save()
     ctx.beginPath()
     ctx.setFillStyle('rgba(0, 0, 0, 0.4)')
@@ -381,7 +400,17 @@ Page({
     ctx.setFontSize(12)
     ctx.setTextAlign('left')
     ctx.fillText(prop, x + 10, y + 14)
-    ctx.setFillStyle('#f6de4b')
+    let fontColor=''
+    if (colorIndex==1){
+      fontColor=color1
+    }else if (colorIndex == 2) {
+      fontColor = color2
+    } else if (colorIndex == 3) {
+      fontColor = color3
+    } else if (colorIndex == 4) {
+      fontColor = color4
+    }
+    ctx.setFillStyle(fontColor)
     ctx.setTextAlign('right')
     ctx.fillText(point, x + w - (r - 5), y + 14)
 

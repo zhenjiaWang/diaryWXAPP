@@ -14,6 +14,8 @@ const { wxGet, parseUserState, showMaskNavigationBarColor,closeMaskNavigationBar
 const commonData = {
   attrList: [],
   lastComment:'',
+  currentDays:1,
+  currentHours:1,
   userState: false,
   userData: false,
   hasUserInfo: false,
@@ -26,6 +28,7 @@ const commonData = {
   submitFlag: false,
   maskShow: false,
   dialogShow:false,
+  dialogPic: 'jieguo',
   dialogResult:'',
   dialogBtn:'确 定',
   tipShow: false,
@@ -55,6 +58,7 @@ function storeMixin(options) {
                   ({ data }) => {
                     const eventId = data['eventId']
                     if (stack.isHappened(eventId)){
+                      stack.addMaxCount()
                       return 
                     }
                     if (data.errorCode >= 0) {
@@ -89,6 +93,7 @@ function storeMixin(options) {
                   ({ data }) => {
                     const eventId = data['eventId']
                     if (stack.isHappened(eventId)) {
+                      stack.addMaxCount()
                       return
                     }
                     if (data.errorCode >= 0) {
@@ -170,26 +175,26 @@ function storeMixin(options) {
     },
     dialogOK:function(){
       const that=this
-      that.voiceContext().playClick()
-      wxGet('/user/refresh/' + that.data.userData.userId,
-        false,
-        ({ data }) => {
-          parseUserState(data, that)
-          closeMaskNavigationBarColor()
-          that.setData({maskShow:false,dialogShow:false})
-          // const eventType = that.data.findEventType 
-          // if (eventType){
-          //   wxGet(`/user/${eventType}/findEvent`,
-          //     {
-          //       userId: that.data.userData.userId,
-          //       findEventId: that.data.findEventId,
-          //     },
-          //     ({ data }) => {
-          //       console.info(data)
-          //     })
-          // }
-         
-        })
+      if (that.data.userState.live) {
+        that.voiceContext().playClick()
+        wxGet('/user/refresh/' + that.data.userData.userId,
+          false,
+          ({ data }) => {
+            parseUserState(data, that)
+            closeMaskNavigationBarColor()
+            if (data.userState.live) {
+              that.setData({ maskShow: false, dialogShow: false, dialogPic: 'jieguo' })
+            } else {
+              that.setData({ maskShow: false, dialogShow: false })
+              that.voiceContext().playOver()
+              setTimeout(function () {
+                that.setData({ maskShow: true, dialogShow: true,dialogResult: data.resultArray })
+              }, 2000)
+            }
+          })
+      }else{
+        that.done()
+      }
     },
     blackScreen:function(showClass,text,blackCallback,doneCallback){
       const that = this

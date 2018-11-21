@@ -1,5 +1,5 @@
 const host = 'https://game.jinrongzhushou.com/v1'
-export const maxEventInDay=4
+export const maxEventInDay=5
 exports.wxRunAsync= (execute) => {
   return new Promise((resolve, reject) => {
     execute(resolve, reject)
@@ -51,17 +51,28 @@ exports.wxGet = (url, paramData, successCallback, failCallback, completeCallback
 
 exports.parseUserState = (data,that) =>{
  // console.info(data)
-  if (data.errorCode === 0) {
+  if (data.errorCode == 0) {
     for (var i = 0; i < data.attrList.length; i++) {
       data.attrList[i]['textArray'] = data.attrList[i]['text'].split('')
       data.attrList[i]['length'] = data.attrList[i]['text'].length
       data.userState[data.attrList[i]['value'] + 'Length'] = data.userState[data.attrList[i]['value']].length
-      data.userState[data.attrList[i]['value'] + 'Color'] = '1'
+      let v = data.userState[data.attrList[i]['value']]
       if (data.attrList[i]['value'] === 'money' || data.attrList[i]['value'] === 'fund') {
         data.userState[data.attrList[i]['value'] + 'Color'] = '2'
-      }
-      if (data.attrList[i]['value'] === 'happy') {
-        data.userState[data.attrList[i]['value'] + 'Color'] = '3'
+      } else if (data.attrList[i]['value'] === 'health'){
+        if (v < 60) {
+          data.userState[data.attrList[i]['value'] + 'Color'] = '3'
+        }else{
+          data.userState[data.attrList[i]['value'] + 'Color'] = '1'
+        }
+      }else{
+        if(v<80){
+          data.userState[data.attrList[i]['value'] + 'Color'] = '3'
+        }else if(v>250){
+          data.userState[data.attrList[i]['value'] + 'Color'] = '4'
+        }else{
+          data.userState[data.attrList[i]['value'] + 'Color'] = '1'
+        }
       }
     }
     that.setData({

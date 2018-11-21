@@ -2,12 +2,14 @@
 <template name="popNight">
   <view class='night {{nightClass}}'>
     <view class='text-center'>{{nightText}}</view>
+        <view class='text-center'>{{nightText}}</view>
+<view class='float-info' style='background:none;color:#ffffff;left:140rpx;right:140rpx;'>四处逛逛,生活节奏慢点可能触发偶遇</view>
   </view>
 </template>
 <template name="popDialog">
   <view class='pop pop-result' hidden='{{!dialogShow}}'>
     <view class='story' style=''>
-      <view class='text-center'><image src='../../img/jieguo.png' mode='widthFix'></image></view>
+      <view class='text-center'><image src='../../img/{{dialogPic}}.png' mode='widthFix'></image></view>
       <view class='game-result clearfix'>
             <view class='result-one' wx:for='{{dialogResult}}' wx:key='*this'>
                 <view class='title'>{{item.text}}</view>
@@ -56,7 +58,7 @@
               <text>个人能力成长，每次消耗 1 个小时</text>
           </view>
       </view>
-      <view class='feed {{tools.isEnableBtn(userState.hours,0)?"":"disable"}}' wx:for='{{planItems}}' wx:key='id' bindtap='applyPlan' data-id='{{item.id}}'>
+      <view class='feed  {{tools.isEnableMoneyBtn(userState.hours,userState.moneyNumber,item.title)?"":"disable"}}' wx:for='{{planItems}}' wx:key='id' bindtap='applyPlan' data-id='{{item.id}}'>
           <view>{{item.remarks}}</view>
           <view>{{item.title}}</view>
       </view>
@@ -87,7 +89,7 @@
           <view>{{item.remarks}}</view>
         </view>
         <view wx:if='{{userState.myJobId===item.id}}' class='job-btn in-job disable' ></view>
-        <view wx:else class='job-btn  {{tools.isEnableBtn(1,userState.jobLimit)?"":"disable"}}' bindtap='applyJob' data-id='{{item.id}}'></view>
+        <view wx:else class='job-btn  {{userState.jobLimit==0?"":"disable"}}' bindtap='applyJob' data-id='{{item.id}}'></view>
       </view>
     </view>
   </view>
@@ -151,8 +153,8 @@
                   <text>拥有：{{tools.getHaveNumber(userState.myHouseNumber,item.id)}}</text>
               </view>
           </view>
-          <view class='btn-mini1 {{tools.isEnableBtn(1,userState.houseLimit)?"":"disable"}}' bindtap='buyHouse' data-id='{{item.id}}'>购 买</view>
-          <view class='btn-mini2 {{(tools.isEnableBtn(1,userState.houseLimit)&&tools.arrayContain(userState.myHouseArray,item.id))?"":"disable"}}'
+          <view class='btn-mini1 {{userState.houseLimit==0?"":"disable"}}' bindtap='buyHouse' data-id='{{item.id}}'>购 买</view>
+          <view class='btn-mini2 {{(userState.houseLimit==0&&tools.arrayContain(userState.myHouseArray,item.id))?"":"disable"}}'
            bindtap='sellHouse' data-id='{{item.id}}'>出 售</view>
       </view>
     </view>
@@ -185,7 +187,7 @@
                   <text>拥有：{{tools.getHaveNumber(userState.myHouseNumber,item.id)}}</text>
               </view>
           </view>
-          <view class='btn-mid2 {{(tools.isEnableBtn(1,userState.houseLimit)&&tools.arrayContain(userState.myHouseArray,item.id))?"":"disable"}}'
+          <view class='btn-mid2 {{(houseLimit==0&&tools.arrayContain(userState.myHouseArray,item.id))?"":"disable"}}'
              bindtap='sellCar' data-id='{{item.id}}'>出 售</view>
       </view>
     </view>
@@ -219,8 +221,8 @@
                   <text>拥有：{{tools.getHaveNumber(userState.myCarNumber,item.id)}}</text>
               </view>
           </view>
-          <view class='btn-mini1 {{tools.isEnableBtn(1,userState.carLimit)?"":"disable"}}' bindtap='buyCar' data-id='{{item.id}}'>购 买</view>
-          <view class='btn-mini2 {{(tools.isEnableBtn(1,userState.carLimit)&&tools.arrayContain(userState.myCarArray,item.id))?"":"disable"}}'
+          <view class='btn-mini1 {{userState.carLimit==0?"":"disable"}}' bindtap='buyCar' data-id='{{item.id}}'>购 买</view>
+          <view class='btn-mini2 {{(userState.carLimit==0&&tools.arrayContain(userState.myCarArray,item.id))?"":"disable"}}'
            bindtap='sellCar' data-id='{{item.id}}'>出 售</view>
       </view>
     </view>
@@ -254,7 +256,7 @@
                   <text>拥有：{{tools.getHaveNumber(userState.myCarNumber,item.id)}}</text>
               </view>
           </view>
-          <view class='btn-mid2 {{(tools.isEnableBtn(1,userState.carLimit)&&tools.arrayContain(userState.myCarArray,item.id))?"":"disable"}}'
+          <view class='btn-mid2 {{(userState.carLimit==0&&tools.arrayContain(userState.myCarArray,item.id))?"":"disable"}}'
             bindtap='sellCar' data-id='{{item.id}}'>出 售</view>
       </view>
       
@@ -289,8 +291,8 @@
                   <text>拥有：{{tools.getHaveNumber(userState.myClothesNumber,item.id)}}</text>
               </view>
           </view>
-          <view class='btn-mini1 {{tools.isEnableBtn(1,userState.clothesLimit)?"":"disable"}}' bindtap='buyClothes' data-id='{{item.id}}'>购 买</view>
-          <view class='btn-mini2 {{(tools.isEnableBtn(1,userState.clothesLimit)&&tools.arrayContain(userState.myClothesArray,item.id))?"":"disable"}}'
+          <view class='btn-mini1 {{userState.clothesLimit==0?"":"disable"}}' bindtap='buyClothes' data-id='{{item.id}}'>购 买</view>
+          <view class='btn-mini2 {{(userState.clothesLimit==0&&tools.arrayContain(userState.myClothesArray,item.id))?"":"disable"}}'
            bindtap='sellClothes' data-id='{{item.id}}'>出 售</view>
       </view>
     </view>
@@ -324,7 +326,7 @@
                   <text>拥有：{{tools.getHaveNumber(userState.myClothesNumber,item.id)}}</text>
               </view>
           </view>
-          <view class='btn-mid2 {{(tools.isEnableBtn(1,userState.clothesLimit)&&tools.arrayContain(userState.myClothesArray,item.id))?"":"disable"}}'
+          <view class='btn-mid2 {{(userState.clothesLimit==0&&tools.arrayContain(userState.myClothesArray,item.id))?"":"disable"}}'
             bindtap='sellClothes' data-id='{{item.id}}'>出 售</view>
       </view>
       
@@ -359,8 +361,8 @@
                   <text>拥有：{{tools.getHaveNumber(userState.myLuxuryNumber,item.id)}}</text>
               </view>
           </view>
-          <view class='btn-mini1 {{tools.isEnableBtn(1,userState.luxuryLimit)?"":"disable"}}' bindtap='buyLuxury' data-id='{{item.id}}'>购 买</view>
-          <view class='btn-mini2 {{(tools.isEnableBtn(1,userState.luxuryLimit)&&tools.arrayContain(userState.myLuxuryArray,item.id))?"":"disable"}}'
+          <view class='btn-mini1 {{userState.luxuryLimit==0?"":"disable"}}' bindtap='buyLuxury' data-id='{{item.id}}'>购 买</view>
+          <view class='btn-mini2 {{(userState.luxuryLimit==0&&tools.arrayContain(userState.myLuxuryArray,item.id))?"":"disable"}}'
            bindtap='sellLuxury' data-id='{{item.id}}'>出 售</view>
       </view>
     </view>
@@ -394,7 +396,7 @@
                   <text>拥有：{{tools.getHaveNumber(userState.myLuxuryNumber,item.id)}}</text>
               </view>
           </view>
-          <view class='btn-mid2 {{(tools.isEnableBtn(1,userState.luxuryLimit)&&tools.arrayContain(userState.myLuxuryArray,item.id))?"":"disable"}}'
+          <view class='btn-mid2 {{(userState.luxuryLimit==0&&tools.arrayContain(userState.myLuxuryArray,item.id))?"":"disable"}}'
             bindtap='sellLuxury' data-id='{{item.id}}'>出 售</view>
       </view>
       
@@ -427,7 +429,7 @@
                 </view>
                 <view>有概率获得{{item.gainPrice}}钱</view>
             </view>
-            <view class='btn-mid {{tools.isEnableBtn(1,userState.luckLimit)?"":"disable"}}' bindtap='applyLuck' data-id='{{item.id}}'>试一次</view>
+            <view class='btn-mid  {{userState.luckLimit==0?"":"disable"}}' bindtap='applyLuck' data-id='{{item.id}}'>试一次</view>
         </view>
     </view>
   </view>
@@ -455,14 +457,14 @@
         <view class='feed2-left'>
           <view class='job'>{{item.title}}</view>
           <view class='money'>
-            <text>{{tools.getCoupleStateName(coupleState,item.id)}}</text>
+            <text class='{{tools.isCouple(coupleState,item.id)?"":"disable"}}'>{{tools.getCoupleStateName(coupleState,item.id)}}</text>
             <image wx:if='{{tools.isCouple(coupleState,item.id)}}' src='{{tools.getCoupleStateAvatar(coupleState,item.id)}}' class='user-photo' mode='widthFix'></image>
           </view>
           <view>{{item.remarks}}</view>
         </view>
-        <view wx:if='{{userState.myCoupleId===item.id}}' class='mf-btn2 {{tools.isEnableBtn(userState.hours,userState.coupleLimit)?"":"disable"}}' 
+        <view wx:if='{{userState.myCoupleId===item.id}}' class='mf-btn2 {{userState.coupleLimit==0?"":"disable"}}' 
         bindtap='breakUp' data-id='{{item.id}}'></view>
-        <view wx:else class='mf-btn  {{tools.isEnableBtn(1,userState.coupleLimit)?"":"disable"}}' bindtap='relationship' data-id='{{item.id}}'></view>
+        <view wx:else class='mf-btn  {{userState.coupleLimit==0?"":"disable"}}' bindtap='relationship' data-id='{{item.id}}'></view>
       </view>
     </view>
   </view>
@@ -493,7 +495,7 @@
           </view>
           <view>{{item.remarks}}</view>
         </view>
-        <view class='mf-btn2 {{(tools.isEnableBtn(1,userState.coupleLimit)&&userState.myCoupleId===item.id)?"":"disable"}}' 
+        <view class='mf-btn2 {{(userState.coupleLimit==0&&userState.myCoupleId===item.id)?"":"disable"}}' 
         bindtap='breakUp' data-id='{{item.id}}'></view>
       </view>
     </view>
@@ -551,7 +553,7 @@
                 </view>
                 <view>{{item.remarks}}</view>
             </view>
-            <view class='btn-mid' class='btn-mid {{tools.isEnableBtn(1,userState.fundLimit)?"":"disable"}}' bindtap='actionFundDetail' data-item='{{item}}'>去看看</view>
+            <view class='btn-mid' class='btn-mid {{userState.fundLimit==0?"":"disable"}}' bindtap='actionFundDetail' data-item='{{item}}'>去看看</view>
         </view>
        </view>
   </view>
@@ -615,11 +617,11 @@
           </view>
           <view class='chart-input clearfix'>
               <input type='digit' placeholder='请输入买入金额' bindinput='bindBuyInput' value='{{buyMoney}}' style="text-indent:10rpx"></input>
-              <button class='begin-btn  {{tools.isEnableBtn(userState.hours,userState.fundLimit)?"":"disable"}}' bindtap='applyFundBuy' data-id="{{fundItem.id}}">确认买入</button>
+              <button class='begin-btn  {{userState.fundLimit==0?"":"disable"}}' bindtap='applyFundBuy' data-id="{{fundItem.id}}">确认买入</button>
           </view>
           <view class='chart-input clearfix'>
               <input type='digit' placeholder='请输入卖出金额'bindinput='bindSellInput' value='{{sellMoney}}' style="text-indent:10rpx"></input>
-              <button class='begin-btn begin-btn2  {{tools.isEnableBtn(userState.hours,userState.fundLimit)?"":"disable"}}' bindtap='applyFundSell' data-id="{{fundItem.id}}" data-money='{{fundMoney}}'>确认卖出</button>
+              <button class='begin-btn begin-btn2  {{userState.fundLimit==0?"":"disable"}}' bindtap='applyFundSell' data-id="{{fundItem.id}}" data-money='{{fundMoney}}'>确认卖出</button>
           </view>
       </view>
   </view>
