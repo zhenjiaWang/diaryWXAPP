@@ -92,8 +92,11 @@ function storeMixin(options) {
                   { userId },
                   ({ data }) => {
                     const eventId = data['eventId']
-                    if (stack.isHappened(eventId)) {
+                    if (stack.isHappened(eventId)) {//加载到重复事件,50%继续添加
                       stack.addMaxCount()
+                      if (Math.ceil(Math.random() * 100) > 50) {
+                        stack.push({ category: 'random' })
+                      }
                       return
                     }
                     if (data.errorCode >= 0) {
