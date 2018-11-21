@@ -92,10 +92,16 @@ function storeMixin(options) {
                   { userId },
                   ({ data }) => {
                     const eventId = data['eventId']
-                    if (stack.isHappened(eventId)) {
+                    if (stack.isHappened(eventId)) {//加载到重复事件,50%继续添加
                       stack.addMaxCount()
+                      if (Math.ceil(Math.random() * 100) > 50) {
+                        stack.push({ category: 'random' })
+                      }
                       return
                     }
+                    wx.showLoading({
+                      title: '骚年留步...',
+                    })
                     if (data.errorCode >= 0) {
                      // that.setData({ hangOn: true })
                       wxGet('/userEvent/load',
@@ -117,11 +123,14 @@ function storeMixin(options) {
                               }
                             }
                           }
+                          wx.hideLoading()
                           that.setData({ hangOn: false })
                         },  () => {//load fail callback
+                          wx.hideLoading()
                           that.setData({ hangOn: false })
                         })
                     } else {
+                      wx.hideLoading()
                       that.setData({ hangOn: false })
                     }
                   },  () => {//findEvent fail callback
