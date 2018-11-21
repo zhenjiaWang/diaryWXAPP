@@ -99,6 +99,9 @@ function storeMixin(options) {
                       }
                       return
                     }
+                    wx.showLoading({
+                      title: '骚年留步...',
+                    })
                     if (data.errorCode >= 0) {
                      // that.setData({ hangOn: true })
                       wxGet('/userEvent/load',
@@ -120,11 +123,14 @@ function storeMixin(options) {
                               }
                             }
                           }
+                          wx.hideLoading()
                           that.setData({ hangOn: false })
                         },  () => {//load fail callback
+                          wx.hideLoading()
                           that.setData({ hangOn: false })
                         })
                     } else {
+                      wx.hideLoading()
                       that.setData({ hangOn: false })
                     }
                   },  () => {//findEvent fail callback
