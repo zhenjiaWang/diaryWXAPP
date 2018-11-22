@@ -103,6 +103,9 @@ function storeMixin(options) {
                     wx.showLoading({
                       title: `${gender === 1 ? '骚年' : '少女'}留步...`,
                     })
+                    setTimeout(()=>{//5s强制关闭loading
+                      wx.hideLoading()
+                    },5000)
                     if (data.errorCode >= 0) {
                      // that.setData({ hangOn: true })
                       wxGet('/userEvent/load',
@@ -122,9 +125,12 @@ function storeMixin(options) {
                                 stack.push({ category: 'random' })
                                 console.info(randomPoint, odds, ' still push event')
                               }
+                            }else{
+                              wx.hideLoading()
                             }
+                          }else{
+                            wx.hideLoading()
                           }
-                          wx.hideLoading()
                           that.setData({ hangOn: false })
                         },  () => {//load fail callback
                           wx.hideLoading()

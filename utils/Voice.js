@@ -12,6 +12,7 @@ class Voice {
   constructor() {
     this.context = wx.createInnerAudioContext()
     //this.context.volume=0.3
+   // this.context.obeyMuteSwitch=false
   }
   destroy=()=>{
     this.context.destroy()

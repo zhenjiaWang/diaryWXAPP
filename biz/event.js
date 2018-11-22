@@ -19,19 +19,21 @@ export default {
     }
   },
   showEvent:function(data){
-    wx.hideLoading()
-    let hour = this.data.userState.hours
-    hour=parseInt(hour)
-    if (data && hour && hour !== 6){
-      //console.info(this)
-      this.voiceContext().playEvent()
-      this.setData({
-        eventShow: true,
-        maskShow: true,
-        eventItems: data['eventResultArray'],
-        eventTitle: data['event']['content']
-      })
-    }
+    setTimeout(()=>{
+      wx.hideLoading()
+      let hour = this.data.userState.hours
+      hour = parseInt(hour)
+      if (data && hour && hour !== 6) {
+        //console.info(this)
+        this.voiceContext().playEvent()
+        this.setData({
+          eventShow: true,
+          maskShow: true,
+          eventItems: data['eventResultArray'],
+          eventTitle: data['event']['content']
+        })
+      }
+    },1000) 
   },
   applyEvent: function (e) {
     const that = this
