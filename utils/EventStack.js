@@ -62,13 +62,20 @@ class EventStack{
     }
     if (this.item.length < this.maxTime) {
       this.item.push(event)
-      const { category } = event
-      if (category !== this.latestType){
-        this.latestType = category
-        this.serialTime=1
-      } else if (category === this.latestType && this.latestType==='random'){
+      const { category, restart} = event
+      if(restart){
+        this.serialTime = 1
+      }else{
         this.serialTime++
       }
+      // if (category !== this.latestType){
+      //   console.info(category,this.latestType,'ddd')
+      //   this.latestType = category
+      //   this.serialTime=1
+      // } else if (category === this.latestType && this.latestType==='random'){
+      //   this.serialTime++
+      //   console.info(category, this.latestType, 'sss')
+      // }
     } else {
       console.info(`EventStack:event size overflow ${this.item.length} !`)
     }

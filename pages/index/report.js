@@ -45,14 +45,16 @@ Page({
       wxGet('/user/info', { userId: viewId},({data})=>{
         if(data.errorCode===0){
           this.setData({ userInfo: data.userData })
-          this.getImageInfo(data.userData.avatarUrl, data.userData.nickName, viewId, data.userData.lastComment)
+          const { gender, avatarUrl, nickName, lastComment } = data.userData
+          this.getImageInfo(avatarUrl, nickName, viewId,lastComment,gender)
         }
       })
     }else if(userId){//report 
       wxPost('/user/done',{userId},({data})=>{
         if (data.errorCode === 0) {
           this.setData({ userInfo: data.userData })
-          this.getImageInfo(data.userData.avatarUrl, data.userData.nickName, userId, data.comment)
+          const { gender, avatarUrl, nickName } = data.userData
+          this.getImageInfo(avatarUrl,nickName, userId, data.comment,gender)
         }
       })
     }else{
@@ -69,7 +71,7 @@ Page({
       }
     }
   },
-  getImageInfo(url, nickName, userId, commentUrl) {//  图片缓存本地的方法
+  getImageInfo(url, nickName, userId, commentUrl,gender) {//  图片缓存本地的方法
     console.info('url=' + url)
     console.info('nickName=' + nickName)
 
@@ -153,7 +155,7 @@ Page({
             nickName,
             qrCodeImg: qrcodeResult.path,
             comment: commentUrl
-          }, reportResult.data)
+          }, reportResult.data, gender)
         }
       }).catch((error) => {
         console.info(error)
@@ -187,7 +189,15 @@ Page({
     experienceColor = '',
     moneyColor='',
     abilityColor='',
-    connectionsColor=''} = {}) {
+    connectionsColor='',
+    wisdom = '', 
+    beatuy='',
+    popularity = '', 
+    wisdomColor = '',
+    beatuyColor = '',
+    popularityColor = '',
+    clothesTile=[],
+    luxuryTitle=[]} = {},gender) {
     let { canvasWidth } = this.data
     const ctx = wx.createCanvasContext('share')
     let usedHeight = 15 //已使用的高度
@@ -257,19 +267,33 @@ Page({
     usedHeight += itemH + 10
     this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '快 乐', happy, happyColor)
     this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '健康', health,healthColor)
-    this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '人 脉', connections,connectionsColor)
+    if(gender===1){
+      this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '人 脉', connections, connectionsColor)
+    }else{
+      this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '知名度', popularity, popularityColor)
+    }
 
     //line 3  
     usedHeight += itemH + 10
-    this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '社会经验', experience,experienceColor)
-    this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '正 义', positive,positiveColor)
-
+    if (gender === 1) {
+      this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '社会经验', experience, experienceColor)
+      this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '正 义', positive, positiveColor)
+    } else {
+      this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '智 慧', wisdom, wisdomColor)
+      this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '美 貌', beatuy, beatuyColor)
+    }
     this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '能力才干', ability,abilityColor)
 
     //line 4
     usedHeight += itemH + 10
-    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '座 驾', carTitle ? carTitle[0]:'',2)
-    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '房 产', houseTitle ? houseTitle[0]:'',2)
+    if (gender === 1) {
+      this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '座 驾', carTitle ? carTitle[0] : '', 2)
+      this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '房 产', houseTitle ? houseTitle[0] : '', 2)
+    } else {
+      this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '着装风格', clothesTile ? clothesTile[0] : '', 2)
+      this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '妆容排场', luxuryTitle ? luxuryTitle[0] : '', 2)
+    }
+   
 
     //line 5
     usedHeight += itemH + 10

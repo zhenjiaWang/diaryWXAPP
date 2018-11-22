@@ -55,9 +55,9 @@ export default {
           ({ data }) => {
             if (data.errorCode >= 0) {
               if (Math.ceil(Math.random() * 100) > 35) {
-                that.getEventStack().push({ category: 'random-first' })
+                that.getEventStack().push({ category: 'random',restart:true })
               } else {
-                that.getEventStack().push({ category: 'random-first' })//删除plan的event 直接调用事件的event
+                that.getEventStack().push({ category: 'random', restart: true})//删除plan的event 直接调用事件的event
                 //that.getEventStack().push({ id: planId, category: 'plan' })
               }
               that.setData({
