@@ -24,7 +24,9 @@
               <text>体验北漂生活，生存不仅需要朋友和金钱，更需要对社会、人性的了解。三分靠努力，七分靠打拼，剩下九十分靠天意！混在北京，是好是坏，都能混的下去。</text>
           </view>
       </view>
-      <button wx:if='{{hasAuth}}' class='begin-btn' bindtap='gameStart'>{{(lastComment&&currentDays==0&&currentHours==0)?"重新混":"开始混"}}</button>
+      <form report-submit="true" bindsubmit='gameStart'>
+        <button wx:if='{{hasAuth}}' class='begin-btn' formType="submit">{{(lastComment&&currentDays==0&&currentHours==0)?"重新混":"开始混"}}</button>
+      </form>
       <view wx:if='{{hasAuth}}' class='begin-btn begin-btn2' bindtap='viewRankingList'>排行榜</view>
       <button wx:if='{{!hasAuth}}' class='begin-btn' open-type='getUserInfo' lang='zh_CN' bindgetuserinfo='gameAuth'>去授权</button>
     </block>
@@ -40,8 +42,14 @@
     <image class='icon-2' src='../../img/line-bg.png' mode="widthFix" style='height:auto'></image>
     <image class='icon-1' src='../../img/icon-2.png' mode="widthFix" style='height:auto'></image>
     <text class='num-box'>今日还剩<text class='numFont font60 color1'>{{userState.hours}}</text>小时</text>
-    <button wx:if='{{userState.days>0}}' class='next-day {{userState.hours>0?"disable":""}}' bindtap='nextDay'></button>
-    <button wx:if='{{userState.days==0}}' class='end {{userState.hours>0||userState.score>0?"disable":""}}' bindtap='done'></button>
+    <form report-submit="true" bindsubmit='nextDay' wx:if='{{userState.days>0}}'>
+       <button  class='next-day {{userState.hours>0?"disable":""}}' formType="submit"></button>
+    </form>
+    <form report-submit="true" bindsubmit='done' wx:if='{{userState.days==0}}'>
+       <button  class='end {{userState.hours>0||userState.score>0?"disable":""}}'  formType="submit"></button>
+    </form>
+    
+    
 
   </view>
   <view class='game-info clearfix {{userState.live?"":"disable"}}'>
@@ -149,7 +157,7 @@
           <image src='../../img/ques.png' class='ask' bindtap='actionTip'></image>
         </view>
         <view class='right-inner'>
-          <view class='btn-box  clearfix {{userState.jobLimit==0?"":"disable"}}' bindtap='actionJob'>
+          <view class='btn-box  clearfix {{userState.jobLimit==0?"":"disable"}} {{userState.hours==="0"?"disable":""}}' bindtap='actionJob'>
             <image src='../../img/btn-1.png'></image>
             <text>找份工作</text>
           </view>
@@ -157,40 +165,40 @@
             <image src='../../img/btn-2.png'></image>
             <text>四处逛逛</text>
           </view>
-          <view class='btn-box clearfix {{userState.fundLimit==0?"":"disable"}}' bindtap='actionFund'>
+          <view class='btn-box clearfix {{userState.fundLimit==0?"":"disable"}} {{userState.hours==="0"?"disable":""}}' bindtap='actionFund'>
             <image src='../../img/btn-3.png'></image>
             <text>理财投资</text>
           </view>
-          <view class='btn-box clearfix {{userState.luckLimit==0?"":"disable"}}' bindtap='actionLuck'>
+          <view class='btn-box clearfix {{userState.luckLimit==0?"":"disable"}} {{userState.hours==="0"?"disable":""}}' bindtap='actionLuck'>
             <image src='../../img/btn-4.png'></image>
             <text>时来运转</text>
           </view>
 
           <!--male prop-->
-          <view class='btn-box clearfix {{userState.houseLimit==0?"":"disable"}}' 
+          <view class='btn-box clearfix {{userState.houseLimit==0?"":"disable"}} {{userState.hours==="0"?"disable":""}}' 
           bindtap='actionHouse' wx:if="{{userData.gender==1}}">
             <image src='../../img/btn-8.png'></image>
             <text>购房置业</text>
           </view>
-          <view class='btn-box clearfix {{userState.carLimit==0?"":"disable"}}' 
+          <view class='btn-box clearfix {{userState.carLimit==0?"":"disable"}} {{userState.hours==="0"?"disable":""}}' 
           bindtap='actionCar' wx:if="{{userData.gender==1}}">
             <image src='../../img/btn-9.png'></image>
             <text>座驾排场</text>
           </view>
 
           <!--female prop-->
-           <view class='btn-box clearfix {{userState.clothesLimit==0?"":"disable"}}' 
+           <view class='btn-box clearfix {{userState.clothesLimit==0?"":"disable"}} {{userState.hours==="0"?"disable":""}}' 
            bindtap='actionClothes' wx:if="{{userData.gender==2}}">
             <image src='../../img/btn-10.png'></image>
             <text>着装风格</text>
           </view>
-          <view class='btn-box clearfix {{userState.luxuryLimit==0?"":"disable"}}' 
+          <view class='btn-box clearfix {{userState.luxuryLimit==0?"":"disable"}} {{userState.hours==="0"?"disable":""}}' 
           bindtap='actionLuxury' wx:if="{{userData.gender==2}}">
             <image src='../../img/btn-12.png'></image>
             <text>妆容排场</text>
           </view>
           <!--common prop-->
-          <view class='btn-box clearfix {{userState.coupleLimit==0?"":"disable"}}' bindtap='actionCouple'>
+          <view class='btn-box clearfix {{userState.coupleLimit==0?"":"disable"}} {{userState.hours==="0"?"disable":""}}' bindtap='actionCouple'>
             <image src='../../img/btn-6.png'></image>
             <text>儿女情长</text>
           </view>

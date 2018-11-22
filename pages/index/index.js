@@ -172,6 +172,9 @@ const options={
             })
             that.start()
             that.resData()
+            if (e) {
+              that.submitFormId(e.detail.formId, app.globalData.userData.userId)
+            }
           }
         })
       } else {
@@ -180,6 +183,9 @@ const options={
         })
         that.start()
         that.resData()
+        if (e) {
+          that.submitFormId(e.detail.formId, app.globalData.userData.userId)
+        }
       }
     }
   },
@@ -239,13 +245,14 @@ const options={
       }
     )
   },
-  nextDay:function(){
+  nextDay:function(e){
     const that = this
-    
-
     if (that.data.userState.hours >0 || that.data.submitFlag) {
       return false
     } else {
+      if (e) {
+        that.submitFormId(e.detail.formId, app.globalData.userData.userId)
+      }
       that.voiceContext().playClick()
       that.setData({ submitFlag: true,maskShow:true })
       wxPost(
@@ -270,12 +277,15 @@ const options={
       )
     }
   },
-  done: function () {
+  done: function (e) {
     const that = this
     if (that.data.userState.days == 0&&that.data.userState.hour == 0 && that.data.submitFlag) {
       return false
     } else {
       that.voiceContext().playClick()
+      if(e){
+        that.submitFormId(e.detail.formId, app.globalData.userData.userId)
+      }
       that.setData({ submitFlag: true})
       wx.navigateTo({
         url: './report',
@@ -299,6 +309,12 @@ const options={
         url: './report',
       })
     }
+  },
+  submitFormId: function (formId, userId){
+    if(userId && formId)
+    wxPost('/user/submit',{userId,formId},({data})=>{
+      //success callback
+    })
   }
 }
 
