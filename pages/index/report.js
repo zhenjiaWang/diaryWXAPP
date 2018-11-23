@@ -107,6 +107,30 @@ Page({
           }
         })
       })
+      const bgImg = new Promise((resolve, reject) => {
+        wx.getImageInfo({
+          src: 'https://img.jinrongzhushou.com/common/body-bg.jpg',
+          success: (res) => {
+            console.info('get bgImg success')
+            resolve(res)
+          },
+          fail: err => {
+            reject('get bgImg fail')
+          }
+        })
+      })
+      const sloganImg = new Promise((resolve, reject) => {
+        wx.getImageInfo({
+          src: 'https://img.jinrongzhushou.com/common/slogan.png',
+          success: (res) => {
+            console.info('get sloganImg success')
+            resolve(res)
+          },
+          fail: err => {
+            reject('get sloganImg fail')
+          }
+        })
+      })
       const report = new Promise((resolve, reject) => {
         wxGet(`/user/report/${userId}`, null, ({ data }) => {
           if (data.errorCode==0) {
@@ -142,19 +166,24 @@ Page({
         })
       })
      
-      Promise.all([avatar, qrCode, report]).then((result) => {
+      Promise.all([avatar, qrCode, report,bgImg,sloganImg]).then((result) => {
         
         const avatarResult = result[0]
         const qrcodeResult = result[1]
         const reportResult = result[2]
+        const bgImgResult = result[3]
+        const sloganImgResult = result[4]
        
-        if (avatarResult.errMsg === 'getImageInfo:ok' && qrcodeResult.errMsg === 'getImageInfo:ok' && reportResult.errorCode >= 0) {
+        if (avatarResult.errMsg === 'getImageInfo:ok' && qrcodeResult.errMsg === 'getImageInfo:ok' && reportResult.errorCode >= 0
+          && bgImgResult.errMsg === 'getImageInfo:ok' && sloganImgResult.errMsg === 'getImageInfo:ok') {
           
           that.draw({
             avatar: avatarResult.path, 
             nickName,
             qrCodeImg: qrcodeResult.path,
-            comment: commentUrl
+            comment: commentUrl,
+            bgImg: bgImgResult.path,
+            sloganImg: sloganImgResult.path
           }, reportResult.data, gender)
         }
       }).catch((error) => {
@@ -167,7 +196,9 @@ Page({
     qrCodeImg = '../../img/scjg.png',
     comment = '../../img/feng.png',
     point = '23178208',
-    nickName = '张三'
+    nickName = '张三',
+    bgImg='',
+    sloganImg=''
   } = {}, {
     coupleTitle = '左手',
     happy = '',
@@ -213,9 +244,9 @@ Page({
     })
     let { canvasHeight } = this.data
     //draw bg
-    ctx.drawImage('../../img/body-bg.jpg', 0, 0, canvasWidth, canvasHeight += 15)
+    ctx.drawImage(bgImg, 0, 0, canvasWidth, canvasHeight += 15)
     //draw title
-    ctx.drawImage('../../img/slogan.png', padding, usedHeight, titleWidth, usedHeight += 100)
+    ctx.drawImage(sloganImg, padding, usedHeight, titleWidth, usedHeight += 100)
     //draw avatar & rank
     usedHeight += 30//头像圆形上方,圆点需要+半径
     ctx.save()
