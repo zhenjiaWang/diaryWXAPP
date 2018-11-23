@@ -34,10 +34,12 @@ Page({
       }, 500)
     })
   },
-  viewMyReport: () => {
-    wx.navigateTo({
-      url: './report',
-    })
+  viewMyReport: function (){
+    if(this.data.myData.score>0){
+      wx.navigateTo({
+        url: './report',
+      })
+    }
   },
   viewReport: (e) => {
     let userId = e.currentTarget.dataset.id
