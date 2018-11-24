@@ -52,7 +52,7 @@
     
 
   </view>
-  <view class='game-info clearfix {{userState.live?"":"disable"}}'>
+  <view class='game-info clearfix {{userState.live?"":"die"}}'>
     <view class='pull-left'>
       <view class='pull-left-inner'>
         <view class='title-img'>

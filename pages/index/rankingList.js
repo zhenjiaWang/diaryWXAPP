@@ -37,15 +37,15 @@ Page({
   viewMyReport: function (){
     if(this.data.myData.score>0){
       wx.navigateTo({
-        url: './report',
+        url: './report?userId=' + app.globalData.userId,
       })
     }
   },
   viewReport: (e) => {
-    let userId = e.currentTarget.dataset.id
-    if (userId){
+    let uid = e.currentTarget.dataset.id
+    if (uid){
       wx.navigateTo({
-        url: './report?userId='+userId,
+        url: './report?userId=' + uid,
       })
     }
   },
@@ -55,8 +55,15 @@ Page({
     })
   },
   onShareAppMessage(opt){
-    share({
-      
-    })
+    return{
+      title: '推荐这个我正在混的小程序给你，来试试，看你能混出什么样来！',
+      path: '/pages/index/index',
+      success: (res) => {
+        console.log("转发成功", res);
+      },
+      fail: (res) => {
+        console.log("转发失败", res);
+      }
+    }
   }
 })

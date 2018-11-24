@@ -278,7 +278,7 @@
       <view class='tip'>
           <view class='tip-inner'>
               <image src='../../img/t.png' mode='widthFix'></image>
-              <text>增加美貌、健康，每日限 1 次</text>
+              <text>增加美貌、健康、工作能力，每日限 1 次</text>
           </view>
       </view>
       <view class='feed2 clearfix' wx:for='{{clothesItems}}' wx:key='id'>
@@ -312,7 +312,7 @@
       <view class='tip'>
           <view class='tip-inner'>
               <image src='../../img/t.png' mode='widthFix'></image>
-              <text>增加美貌、健康</text>
+              <text>增加美貌、健康、工作能力</text>
           </view>
       </view>
       
@@ -429,7 +429,7 @@
                 </view>
                 <view>有概率获得{{item.gainPrice}}钱</view>
             </view>
-            <view class='btn-mid  {{userState.luckLimit==0?"":"disable"}}' bindtap='applyLuck' data-id='{{item.id}}'>试一次</view>
+            <view class='btn-mid  {{userState.moneyNumber>=item.investPrice&&userState.luckLimit==0?"":"disable"}}' bindtap='applyLuck' data-id='{{item.id}}'>试一次</view>
         </view>
     </view>
   </view>
