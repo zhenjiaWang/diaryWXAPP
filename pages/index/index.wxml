@@ -15,9 +15,9 @@
         <text wx:elif='{{!hasAuth}}'>需要你的公开头像和昵称</text>
         <image wx:if='{{userData.gender==2}}' src='../../img/icon-gilr.png' mode='widthFix' style='width:24rpx;height:24rpx;'></image>
         <image wx:elif='{{userData.gender==1}}'src='../../img/icon-men.png' mode='widthFix' style='width:24rpx;height:24rpx;'></image>
-        <view class='tag-img' style='position:absolute;left:430rpx;top:-60rpx;' wx:if='{{lastComment&&currentDays==0&&currentHours==0}}'>
+        <!-- <view class='tag-img' style='position:absolute;left:430rpx;top:-60rpx;' wx:if='{{lastComment&&currentDays==0&&currentHours==0}}'>
             <image src='../../img/{{lastComment}}.png' mode='widthFix'  style='height:auto' ></image>
-        </view>
+        </view> -->
       </view>
       <view class='begin-txt-box'>
           <view class='begin-txt-main'>
@@ -52,7 +52,7 @@
     
 
   </view>
-  <view class='game-info clearfix {{userState.live?"":"disable"}}'>
+  <view class='game-info clearfix {{userState.live?"":"die"}}'>
     <view class='pull-left'>
       <view class='pull-left-inner'>
         <view class='title-img'>
@@ -104,7 +104,7 @@
           <!--female prop -->
            <view class='one' wx:if="{{userData.gender==2}}">
             <view class='one-inner clearfix'>
-              <text>我的华服</text>
+              <text>我的衣品</text>
               <view class='menu-btn'>
                 <image wx:if='{{userState.myClothesArray.length>0}}'src='../../img/icon-menu.png' bindtap='showMyClothes'></image>
                 <image wx:else src='../../img/icon-menu-dis.png'></image>
@@ -157,7 +157,7 @@
           <image src='../../img/ques.png' class='ask' bindtap='actionTip'></image>
         </view>
         <view class='right-inner'>
-          <view class='btn-box  clearfix {{userState.jobLimit==0?"":"disable"}} {{userState.hours==="0"?"disable":""}}' bindtap='actionJob'>
+          <view class='btn-box  clearfix {{userState.jobLimit==0?"":"disable"}}' bindtap='actionJob'>
             <image src='../../img/btn-1.png'></image>
             <text>找份工作</text>
           </view>
@@ -165,40 +165,40 @@
             <image src='../../img/btn-2.png'></image>
             <text>四处逛逛</text>
           </view>
-          <view class='btn-box clearfix {{userState.fundLimit==0?"":"disable"}} {{userState.hours==="0"?"disable":""}}' bindtap='actionFund'>
+          <view class='btn-box clearfix {{userState.fundLimit==0?"":"disable"}}' bindtap='actionFund'>
             <image src='../../img/btn-3.png'></image>
             <text>理财投资</text>
           </view>
-          <view class='btn-box clearfix {{userState.luckLimit==0?"":"disable"}} {{userState.hours==="0"?"disable":""}}' bindtap='actionLuck'>
+          <view class='btn-box clearfix {{userState.luckLimit==0?"":"disable"}}' bindtap='actionLuck'>
             <image src='../../img/btn-4.png'></image>
             <text>时来运转</text>
           </view>
 
           <!--male prop-->
-          <view class='btn-box clearfix {{userState.houseLimit==0?"":"disable"}} {{userState.hours==="0"?"disable":""}}' 
+          <view class='btn-box clearfix {{userState.houseLimit==0?"":"disable"}}' 
           bindtap='actionHouse' wx:if="{{userData.gender==1}}">
             <image src='../../img/btn-8.png'></image>
             <text>购房置业</text>
           </view>
-          <view class='btn-box clearfix {{userState.carLimit==0?"":"disable"}} {{userState.hours==="0"?"disable":""}}' 
+          <view class='btn-box clearfix {{userState.carLimit==0?"":"disable"}}' 
           bindtap='actionCar' wx:if="{{userData.gender==1}}">
             <image src='../../img/btn-9.png'></image>
             <text>座驾排场</text>
           </view>
 
           <!--female prop-->
-           <view class='btn-box clearfix {{userState.clothesLimit==0?"":"disable"}} {{userState.hours==="0"?"disable":""}}' 
+           <view class='btn-box clearfix {{userState.clothesLimit==0?"":"disable"}}' 
            bindtap='actionClothes' wx:if="{{userData.gender==2}}">
             <image src='../../img/btn-10.png'></image>
-            <text>着装风格</text>
+            <text>着装衣品</text>
           </view>
-          <view class='btn-box clearfix {{userState.luxuryLimit==0?"":"disable"}} {{userState.hours==="0"?"disable":""}}' 
+          <view class='btn-box clearfix {{userState.luxuryLimit==0?"":"disable"}}' 
           bindtap='actionLuxury' wx:if="{{userData.gender==2}}">
             <image src='../../img/btn-12.png'></image>
             <text>妆容排场</text>
           </view>
           <!--common prop-->
-          <view class='btn-box clearfix {{userState.coupleLimit==0?"":"disable"}} {{userState.hours==="0"?"disable":""}}' bindtap='actionCouple'>
+          <view class='btn-box clearfix {{userState.coupleLimit==0?"":"disable"}}' bindtap='actionCouple'>
             <image src='../../img/btn-6.png'></image>
             <text>儿女情长</text>
           </view>
@@ -211,7 +211,7 @@
 <view class='mask' hidden='{{!maskShow}}'></view>
 
 <template is='popTip' data='{{tipShow,tipItems,userData}}'></template>
-<template is='popNight' data='{{nightClass,nightText}}'></template>
+<template is='popNight' data='{{nightClass,nightText,nightTip}}'></template>
 <template is='popDialog' data='{{dialogShow,dialogResult,dialogBtn,dialogPic}}'></template>
 <template is='popJob' data='{{jobShow,jobItems,userState}}'></template>
 <template is='popPlan' data='{{planShow,planItems,userState}}'></template>

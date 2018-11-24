@@ -25,6 +25,7 @@ const commonData = {
   canIUse: wx.canIUse('button.open-type.getUserInfo'),
   nightClass:'',
   nightText:'',
+  nightTip:'',
   submitFlag: false,
   maskShow: false,
   dialogShow:false,
@@ -225,13 +226,13 @@ function storeMixin(options) {
       })
       that.setData({ nightClass: showClass })
       setTimeout(function () {
-        that.setData({ nightText: text })
+        that.setData({ nightText: text, nightTip:'四处逛逛,生活节奏慢点可能触发偶遇' })
         if (blackCallback) {
           blackCallback()
         }
       }, 1200)
       setTimeout(function () {
-        that.setData({ nightClass: 'show hide', nightText: '' })
+        that.setData({ nightClass: 'show hide', nightText: '', nightTip:'' })
         wx.setNavigationBarColor({
           frontColor: '#ffffff',
           backgroundColor: '#2e55af',

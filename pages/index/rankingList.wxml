@@ -22,8 +22,8 @@
                         <image src='{{myData.avatarUrl}}'></image>
                     </view>
                 </view>
-                <view class='font26'>{{myData.nickName}}</view>
-                <view class='tag-png'><image style='height:auto;' src='../../img/{{myData.comment}}-j.png' mode='widthFix' wx:if="{{myData.comment}}"></image></view>
+                <view class='font26'>{{myData.nickName}}<image src='../../img/icon-{{myData.gender==1?"men":"gilr"}}.png' mode='widthFix' style='width:24rpx;height:24rpx;'></image></view>
+                <view wx:if='{{myData.score>0}}' class='tag-png'><image style='height:auto;' src='../../img/{{myData.comment}}-j.png' mode='widthFix' wx:if="{{myData.comment}}"></image></view>
             </view>
             <view class='view3'>
                 <text class='numFont font54'>{{myData.score||'-- '}}</text>
@@ -50,7 +50,7 @@
                                     <image src='{{item.avatarUrl}}'></image>
                                 </view>
                             </view>
-                            <view class='font26'>{{item.nickName}}<image src='../../img/icon-men.png' mode='widthFix' style='width:24rpx;height:24rpx;'></image></view>
+                            <view class='font26'>{{item.nickName}}<image src='../../img/icon-{{item.gender==1?"men":"gilr"}}.png' mode='widthFix' style='width:24rpx;height:24rpx;'></image></view>
                             <view class='tag-png'>
                               <image style='height:auto;' src='../../img/{{item.comment}}-j.png' mode='widthFix' wx:if='{{item.comment}}' ></image>
                             </view>

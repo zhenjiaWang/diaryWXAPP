@@ -142,8 +142,18 @@ export default {
     const amount = parseFloat(that.data.buyMoney)
     if ((that.data.userState.fundLimit == 1 && that.data.submitFlag) || isNotNum || money < amount) {
       if (money < amount){
+        wx.showToast({
+          title: '你并没有那么多钱可买入',
+          icon: 'none',
+          duration: 1500
+        })
         console.info('buy 持有不足')
       } else if (isNotNum){
+        wx.showToast({
+          title: '请输入正确的数字',
+          icon: 'none',
+          duration: 1500
+        })
         console.info('buy 非数字')
       }
       return false
@@ -173,8 +183,18 @@ export default {
     const amount = parseFloat(that.data.sellMoney)
     if ((that.data.userState.fundLimit == 1 && that.data.submitFlag) || isNotNum || money < amount) {
       if (money < amount) {
+        wx.showToast({
+          title: '你并没有那么多钱可赎回',
+          icon: 'none',
+          duration: 1500
+        })
         console.info('sell 持有不足')
       } else if (isNotNum) {
+        wx.showToast({
+          title: '请输入正确的数字',
+          icon: 'none',
+          duration: 1500
+        })
         console.info('sell 非数字')
       }
       return false

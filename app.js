@@ -1,4 +1,5 @@
 //app.js
+const ald = require('./utils/ald-stat.js')
 const { wxPost, wxGet, wxRunAsync} = require('./utils/common.js')
 
 App({
@@ -102,6 +103,7 @@ App({
                 wx.setStorageSync('code', res.code)
                 that.globalData.userId = data.userData.userId
                 that.globalData.userData = data.userData
+                that.aldstat.sendOpenid(data.userData.openId)
               }
               resolve()
             },
