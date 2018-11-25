@@ -348,13 +348,10 @@ Page({
 
     ctx.setTextAlign('left')
     ctx.setFillStyle('#000')
-    let temp=0
     for (let x = 0; x < commentText.length; x++) {
       const h = this.drawText(ctx, commentText[x], padding + 20, usedHeight, 10, maxTextWidth)
       usedHeight += h
-      temp+=h
     }
-    console.info(temp)
 
     //draw qrcode
     ctx.save()
