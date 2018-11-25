@@ -343,7 +343,7 @@ page{overflow: hidden;}
     border-radius:50rpx;
     background: rgba(0, 0, 0, .2);
     color:#fff;
-    font-size:30rpx;
+    font-size:26rpx;
     line-height: 66rpx;
     text-shadow: 0 0 1px #000,                   0 0 1px #000,                   0 0 1px #000,                   0 0 1px #000,                   0 0 1px #000;
 }
@@ -445,3 +445,7 @@ page{overflow: hidden;}
     min-width: 130rpx;
 }
 .result-one{margin-bottom: 10rpx;}
+.die {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+}

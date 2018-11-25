@@ -46,7 +46,7 @@ Page({
         if(data.errorCode===0){
           this.setData({ userInfo: data.userData })
           const { gender, avatarUrl, nickName, lastComment } = data.userData
-          this.getImageInfo(avatarUrl, nickName, viewId,lastComment,gender)
+          this.getImageInfo(avatarUrl, nickName, viewId, lastComment, gender, viewId)
         }
       })
     }else if(userId){//report 
@@ -54,7 +54,7 @@ Page({
         if (data.errorCode === 0) {
           this.setData({ userInfo: data.userData })
           const { gender, avatarUrl, nickName } = data.userData
-          this.getImageInfo(avatarUrl,nickName, userId, data.comment,gender)
+          this.getImageInfo(avatarUrl, nickName, userId, data.comment, gender, viewId)
         }
       })
     }else{
@@ -71,7 +71,7 @@ Page({
       }
     }
   },
-  getImageInfo(url, nickName, userId, commentUrl,gender) {//  图片缓存本地的方法
+  getImageInfo(url, nickName, userId, commentUrl, gender, viewId) {//  图片缓存本地的方法
     console.info('url=' + url)
     console.info('nickName=' + nickName)
 
@@ -95,44 +95,51 @@ Page({
           }
         })
       })
-      const qrCode = new Promise((resolve, reject) => {
-        wx.getImageInfo({
-          src: 'https://img.jinrongzhushou.com/common/hun_qrcode.jpg',
-          success: (res) => {
-            console.info('get qrcode success')
-            resolve(res)
-          },
-          fail: err => {
-            reject('get qrcode fail')
-          }
-        })
-      })
-      const bgImg = new Promise((resolve, reject) => {
-        wx.getImageInfo({
-          src: 'https://img.jinrongzhushou.com/common/body-bg.jpg',
-          success: (res) => {
-            console.info('get bgImg success')
-            resolve(res)
-          },
-          fail: err => {
-            reject('get bgImg fail')
-          }
-        })
-      })
-      const sloganImg = new Promise((resolve, reject) => {
-        wx.getImageInfo({
-          src: 'https://img.jinrongzhushou.com/common/slogan.png',
-          success: (res) => {
-            console.info('get sloganImg success')
-            resolve(res)
-          },
-          fail: err => {
-            reject('get sloganImg fail')
-          }
-        })
-      })
+      // const qrCode = new Promise((resolve, reject) => {
+      //   wx.getImageInfo({
+      //     src: 'https://img.jinrongzhushou.com/common/hun_qrcode.jpg',
+      //     success: (res) => {
+      //       console.info('get qrcode success')
+      //       resolve(res)
+      //     },
+      //     fail: err => {
+      //       reject('get qrcode fail')
+      //     }
+      //   })
+      // })
+      // const bgImg = new Promise((resolve, reject) => {
+      //   wx.getImageInfo({
+      //     src: 'https://img.jinrongzhushou.com/common/body-bg.jpg',
+      //     success: (res) => {
+      //       console.info('get bgImg success')
+      //       resolve(res)
+      //     },
+      //     fail: err => {
+      //       reject('get bgImg fail')
+      //     }
+      //   })
+      // })
+      // const sloganImg = new Promise((resolve, reject) => {
+      //   wx.getImageInfo({
+      //     src: 'https://img.jinrongzhushou.com/common/slogan.png',
+      //     success: (res) => {
+      //       console.info('get sloganImg success')
+      //       resolve(res)
+      //     },
+      //     fail: err => {
+      //       reject('get sloganImg fail')
+      //     }
+      //   })
+      // })
       const report = new Promise((resolve, reject) => {
-        wxGet(`/user/report/${userId}`, null, ({ data }) => {
+        let reportUrl =''
+        if (viewId){
+          reportUrl = `/user/report/${userId}`
+        }else{
+          reportUrl = `/user/myReport/${userId}`
+        }
+        
+        wxGet(reportUrl, null, ({ data }) => {
           if (data.errorCode==0) {
             for (var i = 0; i < data.attrList.length; i++) {
               let v = data.data[data.attrList[i]['value']]
@@ -166,24 +173,16 @@ Page({
         })
       })
      
-      Promise.all([avatar, qrCode, report,bgImg,sloganImg]).then((result) => {
+      Promise.all([avatar,  report]).then((result) => {
         
         const avatarResult = result[0]
-        const qrcodeResult = result[1]
-        const reportResult = result[2]
-        const bgImgResult = result[3]
-        const sloganImgResult = result[4]
+        const reportResult = result[1]
        
-        if (avatarResult.errMsg === 'getImageInfo:ok' && qrcodeResult.errMsg === 'getImageInfo:ok' && reportResult.errorCode >= 0
-          && bgImgResult.errMsg === 'getImageInfo:ok' && sloganImgResult.errMsg === 'getImageInfo:ok') {
-          
+        if (avatarResult.errMsg === 'getImageInfo:ok' && reportResult.errorCode >= 0) {
           that.draw({
             avatar: avatarResult.path, 
             nickName,
-            qrCodeImg: qrcodeResult.path,
-            comment: commentUrl,
-            bgImg: bgImgResult.path,
-            sloganImg: sloganImgResult.path
+            comment: commentUrl
           }, reportResult.data, gender)
         }
       }).catch((error) => {
@@ -222,12 +221,12 @@ Page({
     abilityColor='',
     connectionsColor='',
     wisdom = '', 
-    beatuy='',
+    beauty='',
     popularity = '', 
     wisdomColor = '',
-    beatuyColor = '',
+    beautyColor = '',
     popularityColor = '',
-    clothesTile=[],
+    clothesTitle=[],
     luxuryTitle=[]} = {},gender) {
     let { canvasWidth } = this.data
     const ctx = wx.createCanvasContext('share')
@@ -244,9 +243,9 @@ Page({
     })
     let { canvasHeight } = this.data
     //draw bg
-    ctx.drawImage(bgImg, 0, 0, canvasWidth, canvasHeight += 15)
+    ctx.drawImage('../../img/body-bg.jpg', 0, 0, canvasWidth, canvasHeight += 15)
     //draw title
-    ctx.drawImage(sloganImg, padding, usedHeight, titleWidth, usedHeight += 100)
+    ctx.drawImage('../../img/slogan.png', padding, usedHeight, titleWidth, usedHeight += 100)
     //draw avatar & rank
     usedHeight += 30//头像圆形上方,圆点需要+半径
     ctx.save()
@@ -311,7 +310,7 @@ Page({
       this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '正 义', positive, positiveColor)
     } else {
       this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '智 慧', wisdom, wisdomColor)
-      this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '美 貌', beatuy, beatuyColor)
+      this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '美 貌', beauty, beautyColor)
     }
     this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '能力才干', ability,abilityColor)
 
@@ -321,8 +320,8 @@ Page({
       this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '座 驾', carTitle ? carTitle[0] : '', 2)
       this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '房 产', houseTitle ? houseTitle[0] : '', 2)
     } else {
-      this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '着装风格', clothesTile ? clothesTile[0] : '', 2)
-      this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '妆容排场', luxuryTitle ? luxuryTitle[0] : '', 2)
+      this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '衣 品', clothesTitle ? clothesTitle[0] : '', 2)
+      this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '妆 容', luxuryTitle ? luxuryTitle[0] : '', 2)
     }
    
 
@@ -362,13 +361,13 @@ Page({
     ctx.arc(q_center, bottom + q_r, q_r, 0, 2 * Math.PI);
     ctx.clip()
     ctx.stroke()
-    ctx.drawImage(qrCodeImg, padding, bottom, q_d, q_d)
+    ctx.drawImage('../../img/hun_qrcode.jpg', padding, bottom, q_d, q_d)
     ctx.restore()
 
     ctx.setFontSize(16)
 
     ctx.setFillStyle('#FFFFFF')
-    ctx.fillText('长按图片,扫码加入', padding + q_d + 15, bottom + 45)
+    ctx.fillText('长按图片,扫码来挑战', padding + q_d + 15, bottom + 45)
     ctx.fillText('马上开始鬼混吧!', padding + q_d + 15, bottom + 70)
 
     ctx.draw()
@@ -470,8 +469,17 @@ Page({
     ctx.fillText(point, x + w - (r - 5), y + 14)
 
   },
-  onShareAppMessage: function () {
-
+  onShareAppMessage(opt) {
+    return {
+      title: '推荐这个我正在混的小程序给你，来试试，看你能混出什么样来！',
+      path: '/pages/index/index',
+      success: (res) => {
+        console.log("转发成功", res);
+      },
+      fail: (res) => {
+        console.log("转发失败", res);
+      }
+    }
   },
   saveAsImg: function () {
     const that=this
