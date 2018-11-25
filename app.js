@@ -24,20 +24,20 @@ App({
           that.globalData.userId = userId
           console.info('userId from storage')
         }
-        const code = wx.getStorageSync("code")
-        if (!code) {
-          wx.login({
-            success: res => {
-              // 发送 res.code 到后台换取 openId, sessionKey, unionId
-              console.info('openId' + res.code)
-              that.globalData.code = res.code
-            }
-          })
-          console.info('code been deleted ,reWxLogin')
-        } else {
-          that.globalData.code = code
-          console.info('code from storage')
-        }
+        // const code = wx.getStorageSync("code")
+        // if (!code) {
+        //   wx.login({
+        //     success: res => {
+        //       // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        //       console.info('openId' + res.code)
+        //       that.globalData.code = res.code
+        //     }
+        //   })
+        //   console.info('code been deleted ,reWxLogin')
+        // } else {
+        //   that.globalData.code = code
+        //   console.info('code from storage')
+        // }
       },
       fail: function () {
         console.info(' get userId timeout or be removed')
@@ -55,6 +55,7 @@ App({
           wx.getUserInfo({
             success: res => {
               console.log(res.userInfo)
+              
               // 可以将 res 发送给后台解码出 unionId
               this.globalData.userData = res.userInfo
               // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
