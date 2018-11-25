@@ -237,7 +237,11 @@ Page({
     const rankMargin = 25 //距离point宽度
     const pointFontSize = 25
     const maxTextWidth = titleWidth - 40//desc文本宽度
-    const descHeight = this.calcTextHeight(commentText, maxTextWidth, ctx) + 90
+    let descHeight=50//预留高度,其中margintop=10,剩余为底
+    for (let x = 0; x < commentText.length; x++) {
+      const h = this.drawText(ctx, commentText[x], 0, 0, 10, maxTextWidth,true)
+      descHeight += h
+    }
     this.setData({
       canvasHeight: abilityHeight + descHeight + 120 //属性+描述+二维码
     })
@@ -349,7 +353,6 @@ Page({
       usedHeight += h
     }
 
-
     //draw qrcode
     ctx.save()
     ctx.beginPath()
@@ -376,47 +379,31 @@ Page({
       dataDone: true
     })
   },
-  drawText(ctx, str, x, initHeight, titleHeight, canvasWidth) {
+  drawText(ctx, str, x, initHeight, titleHeight, canvasWidth,r) {
     var lineWidth = 0
     var lastSubStrIndex = 0; //每次开始截取的字符串的索引
+    ctx.setFontSize(12)
     for (let i = 0; i < str.length; i++) {
       lineWidth += ctx.measureText(str[i]).width
       if (lineWidth > canvasWidth) {
-        ctx.fillText(str.substring(lastSubStrIndex, i), x, initHeight)//
+        if (!r) {
+          ctx.fillText(str.substring(lastSubStrIndex, i), x, initHeight)//
+        }
         initHeight += 20//字体的高度
         lineWidth = 0
         lastSubStrIndex = i
         titleHeight += 30;
       }
       if (i == str.length - 1) {//绘制剩余部分
-        ctx.fillText(str.substring(lastSubStrIndex, i + 1), x, initHeight)
+        if (!r) {
+          ctx.fillText(str.substring(lastSubStrIndex, i + 1), x, initHeight)
+        }
         if (lastSubStrIndex === 0) {
           titleHeight += 10 // titleHeight -initHeight(字体高度)
         }
       }
     }
     titleHeight = titleHeight + 4
-    return titleHeight
-  },
-  calcTextHeight(commentText, canvasWidth, ctx) {
-    let titleHeight = 0
-    let lineWidth = 0, lastSubStrIndex = 0
-    commentText.forEach((str) => {
-      for (let i = 0; i < str.length; i++) {
-        lineWidth += ctx.measureText(str[i]).width
-        if (lineWidth > canvasWidth) {
-          lineWidth = 0
-          lastSubStrIndex = i
-          titleHeight += 30;
-        }
-        if (i == str.length - 1) {//绘制剩余部分
-          if (lastSubStrIndex === 0) {
-            titleHeight += 10 // titleHeight -initHeight(字体高度)
-          }
-        }
-      }
-      titleHeight = titleHeight + 4
-    })
     return titleHeight
   },
   roundRect(ctx, x, y, w, h, r, prop, point,colorIndex) {
