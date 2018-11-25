@@ -239,7 +239,7 @@ Page({
     const maxTextWidth = titleWidth - 40//desc文本宽度
     let descHeight=50//预留高度,其中margintop=10,剩余为底
     for (let x = 0; x < commentText.length; x++) {
-      const h = this.drawText(ctx, commentText[x], 0, 0, 10, maxTextWidth)
+      const h = this.drawText(ctx, commentText[x], 0, 0, 10, maxTextWidth,true)
       descHeight += h
     }
     this.setData({
