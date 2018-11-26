@@ -98,18 +98,18 @@ Page({
           }
         })
       })
-      // const qrCode = new Promise((resolve, reject) => {
-      //   wx.getImageInfo({
-      //     src: 'https://img.jinrongzhushou.com/common/hun_qrcode.jpg',
-      //     success: (res) => {
-      //       console.info('get qrcode success')
-      //       resolve(res)
-      //     },
-      //     fail: err => {
-      //       reject('get qrcode fail')
-      //     }
-      //   })
-      // })
+      const qrCode = new Promise((resolve, reject) => {
+        wx.getImageInfo({
+          src: `https://game.jinrongzhushou.com/v1/user/QRCode/${userId}`,
+          success: (res) => {
+            console.info('get qrcode success')
+            resolve(res)
+          },
+          fail: err => {
+            reject('get qrcode fail')
+          }
+        })
+      })
       // const bgImg = new Promise((resolve, reject) => {
       //   wx.getImageInfo({
       //     src: 'https://img.jinrongzhushou.com/common/body-bg.jpg',
@@ -176,14 +176,16 @@ Page({
         })
       })
      
-      Promise.all([avatar,  report]).then((result) => {
+      Promise.all([avatar, report, qrCode]).then((result) => {
         
         const avatarResult = result[0]
         const reportResult = result[1]
+        const qrCodeResult = result[2]
        
-        if (avatarResult.errMsg === 'getImageInfo:ok' && reportResult.errorCode >= 0) {
+        if (avatarResult.errMsg === 'getImageInfo:ok' && reportResult.errorCode >= 0 && qrCodeResult.errMsg === 'getImageInfo:ok') {
           that.draw({
             avatar: avatarResult.path, 
+            qrCodeImg: qrCodeResult.path,
             nickName,
             comment: commentUrl
           }, reportResult.data, gender)
@@ -231,6 +233,7 @@ Page({
     popularityColor = '',
     clothesTitle=[],
     luxuryTitle=[]} = {},gender) {
+      try{
     let { canvasWidth } = this.data
     const ctx = wx.createCanvasContext('share')
     let usedHeight = 15 //已使用的高度
@@ -381,6 +384,9 @@ Page({
     this.setData({
       dataDone: true
     })
+    } catch (ex) {
+      console.info(ex)
+    }
   },
   drawText(ctx, str, x, initHeight, titleHeight, canvasWidth,r) {
     var lineWidth = 0
@@ -513,8 +519,8 @@ Page({
     this.backHome()
   },
   rankingList:function(){
-    wx.navigateTo({
-      url: './rankingList',
+    wx.redirectTo({
+      url: './rankingList'
     })
   }
 })
