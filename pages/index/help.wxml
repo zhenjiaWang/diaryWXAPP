@@ -1,0 +1,9 @@
+
+<view class='body-bg' >
+    <view class='img-auto'><image src='../../img/slogan.png' mode='widthFix' style='height:auto'></image></view>
+    <view class='begin-txt-box'>
+          <view class='begin-txt-main'>
+              <text>体验北漂生活，生存不仅需要朋友和金钱，更需要对社会、人性的了解。三分靠努力，七分靠打拼，剩下九十分靠天意！混在北京，是好是坏，都能混的下去。</text>
+          </view>
+      </view>
+</view>

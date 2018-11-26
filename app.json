@@ -5,7 +5,8 @@
     "pages/template/template",
     "pages/logs/logs",
     "pages/index/rankingList",
-    "pages/index/report"
+    "pages/index/report",
+    "pages/index/help"
   ],
   "window": {
     "backgroundTextStyle": "light",
