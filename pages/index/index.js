@@ -347,7 +347,10 @@ const options={
       })
     }
   },
-  viewRankingList: function (){
+  viewRankingList: function (e){
+    if (e) {
+      this.submitFormId(e.detail.formId, app.globalData.userData.userId)
+    }
     wx.navigateTo({
       url: './rankingList',
     })
