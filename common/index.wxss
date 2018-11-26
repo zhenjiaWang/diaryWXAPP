@@ -538,7 +538,7 @@ text.num-big {
 }
 .game-phb .tab-title view{
     float: left;
-    width: 33%;
+    width: 25%;
     line-height: 70rpx;
     color:#fff;
     text-align: center;

@@ -7,25 +7,58 @@ Page({
     list:[],
     myData: null,
     lastUpdate:'',
-    show:false
+    show:false,
+    activeType:'all',
+    ruleShow:false,
+    char_lt:'<'
   },
   onLoad: function (options) {
+    this.loadRankings()
+  },
+  selected: function (e){
+    const that = this
+    let activetype = e.currentTarget.dataset.activetype
+    that.setData({
+      activeType: activetype
+    })
+    if (activetype!='rule'){
+      that.loadRankings()
+    }else{
+      that.setData({
+        show: false,
+        ruleShow:true
+      })
+    }
+  },
+  loadRankings:function(){
+    const that = this
+    let gender=''
+    if(that.data.activeType==='man'){
+      gender=1
+    } else if (that.data.activeType === 'lady') {
+      gender = 2
+    }
     wx.showLoading({
       title: '请稍等...',
     })
     this.setData({
-      lastUpdate:formatTime(new Date())
+      show: false,
+      ruleShow:false,
+      lastUpdate: formatTime(new Date())
     })
-    const userId = app.globalData.userId
-    const that = this
-    wxGet(`/user/rankings/${userId}`, null, ({ data }) => {
+    let userId = app.globalData.userId
+   
+    if (!userId) {
+      userId = 86125
+    }
+    wxGet(`/user/rankings/${userId}`, { 'gender': gender}, ({ data }) => {
       if (data.errorCode >= 0) {
         const { list, myData } = data
         that.setData({
-          list,myData
+          list, myData
         })
       }
-    },null,()=>{
+    }, null, () => {
       setTimeout(function () {
         wx.hideLoading()
         that.setData({
