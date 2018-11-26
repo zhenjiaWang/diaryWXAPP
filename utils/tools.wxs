@@ -9,7 +9,7 @@ var isEnableMoneyBtn = function (hour, money, reqMoney) {
   if(reqCal==='花'){
     reqMoney = 0 + reqMoney
   }else{
-    reqMoney = 0 - reqMoney
+    reqMoney = money
   }
   return (hour == 0 || money < reqMoney) ? false : true
 }
@@ -82,6 +82,13 @@ var dynamicPrice = function (currentDay,price,offset) {
   price = Math.round(price)
   return price
 }
+var isEnableDynamicPrice = function (currentDay, price, offset, money,limit) {
+  offset = offset * currentDay
+  offset = 100 + offset
+  price = price * offset / 100
+  price = Math.round(price)
+  return (limit == 1 || money < price) ? false : true
+}
 
 var isPositive = function (str1) {
   var num1 = (str1 + '').split(',').join('')
@@ -91,6 +98,7 @@ var isPositive = function (str1) {
 module.exports={
   isEnableBtn: isEnableBtn,
   isEnableMoneyBtn: isEnableMoneyBtn,
+  isEnableDynamicPrice:isEnableDynamicPrice,
   arrayContain: arrayContain,
   getHaveNumber: getHaveNumber,
   getCoupleStateName: getCoupleStateName,

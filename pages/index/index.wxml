@@ -15,16 +15,18 @@
         <text wx:elif='{{!hasAuth}}'>需要你的公开头像和昵称</text>
         <image wx:if='{{userData.gender==2}}' src='../../img/icon-gilr.png' mode='widthFix' style='width:24rpx;height:24rpx;'></image>
         <image wx:elif='{{userData.gender==1}}'src='../../img/icon-men.png' mode='widthFix' style='width:24rpx;height:24rpx;'></image>
-        <view class='tag-img' style='position:absolute;left:430rpx;top:-60rpx;' wx:if='{{lastComment&&currentDays==0&&currentHours==0}}'>
+        <!-- <view class='tag-img' style='position:absolute;left:430rpx;top:-60rpx;' wx:if='{{lastComment&&currentDays==0&&currentHours==0}}'>
             <image src='../../img/{{lastComment}}.png' mode='widthFix'  style='height:auto' ></image>
-        </view>
+        </view> -->
       </view>
       <view class='begin-txt-box'>
           <view class='begin-txt-main'>
               <text>体验北漂生活，生存不仅需要朋友和金钱，更需要对社会、人性的了解。三分靠努力，七分靠打拼，剩下九十分靠天意！混在北京，是好是坏，都能混的下去。</text>
           </view>
       </view>
-      <button wx:if='{{hasAuth}}' class='begin-btn' bindtap='gameStart'>{{(lastComment&&currentDays==0&&currentHours==0)?"重新混":"开始混"}}</button>
+      <form report-submit="true" bindsubmit='gameStart'>
+        <button wx:if='{{hasAuth}}' class='begin-btn' formType="submit">{{(lastComment&&currentDays==0&&currentHours==0)?"重新混":"开始混"}}</button>
+      </form>
       <view wx:if='{{hasAuth}}' class='begin-btn begin-btn2' bindtap='viewRankingList'>排行榜</view>
       <button wx:if='{{!hasAuth}}' class='begin-btn' open-type='getUserInfo' lang='zh_CN' bindgetuserinfo='gameAuth'>去授权</button>
     </block>
@@ -40,11 +42,17 @@
     <image class='icon-2' src='../../img/line-bg.png' mode="widthFix" style='height:auto'></image>
     <image class='icon-1' src='../../img/icon-2.png' mode="widthFix" style='height:auto'></image>
     <text class='num-box'>今日还剩<text class='numFont font60 color1'>{{userState.hours}}</text>小时</text>
-    <button wx:if='{{userState.days>0}}' class='next-day {{userState.hours>0?"disable":""}}' bindtap='nextDay'></button>
-    <button wx:if='{{userState.days==0}}' class='end {{userState.hours>0||userState.score>0?"disable":""}}' bindtap='done'></button>
+    <form report-submit="true" bindsubmit='nextDay' wx:if='{{userState.days>0}}'>
+       <button  class='next-day {{userState.hours>0?"disable":""}}' formType="submit"></button>
+    </form>
+    <form report-submit="true" bindsubmit='done' wx:if='{{userState.days==0}}'>
+       <button  class='end {{userState.hours>0||userState.score>0?"disable":""}}'  formType="submit"></button>
+    </form>
+    
+    
 
   </view>
-  <view class='game-info clearfix {{userState.live?"":"disable"}}'>
+  <view class='game-info clearfix {{userState.live?"":"die"}}'>
     <view class='pull-left'>
       <view class='pull-left-inner'>
         <view class='title-img'>
@@ -78,33 +86,37 @@
           <view class='one' wx:if="{{userData.gender==1}}">
             <view class='one-inner clearfix'>
               <text>我的房产</text>
-              <view class='menu-btn {{userState.myHouseArray.length>0?"":"disable"}}' bindtap='showMyHouse'>
-                <image src='../../img/icon-menu.png'></image>
+              <view class='menu-btn'>
+                <image wx:if='{{userState.myHouseArray.length>0}}'src='../../img/icon-menu.png' bindtap='showMyHouse'></image>
+                <image wx:else src='../../img/icon-menu-dis.png'></image>
               </view>
             </view>
           </view>
           <view class='one'  wx:if="{{userData.gender==1}}">
             <view class='one-inner clearfix'>
               <text>我的座驾</text>
-              <view class='menu-btn {{userState.myCarArray.length>0?"":"disable"}}' bindtap='showMyCar'>
-                <image src='../../img/icon-menu.png'></image>
+              <view class='menu-btn'>
+                <image wx:if='{{userState.myCarArray.length>0}}'src='../../img/icon-menu.png' bindtap='showMyCar'></image>
+                <image wx:else src='../../img/icon-menu-dis.png'></image>
               </view>
             </view>
           </view>
           <!--female prop -->
            <view class='one' wx:if="{{userData.gender==2}}">
             <view class='one-inner clearfix'>
-              <text>我的华服</text>
-              <view class='menu-btn {{userState.myClothesArray.length>0?"":"disable"}}' bindtap='showMyClothes'>
-                <image src='../../img/icon-menu.png'></image>
+              <text>我的衣品</text>
+              <view class='menu-btn'>
+                <image wx:if='{{userState.myClothesArray.length>0}}'src='../../img/icon-menu.png' bindtap='showMyClothes'></image>
+                <image wx:else src='../../img/icon-menu-dis.png'></image>
               </view>
             </view>
           </view>
           <view class='one'  wx:if="{{userData.gender==2}}">
             <view class='one-inner clearfix'>
               <text>我的排场</text>
-              <view class='menu-btn {{userState.myLuxuryArray.length>0?"":"disable"}}' bindtap='showMyLuxury'>
-                <image src='../../img/icon-menu.png'></image>
+              <view class='menu-btn'>
+                <image wx:if='{{userState.myLuxuryArray.length>0}}'src='../../img/icon-menu.png' bindtap='showMyLuxury'></image>
+                <image wx:else src='../../img/icon-menu-dis.png'></image>
               </view>
             </view>
           </view>
@@ -115,8 +127,9 @@
               <text class='pull-left'>伴</text>
               <text class='pull-right'>侣</text>
               </text>
-              <view class='menu-btn {{userState.myCoupleId.length>0?"":"disable"}}' bindtap='showMyCouple'>
-                <image src='../../img/icon-menu.png'></image>
+              <view class='menu-btn'>
+                <image wx:if='{{userState.myCoupleId.length>0}}'src='../../img/icon-menu.png' bindtap='showMyCouple'></image>
+                <image wx:else src='../../img/icon-menu-dis.png'></image>
               </view>
             </view>
           </view>
@@ -126,8 +139,9 @@
               <text class='pull-left'>工</text>
               <text class='pull-right'>作</text>
               </text>
-              <view class='menu-btn {{userState.myJobId.length>0?"":"disable"}}' bindtap='showMyJob'>
-                <image src='../../img/icon-menu.png'></image>
+              <view class='menu-btn'>
+                <image wx:if='{{userState.myJobId.length>0}}'src='../../img/icon-menu.png' bindtap='showMyJob'></image>
+                <image wx:else src='../../img/icon-menu-dis.png'></image>
               </view>
             </view>
           </view>
@@ -176,7 +190,7 @@
            <view class='btn-box clearfix {{userState.clothesLimit==0?"":"disable"}}' 
            bindtap='actionClothes' wx:if="{{userData.gender==2}}">
             <image src='../../img/btn-10.png'></image>
-            <text>着装风格</text>
+            <text>着装衣品</text>
           </view>
           <view class='btn-box clearfix {{userState.luxuryLimit==0?"":"disable"}}' 
           bindtap='actionLuxury' wx:if="{{userData.gender==2}}">
@@ -197,8 +211,8 @@
 <view class='mask' hidden='{{!maskShow}}'></view>
 
 <template is='popTip' data='{{tipShow,tipItems,userData}}'></template>
-<template is='popNight' data='{{nightClass,nightText}}'></template>
-<template is='popDialog' data='{{dialogShow,dialogResult,dialogBtn}}'></template>
+<template is='popNight' data='{{nightClass,nightText,nightTip}}'></template>
+<template is='popDialog' data='{{dialogShow,dialogResult,dialogBtn,dialogPic}}'></template>
 <template is='popJob' data='{{jobShow,jobItems,userState}}'></template>
 <template is='popPlan' data='{{planShow,planItems,userState}}'></template>
 <template is='popHouse' data='{{houseShow,houseItems,userState}}'></template>

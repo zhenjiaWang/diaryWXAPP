@@ -487,7 +487,7 @@ text.num-big {
 }
 .item-box .one .one-inner text{
     width: auto;
-    font-size:24rpx;
+    font-size:22rpx;
     font-weight: normal;
     text-shadow:0 0 1px #000, 0 0 1px #000, 0 0 1px #000, 0 0 1px #000, 0 0 1px #000;
 }
@@ -538,7 +538,7 @@ text.num-big {
 }
 .game-phb .tab-title view{
     float: left;
-    width: 33%;
+    width: 25%;
     line-height: 70rpx;
     color:#fff;
     text-align: center;

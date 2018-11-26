@@ -7,25 +7,58 @@ Page({
     list:[],
     myData: null,
     lastUpdate:'',
-    show:false
+    show:false,
+    activeType:'all',
+    ruleShow:false,
+    char_lt:'<'
   },
   onLoad: function (options) {
+    this.loadRankings()
+  },
+  selected: function (e){
+    const that = this
+    let activetype = e.currentTarget.dataset.activetype
+    that.setData({
+      activeType: activetype
+    })
+    if (activetype!='rule'){
+      that.loadRankings()
+    }else{
+      that.setData({
+        show: false,
+        ruleShow:true
+      })
+    }
+  },
+  loadRankings:function(){
+    const that = this
+    let gender=''
+    if(that.data.activeType==='man'){
+      gender=1
+    } else if (that.data.activeType === 'lady') {
+      gender = 2
+    }
     wx.showLoading({
       title: '请稍等...',
     })
     this.setData({
-      lastUpdate:formatTime(new Date())
+      show: false,
+      ruleShow:false,
+      lastUpdate: formatTime(new Date())
     })
-    const userId = app.globalData.userId
-    const that = this
-    wxGet(`/user/rankings/${userId}`, null, ({ data }) => {
+    let userId = app.globalData.userId
+   
+    if (!userId) {
+      userId = 86125
+    }
+    wxGet(`/user/rankings/${userId}`, { 'gender': gender}, ({ data }) => {
       if (data.errorCode >= 0) {
         const { list, myData } = data
         that.setData({
-          list,myData
+          list, myData
         })
       }
-    },null,()=>{
+    }, null, () => {
       setTimeout(function () {
         wx.hideLoading()
         that.setData({
@@ -34,16 +67,18 @@ Page({
       }, 500)
     })
   },
-  viewMyReport: () => {
-    wx.navigateTo({
-      url: './report',
-    })
+  viewMyReport: function (){
+    if(this.data.myData.score>0){
+      wx.navigateTo({
+        url: './report?userId=' + app.globalData.userId,
+      })
+    }
   },
   viewReport: (e) => {
-    let userId = e.currentTarget.dataset.id
-    if (userId){
+    let uid = e.currentTarget.dataset.id
+    if (uid){
       wx.navigateTo({
-        url: './report?userId='+userId,
+        url: './report?userId=' + uid,
       })
     }
   },
@@ -53,8 +88,15 @@ Page({
     })
   },
   onShareAppMessage(opt){
-    share({
-      
-    })
+    return{
+      title: '推荐这个我正在混的小程序给你，来试试，看你能混出什么样来！',
+      path: '/pages/index/index',
+      success: (res) => {
+        console.log("转发成功", res);
+      },
+      fail: (res) => {
+        console.log("转发失败", res);
+      }
+    }
   }
 })

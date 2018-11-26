@@ -4,14 +4,108 @@
 <view class='body-bg' style='display:;'>
     <view class='img-auto'><image src='../../img/phb.png' mode='widthFix' style="margin-top:10rpx;height:auto" ></image></view>
     <view class='game-main game-phb'>
-        <!-- <view class='top-title tab-title clearfix'>
-            <view class='active'>综合</view>
-            <view>金钱</view>
-            <view>投资</view>
-            <view>金钱</view>
-            <view>投资</view>
-        </view> -->
-        <view class='top-title' bindtap='viewMyReport' hidden="{{!show}}">
+        <view class='top-title tab-title clearfix'>
+            <view class='{{activeType=="all"?"active":""}}' data-activeType='all' bindtap='selected'>综合排行</view>
+            <view class='{{activeType=="man"?"active":""}}' data-activeType='man' bindtap='selected'>男排行</view>
+            <view class='{{activeType=="lady"?"active":""}}' data-activeType='lady' bindtap='selected'>女排行</view>
+            <view class='{{activeType=="rule"?"active":""}}' data-activeType='rule' bindtap='selected'>评分标准</view>
+        </view>
+        <view class='begin-txt-box' hidden="{{!ruleShow}}">
+          <view class='begin-txt-main'>
+              <view class='tag-png' style='float:none;'><image style='height:auto;' src='../../img/hun-j.png' mode='widthFix'></image></view>
+              <text>综合评分>=3500000</text>
+              <view class='tag-png' style='float:none;'><image style='height:auto;' src='../../img/jing-j.png' mode='widthFix'></image></view>
+              <text>综合评分>=2400000</text>
+              <view class='tag-png' style='float:none;'><image style='height:auto;' src='../../img/feng-j.png' mode='widthFix'></image></view>
+              <text>综合评分>=1500000</text>
+              <view class='tag-png' style='float:none;'><image style='height:auto;' src='../../img/lu-j.png' mode='widthFix'></image></view>
+              <text>综合评分>=800000</text>
+              <view class='tag-png' style='float:none;'><image style='height:auto;' src='../../img/qiong-j.png' mode='widthFix'></image></view>
+              <text>综合评分{{char_lt}}800000</text>
+              <text>\n</text>
+              <text>\n</text>
+              <text class='color2'>这是一个金钱至上的游戏，所以金钱得到的分数是最高的，毕竟现实生活里没钱是万万不能的，有钱的快乐是无法想象的。</text>
+              <text>\n</text>
+              <text>\n</text>
+              <text class='color2'>属性值得分：属性值*权重分。如：人脉值300，人脉值权重分600，最终人脉得分1800分</text>
+              <text>\n</text>
+              <text class='color2'>权重列表</text>
+              <text>\n</text>
+              <text>\n</text>
+              <text class='color1'>男版</text>
+              <text>\n</text>
+              <text class='color1'>健康1:1000、能力才干1:600、社会经验1:600</text>
+              <text>\n</text>
+              <text class='color1'>快乐1:700、正气1:700、人脉1:600</text>
+              <text>\n</text>
+              <text>\n</text>
+              <text class='color3'>女版</text>
+              <text>\n</text>
+              <text class='color3'>健康1:1000、工作能力1:600、处世智慧1:600</text>
+              <text>\n</text>
+              <text class='color3'>快乐1:700、美貌1:700、知名度1:600</text>
+              <text>\n</text>
+              <text>\n</text>
+              <text class='color2'>为了鼓励大家爱惜生命，在游戏结束时候健康值如果满足以下情况有附加分数</text>
+              <text>\n</text>
+              <text>\n</text>
+              <text class='color2'>健康值>80:健康值*100、健康值>100:健康值*150、健康值>=150:健康值*200</text>
+              <text>\n</text>
+              <text>\n</text>
+              <text class='color2'>其他设置</text>
+              <text>\n</text>
+              <text class='color2'>时来运转中奖概率</text>
+              <text>\n</text>
+              <text class='color2'>石头剪子布60%～65%、炸金花48%～52%、谣骰子40%～44%、石头剪子布35%～38%</text>
+              <text>\n</text>
+              <text>\n</text>
+              <text class='color2'>理财涨幅概率和区间</text>
+              <text>\n</text>
+              <text class='color2'>货币基金100%上涨 涨幅区间（<text class='color3'>+2.2%～+4.8%</text>）</text>
+              <text>\n</text>
+              <text class='color2'>指数基金65%上涨 涨跌幅区间（<text class='color1'>-6.18%</text>～<text class='color3'>+24.33%</text>）</text>
+              <text>\n</text>
+              <text class='color2'>指数期货49%上涨 涨跌幅区间（<text class='color1'>-12.15%</text>～<text class='color3'>+49.00%</text>）</text>
+              <text>\n</text>
+              <text>\n</text>
+              <text class='color2'>男版车子、女版本衣服 第一天最贵，越往后越便宜，卖出具备贬值属性。</text>
+              <text>\n</text>
+              <text class='color2'>男版房子、女版本妆容 第一天最便宜，越往后越鬼，卖出具备理财属性。</text>
+              <text>\n</text>
+              <text class='color2'>所有增益越早购买越好，毕竟时间有限。</text>
+              <text>\n</text>
+              <text>\n</text>
+              <text class='color2'>分数加成设置</text>
+              <text>\n</text>
+              <text class='color2'>投资金额为0则减少50000分，投资金额超过10万则多加1000000分</text>
+              <text>\n</text>
+              <text class='color2'>投资失策则减少50000分，投资盈利则多加100000分</text>
+              <text>\n</text>
+              <text>\n</text>
+              <text class='color2'>没有工作，社会闲散人士则减少50000分</text>
+              <text>\n</text>
+              <text class='color2'>有份不错多工作可能会增加30000～60000分</text>
+              <text>\n</text>
+              <text>\n</text>
+              <text class='color2'>男版没有车减少80000分，没有房减少100000分</text>
+              <text>\n</text>
+              <text class='color2'>女版没有衣服减少80000分，没有妆容减少100000分</text>
+              <text>\n</text>
+              <text>\n</text>
+              <text class='color2'>单身狗减少50000分，找到对象增加200000分</text>
+              <text>\n</text>
+              <text>\n</text>
+              <text class='color2'>男版女版如有工作、有车（衣）、有房（妆容）、有对象则增加100000分</text>
+              <text>\n</text>
+              <text class='color2'>最好的工作和车（衣）、房（妆容）直接增加500000分</text>
+              <text>\n</text>
+              <text class='color2'>其次的工作和车（衣）、房（妆容）直接增加300000分</text>
+              <text>\n</text>
+              <text>\n</text>
+              
+          </view>
+        </view>
+        <view class='top-title' bindtap='viewMyReport' hidden="{{!show}}" wx:if='{{myData}}'>
             <view class='pull-left view1'>
                 <view><text class='numFont font40 color2'>{{myData.seq}}</text></view>
                 <view><text class='font24 color2'>我的排名</text></view>
@@ -22,8 +116,8 @@
                         <image src='{{myData.avatarUrl}}'></image>
                     </view>
                 </view>
-                <view class='font26'>{{myData.nickName}}</view>
-                <view class='tag-png'><image style='height:auto;' src='../../img/{{myData.comment}}-j.png' mode='widthFix' wx:if="{{myData.comment}}"></image></view>
+                <view class='font24' style='padding:30rpx 20rpx 0 0'>{{myData.nickName}}<image src='../../img/icon-{{myData.gender==1?"men":"gilr"}}.png' mode='widthFix' style='width:24rpx;height:24rpx;padding-left:2rpx;'></image></view>
+                <view wx:if='{{myData.score>0}}' class='tag-png'><image style='height:auto;' src='../../img/{{myData.comment}}-j.png' mode='widthFix' wx:if="{{myData.comment}}"></image></view>
             </view>
             <view class='view3'>
                 <text class='numFont font54'>{{myData.score||'-- '}}</text>
@@ -50,7 +144,7 @@
                                     <image src='{{item.avatarUrl}}'></image>
                                 </view>
                             </view>
-                            <view class='font26'>{{item.nickName}}<image src='../../img/icon-men.png' mode='widthFix' style='width:24rpx;height:24rpx;'></image></view>
+                            <view class='font24' style='padding:30rpx 20rpx 0 0'>{{item.nickName}}<image src='../../img/icon-{{item.gender==1?"men":"gilr"}}.png' mode='widthFix' style='width:24rpx;height:24rpx;padding-left:2rpx;'></image></view>
                             <view class='tag-png'>
                               <image style='height:auto;' src='../../img/{{item.comment}}-j.png' mode='widthFix' wx:if='{{item.comment}}' ></image>
                             </view>
@@ -60,7 +154,7 @@
                                 <text class='numFont font43'>{{item.score||'--'}}</text>
                                 <text class='font24'>分</text>
                             </view>
-                            <view class='like active'><view></view><text>98</text></view>
+                            <!-- <view class='like active'><view></view><text>98</text></view> -->
                         </view>
                     </view>
                 </view>

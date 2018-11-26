@@ -23,8 +23,10 @@ const options={
         } else {
           app.globalData.hasAuth = false
           that.setData({
-            hasAuth: app.globalData.hasAuth
+            hasAuth: app.globalData.hasAuth,
+            waitLoading:false
           })
+          wx.hideLoading()
         }
       }
     })
@@ -45,7 +47,12 @@ const options={
   getEventStack: function () {
     return eventStack
   },
-  onLoad: function () {
+  onLoad: function (options) {
+    if (options.from ==='shareReport'){
+      wx.navigateTo({
+        url: `./report?userId=${options.userId}&share=true`,
+      })
+    }
     wx.showLoading({
       title: '请稍等...',
       mask: true
@@ -53,57 +60,89 @@ const options={
     const that=this
     setWatcher(that)
     console.info('onLoad=' + app.globalData.userData)
+   
+    console.info(app.globalData.code)
+    
     if (app.globalData.userData) {
       that.setData({
         userData: app.globalData.userData,
         hasAuth: app.globalData.hasAuth
       })
+      that.checkError()
     } else if (that.data.canIUse) {
+      
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
       // 所以此处加入 callback 以防止这种情况
       app.userInfoReadyCallback = res => {
+       
         app.globalData.userData = res.userInfo
         app.globalData.hasAuth = true
         that.setData({
           userData: app.globalData.userData,
           hasAuth: app.globalData.hasAuth
         })
+        that.checkError()
       }
     } else {
       // 在没有 open-type=getUserInfo 版本的兼容处理
       wx.getUserInfo({
         success: res => {
+        
           app.globalData.userData = res.userInfo
           app.globalData.hasAuth = true
           that.setData({
             userData: app.globalData.userData,
             hasAuth: app.globalData.hasAuth
           })
+          that.checkError()
         }
       })
     }
     voice = new Voice()
-    if (!app.globalData.code){
+  },
+  checkError:function(){
+    
+    const that = this
+    if (!app.globalData.code) {
       console.info('1')
       wx.login({
         success: res => {
           // 发送 res.code 到后台换取 openId, sessionKey, unionId
+          console.info(res.code)
           app.globalData.code = res.code
-          that.loadGame()
+          if (app.globalData.hasAuth) {
+            that.loadGame()
+          } else {
+            that.setData({
+              waitLoading: false
+            })
+            wx.hideLoading()
+          }
         }
       })
-    }else{
-      that.loadGame()
+    } else {
+      if (app.globalData.hasAuth) {
+        that.loadGame()
+      } else {
+        that.setData({
+          waitLoading: false
+        })
+        wx.hideLoading()
+      }
     }
-    console.info(app.globalData.code)
-    
   },
   loadGame:function(){
     const that = this
-    wxGet('/user/info',
+    wxPost('/user/login',
       {
-        'userId': app.globalData.userId,
-        'code': app.globalData.code
+        userId: app.globalData.userId,
+        code: app.globalData.code,
+        nickName: app.globalData.userData.nickName,
+        avatarUrl: app.globalData.userData.avatarUrl,
+        gender: app.globalData.userData.gender,
+        city: app.globalData.userData.city,
+        province: app.globalData.userData.province,
+        country: app.globalData.userData.country
       },
       ({ data }) => {
         if (data.errorCode === 0) {
@@ -111,6 +150,11 @@ const options={
           if (!that.userData){
             that.setData({ userData: data.userData})
           }
+          wx.setStorageSync('userId', data.userData.userId)
+          wx.setStorageSync('code', app.globalData.code)
+          app.globalData.userId = data.userData.userId
+          app.globalData.userData = data.userData
+          app.aldstat.sendOpenid(data.userData.openId)
         }
       },null,()=>{
         that.setData({
@@ -143,7 +187,8 @@ const options={
           hasAuth: app.globalData.hasAuth,
           submitFlag: false
         })
-        wx.hideLoading()
+        that.checkError()
+        //wx.hideLoading()
       }, 1000)
     }
   },
@@ -163,23 +208,27 @@ const options={
       })
       that.setData({ nightClass: 'show' })
       if (!this.data.hasLogin) {
-        app.appLogin().then(() => {
-          if (app.globalData.userData.userId) {
-            that.setData({
-              userData: app.globalData.userData,
-              hasLogin:true,
-              submitFlag: false
-            })
-            that.start()
-            that.resData()
+        if (app.globalData.userData.userId) {
+          that.setData({
+            userData: app.globalData.userData,
+            hasLogin: true,
+            submitFlag: false
+          })
+          that.start()
+          that.resData()
+          if (e) {
+            that.submitFormId(e.detail.formId, app.globalData.userData.userId)
           }
-        })
+        }
       } else {
         that.setData({
           submitFlag: false
         })
         that.start()
         that.resData()
+        if (e) {
+          that.submitFormId(e.detail.formId, app.globalData.userData.userId)
+        }
       }
     }
   },
@@ -216,10 +265,10 @@ const options={
         that.voiceContext().playNextDay()
         parseUserState(data,that)
         setTimeout(function () {
-          that.setData({ nightText: data.nightText, hasUserInfo: true })
+          that.setData({ nightText: data.nightText, hasUserInfo: true, nightTip: '四处逛逛,生活节奏慢点可能触发偶遇' })
         }, 1200)
         setTimeout(function () {
-          that.setData({ nightClass: 'show hide', nightText: '' })
+          that.setData({ nightClass: 'show hide', nightText: '', nightTip: '' })
           wx.setNavigationBarColor({
             frontColor: '#ffffff',
             backgroundColor: '#2e55af',
@@ -232,67 +281,21 @@ const options={
         setTimeout(function () {
           that.setData({ nightClass: '' })
           if (data.resultArray){
-            that.setData({ maskShow: true, dialogShow: true, dialogResult: data.resultArray })
+            that.setData({ dialogPic:'tishi',maskShow: true, dialogShow: true, dialogResult: data.resultArray })
             that.resultVoice(data)
           }
-          // setInterval(function(){
-          //   if(that.data.jobA==0){
-          //     that.setData({ jobA:1})
-          //   }else{
-          //     that.setData({ jobA: 0 })
-          //   }
-          // },1500)
-          // setInterval(function () {
-          //   if (that.data.fundA == 0) {
-          //     that.setData({ fundA: 1 })
-          //     that.actionFund()
-          //   } else {
-          //     that.setData({ fundA: 0 })
-          //     that.closeFund()
-          //   }
-          // }, 5600)
-          // setInterval(function () {
-          //   if (that.data.carA == 0) {
-          //     that.setData({ carA: 1 })
-          //     that.actionCar()
-          //   } else {
-          //     that.setData({ carA: 0 })
-          //     that.closeCar()
-          //   }
-          // }, 2000)
-          // setInterval(function () {
-          //   if (that.data.houseA == 0) {
-          //     that.setData({ houseA: 1 })
-          //   } else {
-          //     that.setData({ houseA: 0 })
-          //   }
-          // }, 3000)
-          // setInterval(function () {
-          //   if (that.data.coupleA == 0) {
-          //     that.setData({ coupleA: 1 })
-              
-          //   } else {
-          //     that.setData({ coupleA: 0 })
-          //   }
-          // }, 3800)
-          // setInterval(function () {
-          //   if (that.data.luckA == 0) {
-          //     that.setData({ luckA: 1 })
-          //   } else {
-          //     that.setData({ luckA: 0 })
-          //   }
-          // }, 4400)
         }, 3500)
       }
     )
   },
-  nextDay:function(){
+  nextDay:function(e){
     const that = this
-    
-
     if (that.data.userState.hours >0 || that.data.submitFlag) {
       return false
     } else {
+      if (e) {
+        that.submitFormId(e.detail.formId, app.globalData.userData.userId)
+      }
       that.voiceContext().playClick()
       that.setData({ submitFlag: true,maskShow:true })
       wxPost(
@@ -317,13 +320,16 @@ const options={
       )
     }
   },
-  done: function () {
+  done: function (e) {
     const that = this
     if (that.data.userState.days == 0&&that.data.userState.hour == 0 && that.data.submitFlag) {
       return false
     } else {
       that.voiceContext().playClick()
-      that.setData({ submitFlag: true})
+      if(e){
+        that.submitFormId(e.detail.formId, app.globalData.userData.userId)
+      }
+      that.setData({ submitFlag: true, lastComment:'zhenjia'})
       wx.navigateTo({
         url: './report',
         complete: () => {
@@ -345,6 +351,24 @@ const options={
       wx.navigateTo({
         url: './report',
       })
+    }
+  },
+  submitFormId: function (formId, userId){
+    if(userId && formId)
+    wxPost('/user/submit',{userId,formId},({data})=>{
+      //success callback
+    })
+  },
+  onShareAppMessage(opt) {
+    return {
+      title: '推荐这个我正在混的小程序给你，来试试，看你能混出什么样来！',
+      path: '/pages/index/index',
+      success: (res) => {
+        console.log("转发成功", res);
+      },
+      fail: (res) => {
+        console.log("转发失败", res);
+      }
     }
   }
 }

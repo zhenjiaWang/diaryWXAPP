@@ -19,18 +19,21 @@ export default {
     }
   },
   showEvent:function(data){
-    let hour = this.data.userState.hours
-    hour=parseInt(hour)
-    if (data && hour && hour !== 6){
-      //console.info(this)
-      this.voiceContext().playEvent()
-      this.setData({
-        eventShow: true,
-        maskShow: true,
-        eventItems: data['eventResultArray'],
-        eventTitle: data['event']['content']
-      })
-    }
+    setTimeout(()=>{
+      wx.hideLoading()
+      let hour = this.data.userState.hours
+      hour = parseInt(hour)
+      if (data && hour && hour !== 6) {
+        //console.info(this)
+        this.voiceContext().playEvent()
+        this.setData({
+          eventShow: true,
+          maskShow: true,
+          eventItems: data['eventResultArray'],
+          eventTitle: data['event']['content']
+        })
+      }
+    },1000) 
   },
   applyEvent: function (e) {
     const that = this
@@ -50,7 +53,6 @@ export default {
               that.setData({ submitFlag: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
               that.resultVoice(data)
             }
-           // console.info(data)
           }
         )
       }

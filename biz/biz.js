@@ -25,9 +25,11 @@ const commonData = {
   canIUse: wx.canIUse('button.open-type.getUserInfo'),
   nightClass:'',
   nightText:'',
+  nightTip:'',
   submitFlag: false,
   maskShow: false,
   dialogShow:false,
+  dialogPic: 'jieguo',
   dialogResult:'',
   dialogBtn:'确 定',
   tipShow: false,
@@ -44,8 +46,9 @@ function storeMixin(options) {
         const that=this
         if (!n) { //show event 
           setTimeout(() => {
-            const userId = this.data.userData.userId
+            // const userId = this.data.userData.userId
             let hour = this.data.userState.hours
+            let { userId, gender } = this.data.userData
             hour=parseInt(hour)
             if (!that.data.maskShow && userId && hour && hour !==6) {
               const { id: findEventId, category } = this.getEventStack().pop() || {}
@@ -91,10 +94,19 @@ function storeMixin(options) {
                   { userId },
                   ({ data }) => {
                     const eventId = data['eventId']
-                    if (stack.isHappened(eventId)) {
+                    if (stack.isHappened(eventId)) {//加载到重复事件,50%继续添加
                       stack.addMaxCount()
+                      if (Math.ceil(Math.random() * 100) > 50) {
+                        stack.push({ category: 'random' })
+                      }
                       return
                     }
+                    wx.showLoading({
+                      title: `${gender === 1 ? '骚年' : '少女'}留步...`,
+                    })
+                    setTimeout(()=>{//5s强制关闭loading
+                      wx.hideLoading()
+                    },5000)
                     if (data.errorCode >= 0) {
                      // that.setData({ hangOn: true })
                       wxGet('/userEvent/load',
@@ -114,13 +126,19 @@ function storeMixin(options) {
                                 stack.push({ category: 'random' })
                                 console.info(randomPoint, odds, ' still push event')
                               }
+                            }else{
+                              wx.hideLoading()
                             }
+                          }else{
+                            wx.hideLoading()
                           }
                           that.setData({ hangOn: false })
                         },  () => {//load fail callback
+                          wx.hideLoading()
                           that.setData({ hangOn: false })
                         })
                     } else {
+                      wx.hideLoading()
                       that.setData({ hangOn: false })
                     }
                   },  () => {//findEvent fail callback
@@ -182,7 +200,7 @@ function storeMixin(options) {
             parseUserState(data, that)
             closeMaskNavigationBarColor()
             if (data.userState.live) {
-              that.setData({ maskShow: false, dialogShow: false })
+              that.setData({ maskShow: false, dialogShow: false, dialogPic: 'jieguo' })
             } else {
               that.setData({ maskShow: false, dialogShow: false })
               that.voiceContext().playOver()
@@ -208,13 +226,13 @@ function storeMixin(options) {
       })
       that.setData({ nightClass: showClass })
       setTimeout(function () {
-        that.setData({ nightText: text })
+        that.setData({ nightText: text, nightTip:'四处逛逛,生活节奏慢点可能触发偶遇' })
         if (blackCallback) {
           blackCallback()
         }
       }, 1200)
       setTimeout(function () {
-        that.setData({ nightClass: 'show hide', nightText: '' })
+        that.setData({ nightClass: 'show hide', nightText: '', nightTip:'' })
         wx.setNavigationBarColor({
           frontColor: '#ffffff',
           backgroundColor: '#2e55af',

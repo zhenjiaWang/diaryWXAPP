@@ -23,7 +23,8 @@ Page({
     shareImgShow: false,
     shareImgSrc: '',
     hideButton:false,
-    dataDone:false
+    dataDone:false,
+    share:false
   },
   onLoad: function (options) {
     wx.showLoading({
@@ -40,19 +41,23 @@ Page({
    
     const userId=wx.getStorageSync('userId')
     const viewId=options.userId
+    const share = !!options.share
+    
     if (viewId && viewId!==userId){
-      this.setData({ hideButton:true})
+      this.setData({ hideButton: true, share})
       wxGet('/user/info', { userId: viewId},({data})=>{
         if(data.errorCode===0){
           this.setData({ userInfo: data.userData })
-          this.getImageInfo(data.userData.avatarUrl, data.userData.nickName, viewId, data.userData.lastComment)
+          const { gender, avatarUrl, nickName, lastComment } = data.userData
+          this.getImageInfo(avatarUrl, nickName, viewId, lastComment, gender, viewId)
         }
       })
     }else if(userId){//report 
       wxPost('/user/done',{userId},({data})=>{
         if (data.errorCode === 0) {
           this.setData({ userInfo: data.userData })
-          this.getImageInfo(data.userData.avatarUrl, data.userData.nickName, userId, data.comment)
+          const { gender, avatarUrl, nickName } = data.userData
+          this.getImageInfo(avatarUrl, nickName, userId, data.comment, gender, viewId)
         }
       })
     }else{
@@ -69,7 +74,7 @@ Page({
       }
     }
   },
-  getImageInfo(url, nickName, userId, commentUrl) {//  图片缓存本地的方法
+  getImageInfo(url, nickName, userId, commentUrl, gender, viewId) {//  图片缓存本地的方法
     console.info('url=' + url)
     console.info('nickName=' + nickName)
 
@@ -93,20 +98,51 @@ Page({
           }
         })
       })
-      const qrCode = new Promise((resolve, reject) => {
-        wx.getImageInfo({
-          src: 'https://img.jinrongzhushou.com/common/hun_qrcode.jpg',
-          success: (res) => {
-            console.info('get qrcode success')
-            resolve(res)
-          },
-          fail: err => {
-            reject('get qrcode fail')
-          }
-        })
-      })
+      // const qrCode = new Promise((resolve, reject) => {
+      //   wx.getImageInfo({
+      //     src: 'https://img.jinrongzhushou.com/common/hun_qrcode.jpg',
+      //     success: (res) => {
+      //       console.info('get qrcode success')
+      //       resolve(res)
+      //     },
+      //     fail: err => {
+      //       reject('get qrcode fail')
+      //     }
+      //   })
+      // })
+      // const bgImg = new Promise((resolve, reject) => {
+      //   wx.getImageInfo({
+      //     src: 'https://img.jinrongzhushou.com/common/body-bg.jpg',
+      //     success: (res) => {
+      //       console.info('get bgImg success')
+      //       resolve(res)
+      //     },
+      //     fail: err => {
+      //       reject('get bgImg fail')
+      //     }
+      //   })
+      // })
+      // const sloganImg = new Promise((resolve, reject) => {
+      //   wx.getImageInfo({
+      //     src: 'https://img.jinrongzhushou.com/common/slogan.png',
+      //     success: (res) => {
+      //       console.info('get sloganImg success')
+      //       resolve(res)
+      //     },
+      //     fail: err => {
+      //       reject('get sloganImg fail')
+      //     }
+      //   })
+      // })
       const report = new Promise((resolve, reject) => {
-        wxGet(`/user/report/${userId}`, null, ({ data }) => {
+        let reportUrl =''
+        if (viewId){
+          reportUrl = `/user/report/${userId}`
+        }else{
+          reportUrl = `/user/myReport/${userId}`
+        }
+        
+        wxGet(reportUrl, null, ({ data }) => {
           if (data.errorCode==0) {
             for (var i = 0; i < data.attrList.length; i++) {
               let v = data.data[data.attrList[i]['value']]
@@ -140,20 +176,17 @@ Page({
         })
       })
      
-      Promise.all([avatar, qrCode, report]).then((result) => {
+      Promise.all([avatar,  report]).then((result) => {
         
         const avatarResult = result[0]
-        const qrcodeResult = result[1]
-        const reportResult = result[2]
+        const reportResult = result[1]
        
-        if (avatarResult.errMsg === 'getImageInfo:ok' && qrcodeResult.errMsg === 'getImageInfo:ok' && reportResult.errorCode >= 0) {
-          
+        if (avatarResult.errMsg === 'getImageInfo:ok' && reportResult.errorCode >= 0) {
           that.draw({
             avatar: avatarResult.path, 
             nickName,
-            qrCodeImg: qrcodeResult.path,
             comment: commentUrl
-          }, reportResult.data)
+          }, reportResult.data, gender)
         }
       }).catch((error) => {
         console.info(error)
@@ -165,7 +198,9 @@ Page({
     qrCodeImg = '../../img/scjg.png',
     comment = '../../img/feng.png',
     point = '23178208',
-    nickName = '张三'
+    nickName = '张三',
+    bgImg='',
+    sloganImg=''
   } = {}, {
     coupleTitle = '左手',
     happy = '',
@@ -187,7 +222,15 @@ Page({
     experienceColor = '',
     moneyColor='',
     abilityColor='',
-    connectionsColor=''} = {}) {
+    connectionsColor='',
+    wisdom = '', 
+    beauty='',
+    popularity = '', 
+    wisdomColor = '',
+    beautyColor = '',
+    popularityColor = '',
+    clothesTitle=[],
+    luxuryTitle=[]} = {},gender) {
     let { canvasWidth } = this.data
     const ctx = wx.createCanvasContext('share')
     let usedHeight = 15 //已使用的高度
@@ -197,7 +240,11 @@ Page({
     const rankMargin = 25 //距离point宽度
     const pointFontSize = 25
     const maxTextWidth = titleWidth - 40//desc文本宽度
-    const descHeight = this.calcTextHeight(commentText, maxTextWidth, ctx) + 90
+    let descHeight=50//预留高度,其中margintop=10,剩余为底
+    for (let x = 0; x < commentText.length; x++) {
+      const h = this.drawText(ctx, commentText[x], 0, 0, 10, maxTextWidth,true)
+      descHeight += h
+    }
     this.setData({
       canvasHeight: abilityHeight + descHeight + 120 //属性+描述+二维码
     })
@@ -257,19 +304,33 @@ Page({
     usedHeight += itemH + 10
     this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '快 乐', happy, happyColor)
     this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '健康', health,healthColor)
-    this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '人 脉', connections,connectionsColor)
+    if(gender===1){
+      this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '人 脉', connections, connectionsColor)
+    }else{
+      this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '知名度', popularity, popularityColor)
+    }
 
     //line 3  
     usedHeight += itemH + 10
-    this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '社会经验', experience,experienceColor)
-    this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '正 义', positive,positiveColor)
-
+    if (gender === 1) {
+      this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '社会经验', experience, experienceColor)
+      this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '正 义', positive, positiveColor)
+    } else {
+      this.roundRect(ctx, padding, usedHeight, tripleW, itemH, itemR, '智 慧', wisdom, wisdomColor)
+      this.roundRect(ctx, padding + tripleW + itemPd, usedHeight, tripleW, itemH, itemR, '美 貌', beauty, beautyColor)
+    }
     this.roundRect(ctx, padding + tripleW * 2 + itemPd * 2, usedHeight, tripleW, itemH, itemR, '能力才干', ability,abilityColor)
 
     //line 4
     usedHeight += itemH + 10
-    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '座 驾', carTitle ? carTitle[0]:'',2)
-    this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '房 产', houseTitle ? houseTitle[0]:'',2)
+    if (gender === 1) {
+      this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '座 驾', carTitle ? carTitle[0] : '', 2)
+      this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '房 产', houseTitle ? houseTitle[0] : '', 2)
+    } else {
+      this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '衣 品', clothesTitle ? clothesTitle[0] : '', 2)
+      this.roundRect(ctx, padding + doubleW + itemPd, usedHeight, doubleW, itemH, itemR, '妆 容', luxuryTitle ? luxuryTitle[0] : '', 2)
+    }
+   
 
     //line 5
     usedHeight += itemH + 10
@@ -295,7 +356,6 @@ Page({
       usedHeight += h
     }
 
-
     //draw qrcode
     ctx.save()
     ctx.beginPath()
@@ -307,13 +367,13 @@ Page({
     ctx.arc(q_center, bottom + q_r, q_r, 0, 2 * Math.PI);
     ctx.clip()
     ctx.stroke()
-    ctx.drawImage(qrCodeImg, padding, bottom, q_d, q_d)
+    ctx.drawImage('../../img/hun_qrcode.jpg', padding, bottom, q_d, q_d)
     ctx.restore()
 
     ctx.setFontSize(16)
 
     ctx.setFillStyle('#FFFFFF')
-    ctx.fillText('长按图片,扫码加入', padding + q_d + 15, bottom + 45)
+    ctx.fillText('长按图片,扫码来挑战', padding + q_d + 15, bottom + 45)
     ctx.fillText('马上开始鬼混吧!', padding + q_d + 15, bottom + 70)
 
     ctx.draw()
@@ -322,47 +382,31 @@ Page({
       dataDone: true
     })
   },
-  drawText(ctx, str, x, initHeight, titleHeight, canvasWidth) {
+  drawText(ctx, str, x, initHeight, titleHeight, canvasWidth,r) {
     var lineWidth = 0
     var lastSubStrIndex = 0; //每次开始截取的字符串的索引
+    ctx.setFontSize(12)
     for (let i = 0; i < str.length; i++) {
       lineWidth += ctx.measureText(str[i]).width
       if (lineWidth > canvasWidth) {
-        ctx.fillText(str.substring(lastSubStrIndex, i), x, initHeight)//
+        if (!r) {
+          ctx.fillText(str.substring(lastSubStrIndex, i), x, initHeight)//
+        }
         initHeight += 20//字体的高度
         lineWidth = 0
         lastSubStrIndex = i
         titleHeight += 30;
       }
       if (i == str.length - 1) {//绘制剩余部分
-        ctx.fillText(str.substring(lastSubStrIndex, i + 1), x, initHeight)
+        if (!r) {
+          ctx.fillText(str.substring(lastSubStrIndex, i + 1), x, initHeight)
+        }
         if (lastSubStrIndex === 0) {
           titleHeight += 10 // titleHeight -initHeight(字体高度)
         }
       }
     }
     titleHeight = titleHeight + 4
-    return titleHeight
-  },
-  calcTextHeight(commentText, canvasWidth, ctx) {
-    let titleHeight = 0
-    let lineWidth = 0, lastSubStrIndex = 0
-    commentText.forEach((str) => {
-      for (let i = 0; i < str.length; i++) {
-        lineWidth += ctx.measureText(str[i]).width
-        if (lineWidth > canvasWidth) {
-          lineWidth = 0
-          lastSubStrIndex = i
-          titleHeight += 30;
-        }
-        if (i == str.length - 1) {//绘制剩余部分
-          if (lastSubStrIndex === 0) {
-            titleHeight += 10 // titleHeight -initHeight(字体高度)
-          }
-        }
-      }
-      titleHeight = titleHeight + 4
-    })
     return titleHeight
   },
   roundRect(ctx, x, y, w, h, r, prop, point,colorIndex) {
@@ -415,8 +459,18 @@ Page({
     ctx.fillText(point, x + w - (r - 5), y + 14)
 
   },
-  onShareAppMessage: function () {
-
+  onShareAppMessage(opt) {
+    const userId = wx.getStorageSync('userId')
+    return {
+      title: '推荐这个我正在混的小程序给你，来试试，看你能混出什么样来！',
+      path: `/pages/index/index?from=shareReport&userId=${userId}`,
+      success: (res) => {
+        console.log("转发成功", res);
+      },
+      fail: (res) => {
+        console.log("转发失败", res);
+      }
+    }
   },
   saveAsImg: function () {
     const that=this
@@ -453,6 +507,14 @@ Page({
     this.setData({
       shareImgShow: false,
       shareImgSrc: ''
+    })
+  },
+  challenge:function(){
+    this.backHome()
+  },
+  rankingList:function(){
+    wx.navigateTo({
+      url: './rankingList',
     })
   }
 })
