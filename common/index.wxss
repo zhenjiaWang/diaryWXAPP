@@ -441,9 +441,15 @@ text.num-big {
 .phb-list .user-img-box + .font26 {
     margin-top:30rpx;
 }
-.phb-list .view2{width: 320rpx;}
+.phb-list .view2{width: 360rpx;}
 .phb-list .view3{height:140rpx!important;line-height:140rpx!important;float:right;text-align: right;}
 .phb-list .view3 text{position: relative;}
+.phb-list .view2 .font24{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.one-txt{width: 50%;float: left;margin-bottom: 10rpx;}
 .list-one {border-bottom:1px solid #333c79;padding:0 0 0 0;}
 .survival-main{
     padding:0 35rpx;
@@ -605,3 +611,11 @@ text.num-big {
     font-size:28rpx;
 }
 .phb-list .user-img-box + .font26 image{width: 30rpx;vertical-align: -4rpx;margin-left:10rpx;}
+.btns-item .begin-btn{display: inline-block; margin: 0 10rpx;}
+.btns-item{text-align: center;margin-top:30rpx;}
+
+
+
+
+
+
