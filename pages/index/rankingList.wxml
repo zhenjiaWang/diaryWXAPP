@@ -6,8 +6,8 @@
     <view class='game-main game-phb'>
         <view class='top-title tab-title clearfix'>
             <view class='{{activeType=="all"?"active":""}}' data-activeType='all' bindtap='selected'>综合排行</view>
-            <view class='{{activeType=="man"?"active":""}}' data-activeType='man' bindtap='selected'>男排行</view>
-            <view class='{{activeType=="lady"?"active":""}}' data-activeType='lady' bindtap='selected'>女排行</view>
+            <view class='{{activeType=="man"?"active":""}}' data-activeType='man' bindtap='selected'>男版排行</view>
+            <view class='{{activeType=="lady"?"active":""}}' data-activeType='lady' bindtap='selected'>女版排行</view>
             <view class='{{activeType=="rule"?"active":""}}' data-activeType='rule' bindtap='selected'>评分标准</view>
         </view>
         <view class='begin-txt-box' hidden="{{!ruleShow}}">
@@ -32,10 +32,10 @@
                     <text>综合评分>=800000</text>
                 </view>
             </view>
-            <view class='clearfix txt-box'>
-                <view class='tag-png' style='float:none;'><image style='height:auto;' src='../../img/qiong-j.png' mode='widthFix'></image></view>
-              <text>综合评分{{char_lt}}800000</text>
-            </view>
+              <view class='clearfix txt-box'>
+                  <view class='tag-png' style='float:none;'><image style='height:auto;' src='../../img/qiong-j.png' mode='widthFix'></image></view>
+                <text>综合评分{{char_lt}}800000</text>
+              </view>
               <text>\n</text>
               <text class='color2'>这是一个金钱至上的游戏，所以金钱得到的分数是最高的，毕竟现实生活里没钱是万万不能的，有钱的快乐是无法想象的。</text>
               <text>\n</text>
@@ -116,11 +116,9 @@
               <text>\n</text>
               <text>\n</text>
               <text class='color4 font26'>对了，最终你买了的所有东西都会折算成金钱来转换成得分！这么设置只是让大家知道，有钱，请及时行乐。</text>
-              
-              
           </view>
         </view>
-        <view class='top-title' bindtap='viewMyReport' hidden="{{!show}}" wx:if='{{myData}}'>
+        <view class='top-title' bindtap='viewMyReport' hidden="{{!show}}" wx:if='{{myData.avatarUrl}}'>
             <view class='pull-left view1'>
                 <view><text class='numFont font40 color2'>{{myData.seq}}</text></view>
                 <view><text class='font24 color2'>我的排名</text></view>
@@ -141,9 +139,19 @@
         </view>
         <view class='begin-txt-box' hidden="{{!show}}">
             <view class='begin-txt-main'>
+              <text class='color2'>近期会开放冲榜有奖活动 奖品暂定女生喜爱的口红</text>
+              <image src='../../img/kouhong.png' mode='widthFix' style='width:36rpx;height:36rpx;padding-left:2rpx;'></image>
+              <text>\n</text>
+              <text class='color2'>综合排行 <text class='color4'>混王之王（最高一位）</text><text class='color5'>名动京城（最高一位）</text></text>
+              <text>\n</text>
+              <text class='color2'>男女排行 <text class='color4'>混王之王（分别最高一位）</text></text>
+              <text>\n</text>
+              <text>\n</text>
                 <view class='phb-title clearfix'>
                     <text class='font30'>单局排行</text>
-                    <text>上次更新时间：{{lastUpdate}}</text>
+                    <text class='loop-text'>上次更新时间：{{lastUpdate}}</text>
+                    <!-- <text>上次更新时间：{{lastUpdate}}</text>
+                    <text>上次更新时间：{{lastUpdate}}</text> -->
                 </view>
                 <view class='phb-list'>
                     <view class='list-one clearfix' wx:for="{{list}}" wx:key="id" bindtap='viewReport' data-id="{{item.id}}">

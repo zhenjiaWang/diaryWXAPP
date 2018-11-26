@@ -26,16 +26,25 @@
       </view>
       <form report-submit="true" bindsubmit='gameStart'>
         <button wx:if='{{hasAuth}}' class='begin-btn' formType="submit">{{(lastComment&&currentDays==0&&currentHours==0)?"重新混":"开始混"}}</button>
+        
       </form>
-      <view class='btns-item clearfix'>
+      <form report-submit="true" bindsubmit='viewRankingList' wx:if='{{hasAuth}}' >
+          <button class='begin-btn begin-btn2' formType="submit" >排行榜</button>
+       </form>
+
+       <form report-submit="true" bindsubmit='viewHelp' wx:if='{{hasAuth}}'>
+        <button  class='begin-btn begin-btn3' formType="submit">玩法说明</button>
+       </form>
+      <!-- <view class='btns-item clearfix'>
        <form report-submit="true" bindsubmit='viewRankingList' wx:if='{{hasAuth}}' >
           <button class='begin-btn begin-btn2' formType="submit" >排行榜</button>
        </form>
        <form report-submit="true" bindsubmit='viewRankingList' wx:if='{{hasAuth}}' >
-        <button  class='begin-btn begin-btn2'>玩法说明</button>
+        <button  class='begin-btn begin-btn3'>玩法说明</button>
        </form>
-      </view>
+      </view> -->
       <button wx:if='{{!hasAuth}}' class='begin-btn' open-type='getUserInfo' lang='zh_CN' bindgetuserinfo='gameAuth'>去授权</button>
+      
     </block>
     <!-- <view class='begin-btn begin-btn2' bindtap='viewReport'>temp生存结果</view> -->
 </view>
@@ -158,7 +167,7 @@
         <view class='icon-right'></view>
         <view class='title-img'>
           <image src="../../img/title-right.png" mode="widthFix" style='height:auto'></image>
-          <image src='../../img/ques.png' class='ask' bindtap='actionTip'></image>
+          <image src='../../img/ques.png' class='ask' bindtap='viewHelp'></image>
         </view>
         <view class='right-inner'>
           <view class='btn-box  clearfix {{userState.jobLimit==0?"":"disable"}}' bindtap='actionJob'>
