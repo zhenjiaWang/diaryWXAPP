@@ -12,16 +12,30 @@
         </view>
         <view class='begin-txt-box' hidden="{{!ruleShow}}">
           <view class='begin-txt-main'>
-              <view class='tag-png' style='float:none;'><image style='height:auto;' src='../../img/hun-j.png' mode='widthFix'></image></view>
-              <text>综合评分>=3500000</text>
-              <view class='tag-png' style='float:none;'><image style='height:auto;' src='../../img/jing-j.png' mode='widthFix'></image></view>
-              <text>综合评分>=2400000</text>
-              <view class='tag-png' style='float:none;'><image style='height:auto;' src='../../img/feng-j.png' mode='widthFix'></image></view>
-              <text>综合评分>=1500000</text>
-              <view class='tag-png' style='float:none;'><image style='height:auto;' src='../../img/lu-j.png' mode='widthFix'></image></view>
-              <text>综合评分>=800000</text>
-              <view class='tag-png' style='float:none;'><image style='height:auto;' src='../../img/qiong-j.png' mode='widthFix'></image></view>
+            <view class='clearfix txt-box'>
+                <view class='one-txt'>
+                    <view class='tag-png' style='float:none;'><image style='height:auto;' src='../../img/hun-j.png' mode='widthFix'></image></view>
+                    <text>综合评分>=3500000</text>
+                </view>
+                <view class='one-txt'>
+                    <view class='tag-png' style='float:none;'><image style='height:auto;' src='../../img/jing-j.png' mode='widthFix'></image></view>
+                    <text>综合评分>=2400000</text>
+                </view>
+            </view>
+            <view class='clearfix txt-box'>
+                <view class='one-txt'>
+                    <view class='tag-png' style='float:none;'><image style='height:auto;' src='../../img/feng-j.png' mode='widthFix'></image></view>
+                    <text>综合评分>=1500000</text>
+                </view>
+                <view class='one-txt'>
+                    <view class='tag-png' style='float:none;'><image style='height:auto;' src='../../img/lu-j.png' mode='widthFix'></image></view>
+                    <text>综合评分>=800000</text>
+                </view>
+            </view>
+            <view class='clearfix txt-box'>
+                <view class='tag-png' style='float:none;'><image style='height:auto;' src='../../img/qiong-j.png' mode='widthFix'></image></view>
               <text>综合评分{{char_lt}}800000</text>
+            </view>
               <text>\n</text>
               <text>\n</text>
               <text class='color2'>这是一个金钱至上的游戏，所以金钱得到的分数是最高的，毕竟现实生活里没钱是万万不能的，有钱的快乐是无法想象的。</text>
