@@ -13,7 +13,7 @@ Page({
     char_lt:'<'
   },
   onLoad: function (options) {
-    this.loadRankings()
+    this.loadRankings(true)
   },
   selected: function (e){
     const that = this
@@ -30,7 +30,7 @@ Page({
       })
     }
   },
-  loadRankings:function(){
+  loadRankings:function(f){
     const that = this
     let gender=''
     if(that.data.activeType==='man'){
@@ -53,6 +53,9 @@ Page({
     }
     wxGet(`/user/rankings/${userId}`, { 'gender': gender}, ({ data }) => {
       if (data.errorCode >= 0) {
+        if (!data.myData){
+          data.myData=false
+        }
         const { list, myData } = data
         that.setData({
           list, myData
@@ -60,10 +63,14 @@ Page({
       }
     }, null, () => {
       setTimeout(function () {
-        wx.hideLoading()
+        let t=500
+        if(f){
+          t+=500
+        }
         that.setData({
           show: true
         })
+        wx.hideLoading()
       }, 500)
     })
   },

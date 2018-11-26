@@ -37,7 +37,6 @@
               <text>综合评分{{char_lt}}800000</text>
             </view>
               <text>\n</text>
-              <text>\n</text>
               <text class='color2'>这是一个金钱至上的游戏，所以金钱得到的分数是最高的，毕竟现实生活里没钱是万万不能的，有钱的快乐是无法想象的。</text>
               <text>\n</text>
               <text>\n</text>
@@ -116,6 +115,8 @@
               <text class='color2'>其次的工作和车（衣）、房（妆容）直接增加300000分</text>
               <text>\n</text>
               <text>\n</text>
+              <text class='color4 font26'>对了，最终你买了的所有东西都会折算成金钱来转换成得分！这么设置只是让大家知道，有钱，请及时行乐。</text>
+              
               
           </view>
         </view>
