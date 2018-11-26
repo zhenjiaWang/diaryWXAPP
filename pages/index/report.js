@@ -23,7 +23,8 @@ Page({
     shareImgShow: false,
     shareImgSrc: '',
     hideButton:false,
-    dataDone:false
+    dataDone:false,
+    share:false
   },
   onLoad: function (options) {
     wx.showLoading({
@@ -40,8 +41,10 @@ Page({
    
     const userId=wx.getStorageSync('userId')
     const viewId=options.userId
+    const share = !!options.share
+    
     if (viewId && viewId!==userId){
-      this.setData({ hideButton:true})
+      this.setData({ hideButton: true, share})
       wxGet('/user/info', { userId: viewId},({data})=>{
         if(data.errorCode===0){
           this.setData({ userInfo: data.userData })
@@ -457,9 +460,10 @@ Page({
 
   },
   onShareAppMessage(opt) {
+    const userId = wx.getStorageSync('userId')
     return {
       title: '推荐这个我正在混的小程序给你，来试试，看你能混出什么样来！',
-      path: '/pages/index/index',
+      path: `/pages/index/index?from=shareReport&userId=${userId}`,
       success: (res) => {
         console.log("转发成功", res);
       },
@@ -503,6 +507,14 @@ Page({
     this.setData({
       shareImgShow: false,
       shareImgSrc: ''
+    })
+  },
+  challenge:function(){
+    this.backHome()
+  },
+  rankingList:function(){
+    wx.navigateTo({
+      url: './rankingList',
     })
   }
 })
