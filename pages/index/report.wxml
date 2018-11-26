@@ -217,6 +217,7 @@
                 </view>
             </view>
         </view>
+        
         <view class='clearfix' wx:if="{{!hideButton}}">
             <button class='begin-btn begin-btn2' style='float:left;'  open-type="share">邀好友挑战</button>
             <button class='begin-btn begin-btn' style='color:#fff;float:right;margin-top:20rpx;'bindtap="saveAsImg">保存分享图</button>

@@ -9,7 +9,7 @@ var isEnableMoneyBtn = function (hour, money, reqMoney) {
   if(reqCal==='花'){
     reqMoney = 0 + reqMoney
   }else{
-    reqMoney = 0 - reqMoney
+    reqMoney = money
   }
   return (hour == 0 || money < reqMoney) ? false : true
 }

@@ -27,13 +27,13 @@
       <form report-submit="true" bindsubmit='gameStart'>
         <button wx:if='{{hasAuth}}' class='begin-btn' formType="submit">{{(lastComment&&currentDays==0&&currentHours==0)?"重新混":"开始混"}}</button>
       </form>
-      <view wx:if='{{hasAuth}}' class='begin-btn begin-btn2' bindtap='viewRankingList'>排行榜</view>
+      <view class='btns-item clearfix'>
+        <view wx:if='{{hasAuth}}' class='begin-btn begin-btn2' bindtap='viewRankingList'>排行榜</view>
+        <view wx:if='{{hasAuth}}' class='begin-btn begin-btn2' bindtap='viewRankingList'>玩法说明</view>
+      </view>
       <button wx:if='{{!hasAuth}}' class='begin-btn' open-type='getUserInfo' lang='zh_CN' bindgetuserinfo='gameAuth'>去授权</button>
     </block>
-    
-    
     <!-- <view class='begin-btn begin-btn2' bindtap='viewReport'>temp生存结果</view> -->
-
 </view>
 <view class='game-main' wx:if='{{hasUserInfo}}' >
   <view class='top-title'>
