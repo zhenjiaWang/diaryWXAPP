@@ -347,6 +347,16 @@ const options={
       })
     }
   },
+  viewHelp: function (e) {
+    if (e) {
+      if (app.globalData.userData){
+        this.submitFormId(e.detail.formId, app.globalData.userData.userId)
+      }
+    }
+    wx.navigateTo({
+      url: './help',
+    })
+  },
   viewRankingList: function (e){
     if (e) {
       this.submitFormId(e.detail.formId, app.globalData.userData.userId)
