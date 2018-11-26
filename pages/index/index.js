@@ -47,7 +47,12 @@ const options={
   getEventStack: function () {
     return eventStack
   },
-  onLoad: function () {
+  onLoad: function (options) {
+    if (options.from ==='shareReport'){
+      wx.navigateTo({
+        url: `./report?userId=${options.userId}&share=true`,
+      })
+    }
     wx.showLoading({
       title: '请稍等...',
       mask: true
