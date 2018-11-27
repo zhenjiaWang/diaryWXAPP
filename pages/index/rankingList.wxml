@@ -6,8 +6,8 @@
     <view class='game-main game-phb'>
         <view class='top-title tab-title clearfix'>
             <view class='{{activeType=="all"?"active":""}}' data-activeType='all' bindtap='selected'>综合排行</view>
-            <view class='{{activeType=="man"?"active":""}}' data-activeType='man' bindtap='selected'>男版排行</view>
-            <view class='{{activeType=="lady"?"active":""}}' data-activeType='lady' bindtap='selected'>女版排行</view>
+            <view class='{{activeType=="man"?"active":""}}' data-activeType='man' bindtap='selected'>男神排行</view>
+            <view class='{{activeType=="lady"?"active":""}}' data-activeType='lady' bindtap='selected'>女神排行</view>
             <view class='{{activeType=="rule"?"active":""}}' data-activeType='rule' bindtap='selected'>评分标准</view>
         </view>
         <view class='begin-txt-box' hidden="{{!ruleShow}}">

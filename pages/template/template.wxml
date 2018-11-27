@@ -24,7 +24,13 @@
         </view>
       <!-- <text>{{dialogText}}</text> -->
     </view>
-    <view class='btn-2' bindtap='dialogOK'>{{dialogBtn}}</view>
+    
+    <view bindtap='dialogOK' style="position:relative">
+        <form bindsubmit="pushFormSubmit" report-submit='true'>
+          <button style='-webkit-transform: scale(0.5);transform:scale(1);content:"";height:90rpx; width: 100%;border:1px solid transparent;background-color:transparent; position: absolute; top: 0; left: 0' plain="true" formType="submit"></button>
+          <view class='btn-2' >{{dialogBtn}}</view>
+        </form>
+      </view>
   </view>
 </template>
 <template name="popEvent">
@@ -36,9 +42,14 @@
       <view class='text-center'>{{eventTitle}}</view>
     </view>
 
-     <view class='btn-2' bindtap='applyEvent' wx:for="{{eventItems}}" wx:key="id" data-id="{{item.id}}">
-      {{item.resultText}}
-    </view>
+      <view bindtap='applyEvent' wx:for="{{eventItems}}" wx:key="id" data-id="{{item.id}}" style="position:relative">
+        <form bindsubmit="pushFormSubmit" report-submit='true'>
+          <button style='-webkit-transform: scale(0.5);transform:scale(1);content:"";height:90rpx; width: 100%;border:1px solid transparent;background-color:transparent; position: absolute; top: 0; left: 0' plain="true" formType="submit"></button>
+          <view class='btn-2' >
+            {{item.resultText}}
+          </view>
+        </form>
+      </view>
   </view>
 </template>
 
@@ -58,9 +69,14 @@
               <text>个人能力成长，每次消耗 1 个小时</text>
           </view>
       </view>
-      <view class='feed  {{tools.isEnableMoneyBtn(userState.hours,userState.moneyNumber,item.title)?"":"disable"}}' wx:for='{{planItems}}' wx:key='id' bindtap='applyPlan' data-id='{{item.id}}'>
-          <view>{{item.remarks}}</view>
-          <view>{{item.title}}</view>
+      <view wx:for='{{planItems}}' wx:key='id' bindtap='applyPlan' data-id='{{item.id}}' style="position:relative">
+        <form bindsubmit="pushFormSubmit" report-submit='true'>
+          <button style='-webkit-transform: scale(0.5);transform:scale(1);content:"";height:110rpx; width: 100%;border:1px solid transparent;background-color:transparent; position: absolute; top: 0; left: 0' plain="true" formType="submit"></button>
+          <view class='feed  {{tools.isEnableMoneyBtn(userState.hours,userState.moneyNumber,item.title)?"":"disable"}}' >
+              <view>{{item.remarks}}</view>
+              <view>{{item.title}}</view>
+          </view>
+        </form>
       </view>
     </view>
   </view>

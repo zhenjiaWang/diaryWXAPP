@@ -1,6 +1,7 @@
 <view class='body-bg'>
   <view class='game-main game-phb'>
     <view class='top-title tab-title clearfix'>
+      
       <view class='{{activeType=="base"?"active":""}}' data-activeType='base' bindtap='selected'>基础玩法</view>
       <view class='{{activeType=="setting"?"active":""}}' data-activeType='setting' bindtap='selected'>每日安排</view>
       <view class='{{activeType=="event"?"active":""}}' data-activeType='event' bindtap='selected'>偶遇机制</view>
@@ -9,6 +10,9 @@
 
     <view class='begin-txt-box' hidden='{{activeType!=="base"}}'>
       <view class='begin-txt-main'>
+
+        <text class='color5 font26'>基于这是一个伪“硬核游戏”，玩法上有一点入门难度，以及需要一点点社会生活基本知识，所以有了这个基础玩法</text>
+        <text>\n</text>
         <text class='color5 font26'>我不想打太多字你们随便看看就行，打字真的好累啊，嘤嘤嘤嘤嘤嘤。</text>
         <text>\n</text>
         <text>\n</text>
@@ -57,10 +61,6 @@
         <text>\n</text>
         <text>赢了“会所嫩模,输了下海干活”</text>
         <text>\n</text>
-        <text>遇到大跌也没关系，天台很好很凉快</text>
-        <text>\n</text>
-        <text>机会都掌握在勇敢的人手中---窝滋吉朔德</text>
-        <text>\n</text>
         <text>\n</text>
         <text class='color2 font26'>偶遇</text>
         <text>\n</text>
@@ -82,11 +82,11 @@
         <text>\n</text>
         <text>每天记得看下理财，涨了就卖出，赚差价，长期看好可以留本金</text>
         <text>\n</text>
-        <text >每天时来运转搏一搏，梦想还是要有的</text>
+        <text>每天时来运转搏一搏，梦想还是要有的</text>
         <text>\n</text>
-        <text >昨天的我你爱理不理，今天的我嘻嘻嘻嘻嘻</text>
+        <text>昨天的我你爱理不理，今天的我嘻嘻嘻嘻嘻</text>
         <text>\n</text>
-        <text >属性达到一定数值，记得去换工作</text>
+        <text>属性达到一定数值，记得去换工作</text>
         <text>\n</text>
         <text>\n</text>
         <text class='color5 font26'>篇幅有限，请您继续消耗时间，完成这漫长又充实的七天</text>
@@ -100,7 +100,7 @@
         <text>\n</text>
         <text class='color5 font26'>谢谢</text>
         <text>\n</text>
-        <image src='{{wxNumber}}' mode='widthFix' style='width:256rpx;height:256rpx;' bindtap='previewImage'></image>
+        <!-- <image src='{{wxNumber}}' mode='widthFix' style='width:256rpx;height:256rpx;' bindtap='previewImage'></image> -->
       </view>
     </view>
 
