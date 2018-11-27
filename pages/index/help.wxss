@@ -1,0 +1,11 @@
+/* pages/index/help.wxss */
+/* pages/index/RankingList.wxss */
+@import '../../common/index.wxss';
+.body-bg{
+    overflow-y: auto;
+    padding-bottom: 130rpx;
+}
+.game-phb .pull-left.view2{height:130rpx;}
+.game-phb .begin-txt-box .begin-txt-main{height: auto!important;}
+.phb-list{height: auto;}
+.begin-btn{margin-bottom:30rpx;}

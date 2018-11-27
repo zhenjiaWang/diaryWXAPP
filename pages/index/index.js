@@ -48,7 +48,13 @@ const options={
     return eventStack
   },
   onLoad: function (options) {
-    if (options.from ==='shareReport'){
+    if (options.scene) {//by qrcode
+      let scene = decodeURIComponent(options.scene)
+      console.info(scene,'from  scan qrcode')
+      wx.navigateTo({
+        url: `./report?userId=${scene}&share=true`,
+      })
+    } else if (options.from === 'shareReport') {//by share
       wx.navigateTo({
         url: `./report?userId=${options.userId}&share=true`,
       })
@@ -341,7 +347,20 @@ const options={
       })
     }
   },
-  viewRankingList: function (){
+  viewHelp: function (e) {
+    if (e) {
+      if (app.globalData.userData){
+        this.submitFormId(e.detail.formId, app.globalData.userData.userId)
+      }
+    }
+    wx.navigateTo({
+      url: './help',
+    })
+  },
+  viewRankingList: function (e){
+    if (e) {
+      this.submitFormId(e.detail.formId, app.globalData.userData.userId)
+    }
     wx.navigateTo({
       url: './rankingList',
     })

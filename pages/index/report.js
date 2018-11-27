@@ -24,7 +24,8 @@ Page({
     shareImgSrc: '',
     hideButton:false,
     dataDone:false,
-    share:false
+    share:false,
+    prepareData:null
   },
   onLoad: function (options) {
     wx.showLoading({
@@ -98,18 +99,6 @@ Page({
           }
         })
       })
-      // const qrCode = new Promise((resolve, reject) => {
-      //   wx.getImageInfo({
-      //     src: 'https://img.jinrongzhushou.com/common/hun_qrcode.jpg',
-      //     success: (res) => {
-      //       console.info('get qrcode success')
-      //       resolve(res)
-      //     },
-      //     fail: err => {
-      //       reject('get qrcode fail')
-      //     }
-      //   })
-      // })
       // const bgImg = new Promise((resolve, reject) => {
       //   wx.getImageInfo({
       //     src: 'https://img.jinrongzhushou.com/common/body-bg.jpg',
@@ -176,17 +165,27 @@ Page({
         })
       })
      
-      Promise.all([avatar,  report]).then((result) => {
+      Promise.all([avatar, report]).then((result) => {
         
         const avatarResult = result[0]
         const reportResult = result[1]
-       
+        wx.hideLoading()
+        that.setData({
+          dataDone: true
+        })
         if (avatarResult.errMsg === 'getImageInfo:ok' && reportResult.errorCode >= 0) {
-          that.draw({
-            avatar: avatarResult.path, 
-            nickName,
-            comment: commentUrl
-          }, reportResult.data, gender)
+          that.setData({
+            prepareData:{
+              param1: {
+                avatar: avatarResult.path,
+                nickName,
+                comment: commentUrl
+              },
+              param2: reportResult.data,
+              gender
+            }
+          })
+          //that.draw(, reportResult.data, gender)
         }
       }).catch((error) => {
         console.info(error)
@@ -231,6 +230,7 @@ Page({
     popularityColor = '',
     clothesTitle=[],
     luxuryTitle=[]} = {},gender) {
+      try{
     let { canvasWidth } = this.data
     const ctx = wx.createCanvasContext('share')
     let usedHeight = 15 //已使用的高度
@@ -377,10 +377,13 @@ Page({
     ctx.fillText('马上开始鬼混吧!', padding + q_d + 15, bottom + 70)
 
     ctx.draw()
-    wx.hideLoading()
-    this.setData({
-      dataDone: true
-    })
+    // wx.hideLoading()
+    // this.setData({
+    //   dataDone: true
+    // })
+    } catch (ex) {
+      console.info(ex)
+    }
   },
   drawText(ctx, str, x, initHeight, titleHeight, canvasWidth,r) {
     var lineWidth = 0
@@ -473,19 +476,52 @@ Page({
     }
   },
   saveAsImg: function () {
+    const that = this
+    if (this.data.prepareData) {
+      const { param1, param2, gender } = this.data.prepareData
+      const userId = wx.getStorageSync('userId')
+      wx.showLoading({
+        title: '生成长图中...',
+      })
+      wx.getImageInfo({
+        src: `https://game.jinrongzhushou.com/v1/user/QRCode/${userId}`,
+        success: (res) => {
+          param1.qrCodeImg = res.path
+          that.draw(param1, param2, gender)
+          setTimeout(()=>{//cvs.draw() 方法有延迟 
+            that._save()
+          },1000)
+        },
+        fail: err => {
+          wx.hideLoading()
+          wx.showToast({
+            title: '二维码获取失败'
+          })
+          setTimeout(() => {
+            wx.hideToast()
+          }, 2000)
+        }
+      })
+    } else {
+      wx.showToast({
+        title: '数据不完整'
+      })
+      setTimeout(() => {
+        wx.hideToast()
+      }, 2000)
+    }
+  },
+  _save:function(){
     const that=this
-    wx.showLoading({
-      title: '生成长图中...',
-    })
     wx.canvasToTempFilePath({
       canvasId: 'share',
       fileType: 'jpg',
       success: function (res) {
-        const path=res.tempFilePath
+        const path = res.tempFilePath
         wx.saveImageToPhotosAlbum({
           filePath: path,
           success(res) {
-            wx.hideLoading();
+            wx.hideLoading()
             that.setData({
               shareImgShow: true,
               shareImgSrc: path
@@ -513,8 +549,8 @@ Page({
     this.backHome()
   },
   rankingList:function(){
-    wx.navigateTo({
-      url: './rankingList',
+    wx.redirectTo({
+      url: './rankingList'
     })
   }
 })
