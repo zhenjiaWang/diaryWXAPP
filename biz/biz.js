@@ -10,7 +10,7 @@ import event from './event.js'
 import fund from './fund.js'
 
 const { wxGet, parseUserState, showMaskNavigationBarColor,closeMaskNavigationBarColor } = require('../utils/common.js')
-
+const app = getApp()
 const commonData = {
   attrList: [],
   lastComment:'',
@@ -172,9 +172,15 @@ function storeMixin(options) {
     },
     actionTip: function () {
       const that = this
-      showMaskNavigationBarColor()
-      that.voiceContext().playClick()
-      that.setData({tipShow:true,maskShow:true})
+      wx.navigateTo({
+        url: './help',
+      })
+      app.aldstat.sendEvent('游戏里查看帮助',
+        {
+          nickName: that.data.userData.nickName,
+          gender: that.data.userData.gender,
+          'time': Date.now()
+        })
     },
     resultVoice: function (data,luckWin){
       const that = this

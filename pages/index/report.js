@@ -2,7 +2,7 @@
 const app = getApp()
 const { setWatcher } = require("../../utils/watcher.js");
 import { DrawKLine } from '../../utils/DrawKLine.js'
-const { wxGet,wxPost } = require('../../utils/common.js')
+const { wxGet, wxPost } = require('../../utils/common.js')
 const descriptHeight = 500
 const abilityHeight = 380
 const color1 = '#8fc673'
@@ -51,6 +51,12 @@ Page({
           this.setData({ userInfo: data.userData })
           const { gender, avatarUrl, nickName, lastComment } = data.userData
           this.getImageInfo(avatarUrl, nickName, viewId, lastComment, gender, viewId)
+          app.aldstat.sendEvent('查看结果',
+            {
+              nickName: data.userData.nickName,
+              gender: data.userData.gender,
+              'time': Date.now()
+            })
         }
       })
     }else if(userId){//report 
@@ -59,6 +65,12 @@ Page({
           this.setData({ userInfo: data.userData })
           const { gender, avatarUrl, nickName } = data.userData
           this.getImageInfo(avatarUrl, nickName, userId, data.comment, gender, viewId)
+          app.aldstat.sendEvent('查看结果',
+            {
+              nickName: data.userData.nickName,
+              gender: data.userData.gender,
+              'time': Date.now()
+            })
         }
       })
     }else{
@@ -89,10 +101,13 @@ Page({
       that.setData({ commentImg: commentUrl })
 
       const avatar = new Promise((resolve, reject) => {
+        console.info('avatar url=' + url)
         wx.getImageInfo({
           src: url,
           success: res => {
             resolve(res)
+            console.info('avatar done')
+
           },
           fail: error => {
             reject('avatar qrcode fail')
@@ -158,6 +173,7 @@ Page({
               text: data.data.commentText,
               prop: data.data
             })
+            console.info('reportUrl done')
           }
           resolve(data)
         }, (error) => {
@@ -166,7 +182,7 @@ Page({
       })
      
       Promise.all([avatar, report]).then((result) => {
-        
+        console.info('Promise done')
         const avatarResult = result[0]
         const reportResult = result[1]
         wx.hideLoading()
@@ -194,7 +210,7 @@ Page({
   },
   draw({
     avatar = '../../img/scjg.png',
-    qrCodeImg = '../../img/scjg.png',
+    qrCodeImg = '',
     comment = '../../img/feng.png',
     point = '23178208',
     nickName = '张三',
@@ -367,7 +383,7 @@ Page({
     ctx.arc(q_center, bottom + q_r, q_r, 0, 2 * Math.PI);
     ctx.clip()
     ctx.stroke()
-    ctx.drawImage('../../img/hun_qrcode.jpg', padding, bottom, q_d, q_d)
+    ctx.drawImage(qrCodeImg, padding, bottom, q_d, q_d)
     ctx.restore()
 
     ctx.setFontSize(16)
@@ -464,8 +480,16 @@ Page({
   },
   onShareAppMessage(opt) {
     const userId = wx.getStorageSync('userId')
+    const that = this
+    let title = '全民混北京，三分靠努力，七分靠打拼，剩下九十分靠天意！'
+    let imgSrc = ''
+    if (app.globalData.shareObj) {
+      title = app.globalData.shareObj.title
+      imgSrc = app.globalData.shareObj.imgSrc
+    }
     return {
-      title: '推荐这个我正在混的小程序给你，来试试，看你能混出什么样来！',
+      title: title,
+      imageUrl: imgSrc,
       path: `/pages/index/index?from=shareReport&userId=${userId}`,
       success: (res) => {
         console.log("转发成功", res);
@@ -483,6 +507,7 @@ Page({
       wx.showLoading({
         title: '生成长图中...',
       })
+      console.info('生成长图中'+userId)
       wx.getImageInfo({
         src: `https://game.jinrongzhushou.com/v1/user/QRCode/${userId}`,
         success: (res) => {
@@ -502,6 +527,12 @@ Page({
           }, 2000)
         }
       })
+      app.aldstat.sendEvent('生成分享图',
+        {
+          nickName: that.data.userInfo.nickName,
+          gender: that.data.userInfo.gender,
+          'time': Date.now()
+        })
     } else {
       wx.showToast({
         title: '数据不完整'
@@ -547,10 +578,40 @@ Page({
   },
   challenge:function(){
     this.backHome()
+    app.aldstat.sendEvent('我要挑战',
+      {
+        'time': Date.now()
+      })
+  },
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    wx.getSetting({
+      success: function (res) {
+        if (res.authSetting["scope.userInfo"]) {
+          wx.getUserInfo({
+            success: function (res) {
+              var userInfo = res;
+              wx.login({
+                success: function (res) {
+                  var jsCode = res.code;
+                  app.aldpush.pushuserinfo(userInfo, jsCode);
+                }
+              })
+            }
+          })
+        }
+      }
+    })
   },
   rankingList:function(){
     wx.redirectTo({
       url: './rankingList'
     })
+    app.aldstat.sendEvent('查看结果跳转排行榜',
+      {
+        'time': Date.now()
+      })
   }
 })

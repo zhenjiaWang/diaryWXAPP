@@ -19,6 +19,12 @@ Page({
    */
   onLoad: function (options) {
     this.loadRankings()
+    app.aldstat.sendEvent('查看说明:init base',
+      {
+        nickName: app.globalData.nickName,
+        gender: app.globalData.gender,
+        'time': Date.now()
+      })
   },
   selected: function (e) {
     const that = this
@@ -26,6 +32,12 @@ Page({
     that.setData({
       activeType: activetype
     })
+    app.aldstat.sendEvent('查看说明:' + activetype,
+      {
+        nickName: app.globalData.nickName,
+        gender: app.globalData.gender,
+        'time': Date.now()
+      })
   },
   loadRankings: function (f) {
     const that = this
@@ -66,7 +78,23 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    wx.getSetting({
+      success: function (res) {
+        if (res.authSetting["scope.userInfo"]) {
+          wx.getUserInfo({
+            success: function (res) {
+              var userInfo = res;
+              wx.login({
+                success: function (res) {
+                  var jsCode = res.code;
+                  app.aldpush.pushuserinfo(userInfo, jsCode);
+                }
+              })
+            }
+          })
+        }
+      }
+    })
   },
 
   /**
@@ -100,7 +128,23 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
-
+  onShareAppMessage(opt) {
+    let title = '全民混北京，三分靠努力，七分靠打拼，剩下九十分靠天意！'
+    let imgSrc = ''
+    if (app.globalData.shareObj) {
+      title = app.globalData.shareObj.title
+      imgSrc = app.globalData.shareObj.imgSrc
+    }
+    return {
+      title: title,
+      imageUrl: imgSrc,
+      path: '/pages/index/index',
+      success: (res) => {
+        console.log("转发成功", res);
+      },
+      fail: (res) => {
+        console.log("转发失败", res);
+      }
+    }
   }
 })

@@ -20,6 +20,17 @@ const options={
           that.setData({
             hasAuth: app.globalData.hasAuth
           })
+          wx.getUserInfo({
+            success: function (res) {
+              var userInfo = res;
+              wx.login({
+                success: function (res) {
+                  var jsCode = res.code;
+                  app.aldpush.pushuserinfo(userInfo, jsCode);
+                }
+              })
+            }
+          })
         } else {
           app.globalData.hasAuth = false
           that.setData({
@@ -48,6 +59,7 @@ const options={
     return eventStack
   },
   onLoad: function (options) {
+    console.info(options, 'options')
     if (options.scene) {//by qrcode
       let scene = decodeURIComponent(options.scene)
       console.info(scene,'from  scan qrcode')
@@ -161,12 +173,31 @@ const options={
           app.globalData.userId = data.userData.userId
           app.globalData.userData = data.userData
           app.aldstat.sendOpenid(data.userData.openId)
+          app.aldstat.sendEvent('用户登陆',
+          { nickName: data.userData.nickName,
+            gender: data.userData.gender,
+          'time':Date.now()
+          })
         }
       },null,()=>{
         that.setData({
           waitLoading: false
         })
         wx.hideLoading()
+      })
+    let shareGender=''
+    if (app.globalData.userData){
+      shareGender=app.globalData.userData.gender
+    }else{
+      shareGender=2
+    }
+    wxGet('/user/share/' + shareGender,
+      false,
+      ({ data }) => {
+        //  console.info(data)
+        if (data.errorCode === 0) {
+          app.globalData.shareObj = data.share
+        }
       })
   },
   gameAuth:function(e){
@@ -194,7 +225,12 @@ const options={
           submitFlag: false
         })
         that.checkError()
-        //wx.hideLoading()
+        app.aldstat.sendEvent('用户授权',
+          {
+            nickName: app.globalData.nickName,
+            gender: app.globalData.gender,
+            'time': Date.now()
+          })
       }, 1000)
     }
   },
@@ -236,6 +272,12 @@ const options={
           that.submitFormId(e.detail.formId, app.globalData.userData.userId)
         }
       }
+      app.aldstat.sendEvent('开始游戏',
+        {
+          nickName: app.globalData.nickName,
+          gender: app.globalData.gender,
+          'time': Date.now()
+        })
     }
   },
   resData: function () {
@@ -324,6 +366,13 @@ const options={
           console.info(data)
         }
       )
+
+      app.aldstat.sendEvent('进入下一天',
+        {
+          nickName: that.data.userData.nickName,
+          gender: that.data.userData.gender,
+          'time': Date.now()
+        })
     }
   },
   done: function (e) {
@@ -345,6 +394,12 @@ const options={
           }, 2000)
         }
       })
+      app.aldstat.sendEvent('完成游戏',
+        {
+          nickName: that.data.userData.nickName,
+          gender: that.data.userData.gender,
+          'time': Date.now()
+        })
     }
   },
   viewHelp: function (e) {
@@ -356,6 +411,12 @@ const options={
     wx.navigateTo({
       url: './help',
     })
+    app.aldstat.sendEvent('首页查看帮助',
+      {
+        nickName: app.globalData.userData.nickName,
+        gender: app.globalData.userData.gender,
+        'time': Date.now()
+      })
   },
   viewRankingList: function (e){
     if (e) {
@@ -364,6 +425,12 @@ const options={
     wx.navigateTo({
       url: './rankingList',
     })
+    app.aldstat.sendEvent('首页查看排行',
+      {
+        nickName: app.globalData.userData.nickName,
+        gender: app.globalData.userData.gender,
+        'time': Date.now()
+      })
   },
   viewMyReport: function () {
     if (this.data.lastComment && this.data.currentDays == 0 && this.data.currentHours == 0){
@@ -373,14 +440,21 @@ const options={
     }
   },
   submitFormId: function (formId, userId){
-    if(userId && formId)
-    wxPost('/user/submit',{userId,formId},({data})=>{
-      //success callback
-    })
+    // if(userId && formId)
+    // wxPost('/user/submit',{userId,formId},({data})=>{
+    //   //success callback
+    // })
   },
   onShareAppMessage(opt) {
+    let title ='全民混北京，三分靠努力，七分靠打拼，剩下九十分靠天意！'
+    let imgSrc=''
+    if (app.globalData.shareObj) {
+      title = app.globalData.shareObj.title
+      imgSrc = app.globalData.shareObj.imgSrc
+    }
     return {
-      title: '推荐这个我正在混的小程序给你，来试试，看你能混出什么样来！',
+      title: title,
+      imageUrl: imgSrc,
       path: '/pages/index/index',
       success: (res) => {
         console.log("转发成功", res);
