@@ -4,6 +4,7 @@
 .body-bg{
     overflow-y: auto;
     padding-bottom: 130rpx;
+    -webkit-overflow-scrolling: touch;
 }
 .game-phb .pull-left.view2{height:130rpx;}
 .game-phb .begin-txt-box .begin-txt-main{height: auto!important;}
