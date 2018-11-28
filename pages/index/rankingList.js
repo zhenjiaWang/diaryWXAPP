@@ -1,6 +1,6 @@
 // pages/index/RankingList.js
 const { formatTime } = require('../../utils/util.js') 
-const { wxGet, share} = require('../../utils/common.js')
+const { wxGet} = require('../../utils/common.js')
 const app = getApp()
 Page({
   data: {
@@ -13,7 +13,7 @@ Page({
     char_lt:'<'
   },
   onLoad: function (options) {
-    this.loadRankings()
+    this.loadRankings(true)
   },
   selected: function (e){
     const that = this
@@ -28,9 +28,22 @@ Page({
         show: false,
         ruleShow:true
       })
+      if (app.globalData) {
+        app.aldstat.sendEvent('用户查看评分标准',
+          {
+            nickName: app.globalData.nickName,
+            gender: app.globalData.gender,
+            'time': Date.now()
+          })
+      } else {
+        app.aldstat.sendEvent('新用户查看评分标准',
+          {
+            'time': Date.now()
+          })
+      }
     }
   },
-  loadRankings:function(){
+  loadRankings:function(f){
     const that = this
     let gender=''
     if(that.data.activeType==='man'){
@@ -53,6 +66,9 @@ Page({
     }
     wxGet(`/user/rankings/${userId}`, { 'gender': gender}, ({ data }) => {
       if (data.errorCode >= 0) {
+        if (!data.myData){
+          data.myData=false
+        }
         const { list, myData } = data
         that.setData({
           list, myData
@@ -60,12 +76,30 @@ Page({
       }
     }, null, () => {
       setTimeout(function () {
-        wx.hideLoading()
+        let t=500
+        if(f){
+          t+=500
+        }
         that.setData({
           show: true
         })
+        wx.hideLoading()
       }, 500)
     })
+    if (app.globalData){
+      app.aldstat.sendEvent('用户查看排行:gender=' + gender,
+        {
+          nickName: app.globalData.nickName,
+          gender: app.globalData.gender,
+          'time': Date.now()
+        })
+    }else{
+      app.aldstat.sendEvent('新用户查看排行:gender=' + gender,
+        {
+          'time': Date.now()
+        })
+    }
+   
   },
   viewMyReport: function (){
     if(this.data.myData.score>0){
@@ -87,9 +121,38 @@ Page({
       delta:1
     })
   },
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    wx.getSetting({
+      success: function (res) {
+        if (res.authSetting["scope.userInfo"]) {
+          wx.getUserInfo({
+            success: function (res) {
+              var userInfo = res;
+              wx.login({
+                success: function (res) {
+                  var jsCode = res.code;
+                  app.aldpush.pushuserinfo(userInfo, jsCode);
+                }
+              })
+            }
+          })
+        }
+      }
+    })
+  },
   onShareAppMessage(opt){
-    return{
-      title: '推荐这个我正在混的小程序给你，来试试，看你能混出什么样来！',
+    let title = '全民混北京，三分靠努力，七分靠打拼，剩下九十分靠天意！'
+    let imgSrc = ''
+    if (app.globalData.shareObj) {
+      title = app.globalData.shareObj.title
+      imgSrc = app.globalData.shareObj.imgSrc
+    }
+    return {
+      title: title,
+      imageUrl: imgSrc,
       path: '/pages/index/index',
       success: (res) => {
         console.log("转发成功", res);

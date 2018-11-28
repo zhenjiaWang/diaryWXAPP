@@ -1,20 +1,72 @@
 // pages/index/help.js
+const { wxGet, } = require('../../utils/common.js')
+const app = getApp()
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    tipArray:false,
+    gender:'',
+    activeType: 'base',
+    wxNumber:'https://img.jinrongzhushou.com/common/zhenjia.jpeg'
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.loadRankings()
+    app.aldstat.sendEvent('查看说明:init base',
+      {
+        nickName: app.globalData.nickName,
+        gender: app.globalData.gender,
+        'time': Date.now()
+      })
+  },
+  selected: function (e) {
+    const that = this
+    let activetype = e.currentTarget.dataset.activetype
+    that.setData({
+      activeType: activetype
+    })
+    app.aldstat.sendEvent('查看说明:' + activetype,
+      {
+        nickName: app.globalData.nickName,
+        gender: app.globalData.gender,
+        'time': Date.now()
+      })
+  },
+  loadRankings: function (f) {
+    const that = this
+    wx.showLoading({
+      title: '请稍等...',
+    })
 
+    wxGet(`/user/help/`, null, ({ data }) => {
+      if (data.errorCode >= 0) {
+        const { tipArray } = data
+        that.setData({
+          tipArray, gender: app.globalData.userData.gender
+        })
+      }
+    }, null, () => {
+      setTimeout(function () {
+        wx.hideLoading()
+      }, 500)
+    })
   },
 
+  previewImage: function () {
+    var current = this.data.wxNumber
+    console.info(current)
+    wx.previewImage({
+      current: current, // 当前显示图片的http链接
+      urls: [current]
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -26,7 +78,23 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    wx.getSetting({
+      success: function (res) {
+        if (res.authSetting["scope.userInfo"]) {
+          wx.getUserInfo({
+            success: function (res) {
+              var userInfo = res;
+              wx.login({
+                success: function (res) {
+                  var jsCode = res.code;
+                  app.aldpush.pushuserinfo(userInfo, jsCode);
+                }
+              })
+            }
+          })
+        }
+      }
+    })
   },
 
   /**
@@ -60,7 +128,23 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
-
+  onShareAppMessage(opt) {
+    let title = '全民混北京，三分靠努力，七分靠打拼，剩下九十分靠天意！'
+    let imgSrc = ''
+    if (app.globalData.shareObj) {
+      title = app.globalData.shareObj.title
+      imgSrc = app.globalData.shareObj.imgSrc
+    }
+    return {
+      title: title,
+      imageUrl: imgSrc,
+      path: '/pages/index/index',
+      success: (res) => {
+        console.log("转发成功", res);
+      },
+      fail: (res) => {
+        console.log("转发失败", res);
+      }
+    }
   }
 })
