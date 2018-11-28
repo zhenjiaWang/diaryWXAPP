@@ -197,12 +197,94 @@ Page({
               comment: commentUrl
             }, reportResult.data)
           })
+          that.drawAttribute(reportResult.data.attribute)
           //that.draw(, reportResult.data, gender)
         }
       }).catch((error) => {
         console.info(error)
       })
     }
+  },
+  drawAttribute({
+    attribute: props = [],
+    cvsWidth = 280,
+    cvsHeight = 200,
+    shape = props.length,
+    center = cvsWidth / 2,
+    redius = center - 50,
+    angle = Math.PI * 2 / shape,
+    edgeColor = 'pink',
+    textColor = '#000'
+    
+  } = {}) {
+    const ctx = wx.createCanvasContext('attribute')
+    ctx.save()
+    ctx.strokeStyle = edgeColor
+    var r = redius / shape
+    for (var i = 0; i < shape; i++) {
+      ctx.beginPath()   //开始路径
+      var currR = r * (i + 1);
+      for (var j = 0; j < shape; j++) {
+        var x = center + currR * Math.cos(angle * j)
+        var y = center + currR * Math.sin(angle * j)
+        ctx.lineTo(x - offset, y + usedHeight)
+        //console.info(Math.abs(x), center)
+      }
+      ctx.closePath()  //闭合路径
+      ctx.stroke()  // restore to the default state
+    }
+    ctx.restore()
+
+    //draw line
+    ctx.save()
+    ctx.beginPath()
+    ctx.strokeStyle = edgeColor
+    for (var i = 0; i < shape; i++) {
+      var x = center + redius * Math.cos(angle * i)
+      var y = center + redius * Math.sin(angle * i)
+      ctx.moveTo(center - offset, center + usedHeight)
+      ctx.lineTo(x - offset, y + usedHeight)
+    }
+    ctx.stroke()
+    ctx.restore()
+
+    //draw region
+
+    ctx.save()
+    ctx.beginPath()
+    for (var i = 0; i < shape; i++) {
+      var x = center + redius * Math.cos(angle * i) * props[i][1] / 100;
+      var y = center + redius * Math.sin(angle * i) * props[i][1] / 100;
+      ctx.lineTo(x - offset, y + usedHeight)
+    }
+    ctx.closePath()
+    ctx.fillStyle = 'rgba(255,0,0,0.2)'
+    ctx.fill()
+    ctx.restore()
+
+    //draw text
+    ctx.save()
+    var fontSize = center / 10
+    ctx.font = fontSize + 'px Microsoft Yahei'
+    ctx.fillStyle = textColor;
+    for (var i = 0; i < shape; i++) {
+      var x = center + redius * Math.cos(angle * i) - offset
+      var y = center + redius * Math.sin(angle * i) + usedHeight
+      //通过不同的位置，调整文本的显示位置
+      if (angle * i >= 0 && angle * i <= Math.PI / 2) {
+        ctx.fillText(props[i][0], x, y + fontSize)
+      } else if (angle * i > Math.PI / 2 && angle * i <= Math.PI) {
+        ctx.fillText(props[i][0], x - ctx.measureText(props[i][0]).width, y + fontSize)
+      } else if (angle * i > Math.PI && angle * i <= Math.PI * 3 / 2) {
+        ctx.fillText(props[i][0], x - ctx.measureText(props[i][0]).width, y)
+      } else {
+        ctx.fillText(props[i][0], x, y)
+      }
+    }
+    ctx.restore()
+    ctx.draw()
+
+    console.info('aaa')
   },
   draw({
     avatar = '../../img/scjg.png',
