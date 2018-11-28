@@ -1,0 +1,2 @@
+<!--pages/index/temp.wxml-->
+<canvas canvas-id="share" style='width:{{canvasWidth}}px; height:{{canvasHeight}}px;'></canvas>

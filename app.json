@@ -1,12 +1,12 @@
 {
   "pages": [
-      
     "pages/index/index",
     "pages/template/template",
     "pages/logs/logs",
     "pages/index/rankingList",
     "pages/index/report",
-    "pages/index/help"
+    "pages/index/help",
+    "pages/index/temp"
   ],
   "window": {
     "backgroundTextStyle": "light",
