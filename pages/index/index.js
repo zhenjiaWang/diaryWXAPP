@@ -332,6 +332,7 @@ const options={
             that.setData({ dialogPic:'tishi',maskShow: true, dialogShow: true, dialogResult: data.resultArray })
             that.resultVoice(data)
           }
+          that.autoTip()
         }, 3500)
       }
     )
