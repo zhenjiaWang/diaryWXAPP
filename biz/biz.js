@@ -196,6 +196,24 @@ function storeMixin(options) {
         }
       }
     },
+    autoTip:function(){
+      const that = this
+      if (that.data.userState.hours == 0) {
+        if (that.data.userState.days > 0) {
+          wx.showToast({
+            title: '当日小时已耗尽，点击右上角可以进入下一天',
+            icon: 'none',
+            duration: 2500
+          })
+        }else{
+          wx.showToast({
+            title: '点击右上角立刻获得评分',
+            icon: 'none',
+            duration: 2500
+          })
+        }
+      }
+    },
     dialogOK:function(){
       const that=this
       if (that.data.userState.live) {
@@ -207,6 +225,7 @@ function storeMixin(options) {
             closeMaskNavigationBarColor()
             if (data.userState.live) {
               that.setData({ maskShow: false, dialogShow: false, dialogPic: 'jieguo' })
+              that.autoTip()
             } else {
               that.setData({ maskShow: false, dialogShow: false })
               that.voiceContext().playOver()

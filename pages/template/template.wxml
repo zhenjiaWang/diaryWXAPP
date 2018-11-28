@@ -203,7 +203,7 @@
                   <text>拥有：{{tools.getHaveNumber(userState.myHouseNumber,item.id)}}</text>
               </view>
           </view>
-          <view class='btn-mid2 {{(houseLimit==0&&tools.arrayContain(userState.myHouseArray,item.id))?"":"disable"}}'
+          <view class='btn-mid2 {{(userState.houseLimit==0&&tools.arrayContain(userState.myHouseArray,item.id))?"":"disable"}}'
              bindtap='sellCar' data-id='{{item.id}}'>出 售</view>
       </view>
     </view>
