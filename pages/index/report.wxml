@@ -1,32 +1,32 @@
 <!--pages/index/report.wxml-->
 <view class='body-bg'>
-    <!-- <view class='img-auto'><image src='../../img/scjg.png' mode='widthFix'></image></view> -->
-    <view class='game-main survival-main' hidden='{{!dataDone}}'>
-        <view class='survival clearfix'>
-            <view class='pull-left clearfix'>
-                <view class='user-img-box'>
-                    <view class='user-img'>
-                        <image src='{{userInfo.avatarUrl}}'></image>
-                    </view>
-                </view>
-                <view class='tag-img'>
-                    <image src='{{commentImg}}' mode='widthFix'></image>
-                </view>
-                <view class='r-name'>
-                    <text>{{userInfo.nickName}}</text>
-                    <image wx:if='{{userInfo.gender==2}}' src='../../img/icon-gilr.png' mode='widthFix'></image>
-                    <image wx:elif='{{userInfo.gender==1}}'src='../../img/icon-men.png' mode='widthFix'></image>
-                </view>
-            </view>
-            <view class='pull-right'>
-                <text class='numFont font72'>{{score}}</text>
-                <text class='font30'>分</text>
-            </view>
+  <!-- <view class='img-auto'><image src='../../img/scjg.png' mode='widthFix'></image></view> -->
+  <view class='game-main survival-main' hidden='{{!dataDone}}'>
+    <view class='survival clearfix'>
+      <view class='pull-left clearfix'>
+        <view class='user-img-box'>
+          <view class='user-img'>
+            <image src='{{userInfo.avatarUrl}}'></image>
+          </view>
         </view>
-        <view class='clearfix' style='width:330rpx;float:right;'>
-          <canvas canvas-id="attribute" style='width:100%px; height:120px;'></canvas>
+        <view class='tag-img'>
+          <image src='{{commentImg}}' mode='widthFix'></image>
         </view>
-        <!-- <view class='item-box item-box2 clearfix'>
+        <view class='r-name'>
+          <text>{{userInfo.nickName}}</text>
+          <image wx:if='{{userInfo.gender==2}}' src='../../img/icon-gilr.png' mode='widthFix'></image>
+          <image wx:elif='{{userInfo.gender==1}}' src='../../img/icon-men.png' mode='widthFix'></image>
+        </view>
+      </view>
+      <view class='pull-right'>
+        <text class='numFont font72'>{{score}}</text>
+        <text class='font30'>分</text>
+      </view>
+    </view>
+    <view class='clearfix' style='width:330rpx;float:right;'>
+      <canvas canvas-id="attribute" style='width:100%px; height:150px;'></canvas>
+    </view>
+    <!-- <view class='item-box item-box2 clearfix'>
             <view class="one">
                 <view class="one-inner clearfix" wx:if='{{userInfo.gender==1}}'>
                     <text class='clearfix'>
@@ -90,30 +90,74 @@
                 </view>
             </view>
         </view> -->
-        <view class='item-box item-box2 clearfix' >
-             <view class="one">
-                <view class="one-inner clearfix">
-                    <text class='clearfix'>
-                        <text class='pull-left'>金</text>
-                        <text class='pull-right'>钱</text>
-                    </text>
-                    <text class="num-big">
-                        <text class="numFont color{{prop.moneyColor}}" style='font-size:36rpx;'>{{prop.money}}</text>
-                    </text>
-                </view>
-            </view>
-            <view class="one">
-                <view class="one-inner clearfix">
-                    <text class='clearfix'>
-                        <text class='pull-left'>投</text>
-                        <text class='pull-right'>资</text>
-                    </text>
-                    <text class="num-big">
-                        <text class="numFont color1" style='font-size:36rpx;'>{{prop.fundMoney}}</text>
-                    </text>
-                </view>
-            </view>
-            <view class="one">
+    <view class='item-box item-box2 clearfix'>
+      <view class="one">
+        <view class="one-inner clearfix">
+          <text class='clearfix'>
+                          <text class='pull-left'>资产总额</text>
+          </text>
+          <text class="num-big">
+                          <text class="numFont color{{prop.assetColor}}" style='font-size:36rpx;'>{{prop.asset}}</text>
+          </text>
+        </view>
+      </view>
+      <view class="one">
+        <view class="one-inner clearfix">
+          <text class='clearfix'>
+                        <text class='pull-left'>可用现金</text>
+          </text>
+          <text class="num-big">
+                        <text class="numFont color2" style='font-size:36rpx;'>{{prop.money}}</text>
+          </text>
+        </view>
+      </view>
+      <view class="one">
+        <view class="one-inner clearfix">
+          <text class='clearfix'>
+                        <text class='pull-left'>金融资产</text>
+          </text>
+          <text class="num-big">
+                        <text class="numFont color2" style='font-size:36rpx;'>{{prop.fundMoney}}</text>
+          </text>
+        </view>
+      </view>
+      <view class="one">
+        <view class="one-inner clearfix" wx:if='{{userInfo.gender==1}}'>
+          <text class='clearfix'>
+                        <text class='pull-left'>房屋估值</text>
+          </text>
+          <text class="num-big">
+                        <text class="numFont color{{prop.houseAssetColor}}" style='font-size:36rpx;'>{{prop.houseAsset}}</text>
+          </text>
+        </view>
+        <view class="one-inner clearfix" wx:if='{{userInfo.gender==2}}'>
+          <text class='clearfix'>
+                        <text class='pull-left'>妆备估值</text>
+          </text>
+          <text class="num-big">
+                        <text class="numFont color{{prop.luxuryAssetColor}}" style='font-size:36rpx;'>{{prop.luxuryAsset}}</text>
+          </text>
+        </view>
+      </view>
+      <view class="one">
+        <view class="one-inner clearfix" wx:if='{{userInfo.gender==1}}'>
+          <text class='clearfix'>
+                        <text class='pull-left'>车辆估值</text>
+          </text>
+          <text class="num-big">
+                        <text class="numFont color{{prop.carAssetColor}}" style='font-size:36rpx;'>{{prop.carAsset}}</text>
+          </text>
+        </view>
+        <view class="one-inner clearfix" wx:if='{{userInfo.gender==2}}'>
+          <text class='clearfix'>
+                        <text class='pull-left'>气质估值</text>
+          </text>
+          <text class="num-big">
+                        <text class="numFont color{{prop.clothesAssetColor}}" style='font-size:36rpx;'>{{prop.clothesAsset}}</text>
+          </text>
+        </view>
+      </view>
+      <!-- <view class="one">
                 <view class="one-inner clearfix" wx:if='{{userInfo.gender==1}}'>
                     <text class='clearfix'>
                         <text class='pull-left'>座</text>
@@ -156,9 +200,9 @@
                         <text class=" color4">{{prop.luxuryTitle.length>1?"等":""}}</text>
                     </text>
                 </view>
-            </view>
-        </view>
-        <view class='item-box item-box2 clearfix' >
+            </view> -->
+    </view>
+    <!-- <view class='item-box item-box2 clearfix' >
               <view class="one" style='width:330rpx;'>
                 <view class="one-inner clearfix">
                     <text class='clearfix'>
@@ -181,35 +225,74 @@
                     </text>
                 </view>
             </view>
-        </view>
-       
-        <view class='clearfix' wx:if="{{!hideButton}}">
-            <button class='begin-btn begin-btn2' style='float:left;'  open-type="share">邀好友挑战</button>
-            <button class='begin-btn begin-btn' style='color:#fff;float:right;margin-top:20rpx;'bindtap="saveAsImg">保存分享图</button>
-        </view>
-        <view class='clearfix' wx:if="{{hideButton && share}}">
-            <button class='begin-btn begin-btn2' style='float:left;' bindtap='challenge'>我要挑战</button>
-            <button class='begin-btn begin-btn' style='color:#fff;float:right;margin-top:20rpx;' bindtap='rankingList'>排行榜</button>
-        </view>
-        <view class='survival-txt'>
-            <view class='txt-top'></view>
-            <view class='txt-mid'>
-                 
-                <view>你手头有现金<text class='color2 font30'>12123112</text>，富可敌国说的就是你，你会感觉到买东西越来越便宜了</view>
-                <view>你手头有现金2610514，富可敌国说的就是你，你会感觉到买东西越来越便宜了</view>
-                <view>你手头有现金2610514，富可敌国说的就是你，你会感觉到买东西越来越便宜了</view>
-                <view>你手头有现金2610514，富可敌国说的就是你，你会感觉到买东西越来越便宜了</view>
-                <view>你手头有现金2610514，富可敌国说的就是你，你会感觉到买东西越来越便宜了</view>
-                 <view>你手头有现金2610514，富可敌国说的就是你，你会感觉到买东西越来越便宜了</view>
-                <view>你手头有现金2610514，富可敌国说的就是你，你会感觉到买东西越来越便宜了</view>
-                 <view>你手头有现金2610514，富可敌国说的就是你，你会感觉到买东西越来越便宜了</view>
-                <view>你手头有现金2610514，富可敌国说的就是你，你会感觉到买东西越来越便宜了</view>
-                <!-- <view wx:for="{{text}}" wx:key="*this">{{item}}</view> -->
-            </view>
-            <view class='txt-bottom'></view>
-        </view>
+        </view> -->
+
+
+    <view class='survival-txt' style='color:#fff;'>
+      <view class='txt-top1'></view>
+      <view class='txt-mid1 ' style='font-weight:bold;color:#fff;'>
+        <block wx:if='{{userInfo.gender==1}}'>
+          <text wx:if='{{prop.myCarArray.length>0}}'>有车一族，名下拥有：</text>
+          <text class='color3' style='font-size:36rpx;' wx:for='{{prop.myCarArray}}' wx:key="*this" for-index="index">{{item.title}}*{{item.number}}{{(index<prop.myCarArray.length-1)?"、":""}}</text>
+          <text>\n</text>
+          <text>\n</text>
+          <text wx:if='{{prop.myHouseArray.length>0}}'>北京有房，地处：</text>
+          <text class='color2' style='font-size:36rpx;' wx:for='{{prop.myHouseArray}}' wx:key="*this" for-index="index">{{item.title}}*{{item.number}}{{(index<prop.myHouseArray.length-1)?"、":""}}</text>
+          <text>\n</text>
+          <text>\n</text>
+        </block>
+        <block wx:elif='{{userInfo.gender==2}}'>
+          <text wx:if='{{prop.myClothesArray.length>0}}'>爱买衣服，衣柜里：</text>
+          <text class='color3' style='font-size:36rpx;' wx:for='{{prop.myClothesArray}}' wx:key="*this" for-index="index">{{item.title}}*{{item.number}}{{(index<prop.myClothesArray.length-1)?"、":""}}</text>
+          <text>\n</text>
+          <text>\n</text>
+          <text wx:if='{{prop.myLuxuryArray.length>0}}'>讲究排场，出门必备：</text>
+          <text class='color2' style='font-size:36rpx;' wx:for='{{prop.myLuxuryArray}}' wx:key="*this" for-index="index">{{item.title}}*{{item.number}}{{(index<prop.myLuxuryArray.length-1)?"、":""}}</text>
+          <text>\n</text>
+          <text>\n</text>
+        </block>
+        <block wx:if='{{prop.jobTitleLevel>=5}}'>
+          <text>让人羡慕的工作：</text>
+          <text class='color1' style='font-size:38rpx;'>{{prop.jobTitle}}</text>
+          <text>\n</text>
+          <text>\n</text>
+        </block>
+        <block wx:if='{{prop.coupleTitleLevel==100}}'>
+          <text>拥有一段爱情，</text>
+          <text class='color5' style='font-size:38rpx;'>{{prop.coupleTitle}}</text>
+          <text >{{prop.coupleComment}}</text>
+          <text>\n</text>
+          <text>\n</text>
+        </block>
+        <!-- <text>\n</text>
+                  <text class='color5 ' style='font-size:42rpx;'>用钱跟你合作。</text>
+                  <text>\n</text>
+                  <text>你有丰富的社会资源人脉，遇到任何事情以刷脸为主。 </text>
+                  <text class='color4 ' style='font-size:38rpx;'>刷脸为主</text>
+                  
+                  <text>\n</text>
+                  <text class='color4 ' style='font-size:40rpx;'>人人羡慕</text>
+                  <text>的工作 </text>
+                  <text>\n</text>
+                  <text class='color2 ' style='font-size:50rpx;'>温柔贤惠、知冷知热</text>
+                  <text>的伴侣 </text> -->
+        <text class='{{(index==prop.commentArray.length-1)?"color4":""}}' style='{{(index==prop.commentArray.length-1)?"font-size:42rpx;":""}}' wx:for='{{prop.commentArray}}' wx:key="*this" for-index="index">{{item}}{{(index<prop.commentArray.length-1)?"，":""}}</text>
+      </view>
+      <view class='txt-bottom1'></view>
     </view>
+    <view class='clearfix' wx:if="{{!hideButton}}">
+      <button class='begin-btn begin-btn2' style='float:left;' open-type="share">分享给好友</button>
+      <button class='begin-btn begin-btn' style='color:#fff;float:right;margin-top:20rpx;' bindtap="saveAsImg">保存分享图</button>
+    </view>
+    <view class='clearfix' wx:if="{{hideButton && share}}">
+      <button class='begin-btn begin-btn2' style='float:left;' bindtap='challenge'>北漂试试</button>
+      <button class='begin-btn begin-btn' style='color:#fff;float:right;margin-top:20rpx;' bindtap='rankingList'>排行榜</button>
+    </view>
+  </view>
 </view>
 <canvas canvas-id="share" style='width:{{canvasWidth}}px; height:{{canvasHeight}}px;transform: translateX(-200%);'></canvas>
 <view class='mask' wx:if='{{shareImgShow}}' style='z-index:9999999;'></view>
-<view wx:if='{{shareImgShow}}' class='float-img' style='z-index:9999999;' bindtap='closeShow'><image src='{{shareImgSrc}}' mode='widthFix'></image><view class='float-info'>已保存到系统相册，请分享</view></view>
+<view wx:if='{{shareImgShow}}' class='float-img' style='z-index:9999999;' bindtap='closeShow'>
+  <image src='{{shareImgSrc}}' mode='widthFix'></image>
+  <view class='float-info'>已保存到系统相册，请分享</view>
+</view>

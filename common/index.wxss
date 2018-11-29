@@ -506,7 +506,7 @@ text.num-big {
 }
 .item-box .one .one-inner text:nth-child(2){padding-left:14rpx;}
 .item-box .one .one-inner .numFont{font-size:36rpx;}
-.item-box2 .one{width:340rpx;}
+.item-box2 .one{width:330rpx;}
 .item-box2 .one .one-inner .numFont{font-size:28rpx;}
 .item-box3{padding-top:30rpx;}
 .item-box3 .one{width: 298rpx;}
@@ -530,7 +530,7 @@ text.num-big {
     width: 678rpx;
     /* height:339rpx; */
     /* margin-top:30rpx; */
-    padding:30rpx 0;
+    padding:10rpx 0;
     /* overflow-y: auto; */
     /* background-size:100%; */
     
