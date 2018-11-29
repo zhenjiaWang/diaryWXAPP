@@ -150,23 +150,34 @@ Page({
           if (data.errorCode==0) {
             for (var i = 0; i < data.attrList.length; i++) {
               let v = data.data[data.attrList[i]['value']]
-              if (data.attrList[i]['value'] === 'money' || data.attrList[i]['value'] === 'fund') {
-                data.data[data.attrList[i]['value'] + 'Color'] = '2'
-              } else if (data.attrList[i]['value'] === 'health') {
-                if (v < 60) {
-                  data.data[data.attrList[i]['value'] + 'Color'] = '3'
-                } else {
+              if ((data.attrList[i]['value'].indexOf('asset') != -1 || data.attrList[i]['value'].indexOf('Asset')!=-1)){
+
+                console.info(data.attrList[i]['value'] + 'indexOf=' + data.attrList[i]['value'].indexOf('asset'))
+                if (v < 1000000) {
                   data.data[data.attrList[i]['value'] + 'Color'] = '1'
-                }
-              } else {
-                if (v < 80) {
-                  data.data[data.attrList[i]['value'] + 'Color'] = '3'
-                } else if (v > 250) {
+                }else if (v < 2000000) {
+                  data.data[data.attrList[i]['value'] + 'Color'] = '2'
+                } else if (v >= 2000000) {
                   data.data[data.attrList[i]['value'] + 'Color'] = '4'
-                } else {
-                  data.data[data.attrList[i]['value'] + 'Color'] = '1'
                 }
               }
+              // if (data.attrList[i]['value'] === 'money' || data.attrList[i]['value'] === 'fund') {
+              //   data.data[data.attrList[i]['value'] + 'Color'] = '2'
+              // } else if (data.attrList[i]['value'].indexOf('asset')=== 'health') {
+              //   if (v < 60) {
+              //     data.data[data.attrList[i]['value'] + 'Color'] = '3'
+              //   } else {
+              //     data.data[data.attrList[i]['value'] + 'Color'] = '1'
+              //   }
+              // } else {
+              //   if (v < 80) {
+              //     data.data[data.attrList[i]['value'] + 'Color'] = '3'
+              //   } else if (v > 250) {
+              //     data.data[data.attrList[i]['value'] + 'Color'] = '4'
+              //   } else {
+              //     data.data[data.attrList[i]['value'] + 'Color'] = '1'
+              //   }
+              // }
             }
             that.setData({
               score: data.data.score,
@@ -207,8 +218,8 @@ Page({
   },
   drawAttribute({
     attribute: props = [],
-    cvsWidth = 200,
-    cvsHeight = 190,
+    cvsWidth = 220,
+    cvsHeight = 200,
     shape = props.length,
     center = cvsWidth / 2,
     redius = center - 50,
