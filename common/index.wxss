@@ -504,9 +504,9 @@ text.num-big {
     font-weight: normal;
     text-shadow:0 0 1px #000, 0 0 1px #000, 0 0 1px #000, 0 0 1px #000, 0 0 1px #000;
 }
-.item-box .one .one-inner text:nth-child(2){padding-left:18rpx;}
+.item-box .one .one-inner text:nth-child(2){padding-left:14rpx;}
 .item-box .one .one-inner .numFont{font-size:36rpx;}
-.item-box2 .one{width:330rpx;}
+.item-box2 .one{width:340rpx;}
 .item-box2 .one .one-inner .numFont{font-size:28rpx;}
 .item-box3{padding-top:30rpx;}
 .item-box3 .one{width: 298rpx;}
