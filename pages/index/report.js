@@ -197,7 +197,7 @@ Page({
               comment: commentUrl
             }, reportResult.data)
           })
-          that.drawAttribute(reportResult.data.attribute)
+          that.drawAttribute(reportResult.data)
           //that.draw(, reportResult.data, gender)
         }
       }).catch((error) => {
@@ -207,16 +207,18 @@ Page({
   },
   drawAttribute({
     attribute: props = [],
-    cvsWidth = 280,
-    cvsHeight = 200,
+    cvsWidth = 200,
+    cvsHeight = 190,
     shape = props.length,
     center = cvsWidth / 2,
     redius = center - 50,
     angle = Math.PI * 2 / shape,
-    edgeColor = 'pink',
-    textColor = '#000'
+    edgeColor = '#fff',
+    textColor = '#f6de4b'
     
   } = {}) {
+    const offset = 20, usedHeight = -40
+
     const ctx = wx.createCanvasContext('attribute')
     ctx.save()
     ctx.strokeStyle = edgeColor
@@ -265,7 +267,8 @@ Page({
     //draw text
     ctx.save()
     var fontSize = center / 10
-    ctx.font = fontSize + 'px Microsoft Yahei'
+    console.info(fontSize)
+    ctx.font = fontSize + 'rpx Microsoft Yahei'
     ctx.fillStyle = textColor;
     for (var i = 0; i < shape; i++) {
       var x = center + redius * Math.cos(angle * i) - offset
@@ -695,8 +698,8 @@ Page({
   },
   drawNewShare: function ({
     attribute:props = [],
-    cvsWidth = 280,
-    cvsHeight = 200,
+    cvsWidth = 140,
+    cvsHeight = 100,
     offset = 20,//图片偏移量
     shape = props.length,
     center = cvsWidth / 2,
