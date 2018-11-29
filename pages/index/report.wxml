@@ -1,6 +1,6 @@
 <!--pages/index/report.wxml-->
 <view class='body-bg'>
-    <view class='img-auto'><image src='../../img/scjg.png' mode='widthFix'></image></view>
+    <!-- <view class='img-auto'><image src='../../img/scjg.png' mode='widthFix'></image></view> -->
     <view class='game-main survival-main' hidden='{{!dataDone}}'>
         <view class='survival clearfix'>
             <view class='pull-left clearfix'>
@@ -23,137 +23,10 @@
                 <text class='font30'>分</text>
             </view>
         </view>
-         <!-- <view class='item-box item-box2 clearfix'>
-             <view class="one">
-                <view class="one-inner clearfix">
-                    <text class='clearfix'>
-                        <text class='pull-left'>金</text>
-                        <text class='pull-right'>钱</text>
-                    </text>
-                    <text class="num-big">
-                        <text class="numFont color{{prop.moneyColor}}" style='font-size:36rpx;'>{{prop.money}}</text>
-                    </text>
-                </view>
-            </view>
-            <view class="one">
-                <view class="one-inner clearfix">
-                    <text class='clearfix'>
-                        <text class='pull-left'>投资财富</text>
-                    </text>
-                    <text class="num-big">
-                        <text class="numFont color{{prop.moneyColor}}" style='font-size:36rpx;'>{{prop.fundMoney}}</text>
-                    </text>
-                </view>
-            </view>
+        <view class='clearfix' style='width:330rpx;float:right;'>
+          <canvas canvas-id="attribute" style='width:100%px; height:120px;'></canvas>
         </view>
-        <view class='item-box clearfix'>
-            <view class="one">
-                <view class="one-inner clearfix">
-                    <text class='clearfix'>
-                        <text class='pull-left'>快</text>
-                        <text class='pull-right'>乐</text>
-                    </text>
-                    <text class="num-big">
-                        <text class="numFont color{{prop.happyColor}}">{{prop.happy}}</text>
-                    </text>
-                </view>
-            </view>
-            <view class="one">
-                <view class="one-inner clearfix">
-                    <text class='clearfix'>
-                        <text class='pull-left'>健</text>
-                        <text class='pull-right'>康</text>
-                    </text>
-                    <text class="num-big">
-                        <text class="numFont color{{prop.healthColor}}">{{prop.health}}</text>
-                    </text>
-                </view>
-            </view>
-            <view class="one" wx:if='{{userInfo.gender==1}}'>
-                <view class="one-inner clearfix">
-                    <text class='clearfix'>
-                        <text class='pull-left'>人</text>
-                        <text class='pull-right'>脉</text>
-                    </text>
-                    <text class="num-big">
-                        <text class="numFont color{{prop.connectionsColor}}">{{prop.connections}}</text>
-                    </text>
-                </view>
-            </view>
-            <view class="one" wx:if='{{userInfo.gender==2}}'>
-                <view class="one-inner clearfix">
-                    <text class='clearfix'>
-                        <text class='pull-left'>美</text>
-                        <text class='pull-right'>貌</text>
-                    </text>
-                    <text class="num-big">
-                        <text class="numFont color{{prop.beautyColor}}">{{prop.beauty}}</text>
-                    </text>
-                </view>
-            </view>
-            <view class="one" wx:if='{{userInfo.gender==1}}'>
-                <view class="one-inner clearfix">
-                    <text class='clearfix'>
-                        <text class='pull-left'>社会经验</text>
-                    </text>
-                    <text class="num-big">
-                        <text class="numFont color{{prop.experienceColor}}">{{prop.experience}}</text>
-                    </text>
-                </view>
-            </view>
-            <view class="one" wx:if='{{userInfo.gender==2}}'>
-                <view class="one-inner clearfix">
-                    <text class='clearfix'>
-                        <text class='pull-left'>处世智慧</text>
-                    </text>
-                    <text class="num-big">
-                        <text class="numFont color{{prop.wisdomColor}}">{{prop.wisdom}}</text>
-                    </text>
-                </view>
-            </view>
-            <view class="one" wx:if='{{userInfo.gender==1}}'>
-                <view class="one-inner clearfix">
-                    <text class='clearfix'>
-                        <text class='pull-left'>正</text>
-                        <text class='pull-left'>气</text>
-                    </text>
-                    <text class="num-big">
-                        <text class="numFont color{{prop.positiveColor}}">{{prop.positive}}</text>
-                    </text>
-                </view>
-            </view>
-            <view class="one" wx:if='{{userInfo.gender==2}}'>
-                <view class="one-inner clearfix">
-                    <text class='clearfix'>
-                        <text class='pull-left'>知名度</text>
-                    </text>
-                    <text class="num-big">
-                        <text class="numFont color{{prop.popularityColor}}">{{prop.popularity}}</text>
-                    </text>
-                </view>
-            </view>
-            <view class="one" wx:if='{{userInfo.gender==1}}'>
-                <view class="one-inner clearfix">
-                    <text class='clearfix'>
-                        <text class='pull-left'>能力才干</text>
-                    </text>
-                    <text class="num-big">
-                        <text class="numFont color{{prop.abilityColor}}">{{prop.ability}}</text>
-                    </text>
-                </view>
-            </view>
-            <view class="one" wx:if='{{userInfo.gender==2}}'>
-                <view class="one-inner clearfix">
-                    <text class='clearfix'>
-                        <text class='pull-left'>工作能力</text>
-                    </text>
-                    <text class="num-big">
-                        <text class="numFont color{{prop.abilityColor}}">{{prop.ability}}</text>
-                    </text>
-                </view>
-            </view>
-        </view>
-        <view class='item-box item-box2 clearfix'>
+        <!-- <view class='item-box item-box2 clearfix'>
             <view class="one">
                 <view class="one-inner clearfix" wx:if='{{userInfo.gender==1}}'>
                     <text class='clearfix'>
@@ -217,8 +90,99 @@
                 </view>
             </view>
         </view> -->
-        <canvas canvas-id="attribute" style='width:280px; height:200px;'></canvas>
-
+        <view class='item-box item-box2 clearfix' >
+             <view class="one">
+                <view class="one-inner clearfix">
+                    <text class='clearfix'>
+                        <text class='pull-left'>金</text>
+                        <text class='pull-right'>钱</text>
+                    </text>
+                    <text class="num-big">
+                        <text class="numFont color{{prop.moneyColor}}" style='font-size:36rpx;'>{{prop.money}}</text>
+                    </text>
+                </view>
+            </view>
+            <view class="one">
+                <view class="one-inner clearfix">
+                    <text class='clearfix'>
+                        <text class='pull-left'>投</text>
+                        <text class='pull-right'>资</text>
+                    </text>
+                    <text class="num-big">
+                        <text class="numFont color1" style='font-size:36rpx;'>{{prop.fundMoney}}</text>
+                    </text>
+                </view>
+            </view>
+            <view class="one">
+                <view class="one-inner clearfix" wx:if='{{userInfo.gender==1}}'>
+                    <text class='clearfix'>
+                        <text class='pull-left'>座</text>
+                        <text class='pull-left'>驾</text>
+                    </text>
+                    <text class="num-big">
+                        <text class="color2">{{prop.carTitle?prop.carTitle[0]:""}}</text>
+                        <text class=" color4">{{prop.carTitle.length>1?"等":""}}</text>
+                    </text>
+                </view>
+                <view class="one-inner clearfix" wx:elif='{{userInfo.gender==2}}'>
+                    <text class='clearfix'>
+                        <text class='pull-left'>衣</text>
+                        <text class='pull-left'>品</text>
+                    </text>
+                    <text class="num-big">
+                        <text class=" color2">{{prop.clothesTitle?prop.clothesTitle[0]:""}}</text>
+                        <text class=" color4">{{prop.clothesTitle.length>1?"等":""}}</text>
+                    </text>
+                </view>
+            </view>
+            <view class="one">
+                <view class="one-inner clearfix" wx:if='{{userInfo.gender==1}}'>
+                    <text class='clearfix'>
+                        <text class='pull-left'>房</text>
+                        <text class='pull-left'>产</text>
+                    </text>
+                    <text class="num-big">
+                        <text class=" color2">{{prop.houseTitle?prop.houseTitle[0]:""}}</text>
+                        <text class=" color4">{{prop.houseTitle.length>1?"等":""}}</text>
+                    </text>
+                </view>
+                <view class="one-inner clearfix" wx:elif='{{userInfo.gender==2}}'>
+                    <text class='clearfix'>
+                        <text class='pull-left'>妆</text>
+                        <text class='pull-left'>容</text>
+                    </text>
+                    <text class="num-big">
+                        <text class=" color2">{{prop.luxuryTitle?prop.luxuryTitle[0]:""}}</text>
+                        <text class=" color4">{{prop.luxuryTitle.length>1?"等":""}}</text>
+                    </text>
+                </view>
+            </view>
+        </view>
+        <view class='item-box item-box2 clearfix' >
+              <view class="one" style='width:330rpx;'>
+                <view class="one-inner clearfix">
+                    <text class='clearfix'>
+                        <text class='pull-left'>伴</text>
+                        <text class='pull-left'>侣</text>
+                    </text>
+                    <text class="num-big">
+                        <text class=" color2">{{prop.coupleTitle}}</text>
+                    </text>
+                </view>
+            </view>
+            <view class="one" style='width:330rpx;'>
+                <view class="one-inner clearfix">
+                    <text class='clearfix'>
+                        <text class='pull-left'>工</text>
+                        <text class='pull-left'>作</text>
+                    </text>
+                    <text class="num-big">
+                        <text class=" color2">{{prop.jobTitle}}</text>
+                    </text>
+                </view>
+            </view>
+        </view>
+       
         <view class='clearfix' wx:if="{{!hideButton}}">
             <button class='begin-btn begin-btn2' style='float:left;'  open-type="share">邀好友挑战</button>
             <button class='begin-btn begin-btn' style='color:#fff;float:right;margin-top:20rpx;'bindtap="saveAsImg">保存分享图</button>
@@ -230,7 +194,17 @@
         <view class='survival-txt'>
             <view class='txt-top'></view>
             <view class='txt-mid'>
-                <view wx:for="{{text}}" wx:key="*this">{{item}}</view>
+                 
+                <view>你手头有现金<text class='color2 font30'>12123112</text>，富可敌国说的就是你，你会感觉到买东西越来越便宜了</view>
+                <view>你手头有现金2610514，富可敌国说的就是你，你会感觉到买东西越来越便宜了</view>
+                <view>你手头有现金2610514，富可敌国说的就是你，你会感觉到买东西越来越便宜了</view>
+                <view>你手头有现金2610514，富可敌国说的就是你，你会感觉到买东西越来越便宜了</view>
+                <view>你手头有现金2610514，富可敌国说的就是你，你会感觉到买东西越来越便宜了</view>
+                 <view>你手头有现金2610514，富可敌国说的就是你，你会感觉到买东西越来越便宜了</view>
+                <view>你手头有现金2610514，富可敌国说的就是你，你会感觉到买东西越来越便宜了</view>
+                 <view>你手头有现金2610514，富可敌国说的就是你，你会感觉到买东西越来越便宜了</view>
+                <view>你手头有现金2610514，富可敌国说的就是你，你会感觉到买东西越来越便宜了</view>
+                <!-- <view wx:for="{{text}}" wx:key="*this">{{item}}</view> -->
             </view>
             <view class='txt-bottom'></view>
         </view>
