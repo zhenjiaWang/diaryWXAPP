@@ -1,5 +1,4 @@
 //app.js
-const ald = require('./utils/ald-stat.js')
 const { wxPost, wxGet, wxRunAsync} = require('./utils/common.js')
 
 App({
