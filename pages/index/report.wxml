@@ -26,70 +26,7 @@
     <view class='clearfix' style='width:330rpx;float:right;'>
       <canvas canvas-id="attribute" style='width:100%px; height:150px;'></canvas>
     </view>
-    <!-- <view class='item-box item-box2 clearfix'>
-            <view class="one">
-                <view class="one-inner clearfix" wx:if='{{userInfo.gender==1}}'>
-                    <text class='clearfix'>
-                        <text class='pull-left'>座</text>
-                        <text class='pull-left'>驾</text>
-                    </text>
-                    <text class="num-big">
-                        <text class=" color2">{{prop.carTitle?prop.carTitle[0]:""}}</text>
-                    </text>
-                </view>
-                <view class="one-inner clearfix" wx:elif='{{userInfo.gender==2}}'>
-                    <text class='clearfix'>
-                        <text class='pull-left'>衣</text>
-                        <text class='pull-left'>品</text>
-                    </text>
-                    <text class="num-big">
-                        <text class=" color2">{{prop.clothesTitle?prop.clothesTitle[0]:""}}</text>
-                    </text>
-                </view>
-            </view>
-            <view class="one">
-                <view class="one-inner clearfix" wx:if='{{userInfo.gender==1}}'>
-                    <text class='clearfix'>
-                        <text class='pull-left'>房</text>
-                        <text class='pull-left'>产</text>
-                    </text>
-                    <text class="num-big">
-                        <text class=" color2">{{prop.houseTitle?prop.houseTitle[0]:""}}</text>
-                    </text>
-                </view>
-                <view class="one-inner clearfix" wx:elif='{{userInfo.gender==2}}'>
-                    <text class='clearfix'>
-                        <text class='pull-left'>妆</text>
-                        <text class='pull-left'>容</text>
-                    </text>
-                    <text class="num-big">
-                        <text class=" color2">{{prop.luxuryTitle?prop.luxuryTitle[0]:""}}</text>
-                    </text>
-                </view>
-            </view>
-            <view class="one">
-                <view class="one-inner clearfix">
-                    <text class='clearfix'>
-                        <text class='pull-left'>伴</text>
-                        <text class='pull-left'>侣</text>
-                    </text>
-                    <text class="num-big">
-                        <text class=" color2">{{prop.coupleTitle}}</text>
-                    </text>
-                </view>
-            </view>
-            <view class="one">
-                <view class="one-inner clearfix">
-                    <text class='clearfix'>
-                        <text class='pull-left'>工</text>
-                        <text class='pull-left'>作</text>
-                    </text>
-                    <text class="num-big">
-                        <text class=" color2">{{prop.jobTitle}}</text>
-                    </text>
-                </view>
-            </view>
-        </view> -->
+    
     <view class='item-box item-box2 clearfix'>
       <view class="one">
         <view class="one-inner clearfix">
@@ -157,77 +94,7 @@
           </text>
         </view>
       </view>
-      <!-- <view class="one">
-                <view class="one-inner clearfix" wx:if='{{userInfo.gender==1}}'>
-                    <text class='clearfix'>
-                        <text class='pull-left'>座</text>
-                        <text class='pull-left'>驾</text>
-                    </text>
-                    <text class="num-big">
-                        <text class="color2">{{prop.carTitle?prop.carTitle[0]:""}}</text>
-                        <text class=" color4">{{prop.carTitle.length>1?"等":""}}</text>
-                    </text>
-                </view>
-                <view class="one-inner clearfix" wx:elif='{{userInfo.gender==2}}'>
-                    <text class='clearfix'>
-                        <text class='pull-left'>衣</text>
-                        <text class='pull-left'>品</text>
-                    </text>
-                    <text class="num-big">
-                        <text class=" color2">{{prop.clothesTitle?prop.clothesTitle[0]:""}}</text>
-                        <text class=" color4">{{prop.clothesTitle.length>1?"等":""}}</text>
-                    </text>
-                </view>
-            </view>
-            <view class="one">
-                <view class="one-inner clearfix" wx:if='{{userInfo.gender==1}}'>
-                    <text class='clearfix'>
-                        <text class='pull-left'>房</text>
-                        <text class='pull-left'>产</text>
-                    </text>
-                    <text class="num-big">
-                        <text class=" color2">{{prop.houseTitle?prop.houseTitle[0]:""}}</text>
-                        <text class=" color4">{{prop.houseTitle.length>1?"等":""}}</text>
-                    </text>
-                </view>
-                <view class="one-inner clearfix" wx:elif='{{userInfo.gender==2}}'>
-                    <text class='clearfix'>
-                        <text class='pull-left'>妆</text>
-                        <text class='pull-left'>容</text>
-                    </text>
-                    <text class="num-big">
-                        <text class=" color2">{{prop.luxuryTitle?prop.luxuryTitle[0]:""}}</text>
-                        <text class=" color4">{{prop.luxuryTitle.length>1?"等":""}}</text>
-                    </text>
-                </view>
-            </view> -->
     </view>
-    <!-- <view class='item-box item-box2 clearfix' >
-              <view class="one" style='width:330rpx;'>
-                <view class="one-inner clearfix">
-                    <text class='clearfix'>
-                        <text class='pull-left'>伴</text>
-                        <text class='pull-left'>侣</text>
-                    </text>
-                    <text class="num-big">
-                        <text class=" color2">{{prop.coupleTitle}}</text>
-                    </text>
-                </view>
-            </view>
-            <view class="one" style='width:330rpx;'>
-                <view class="one-inner clearfix">
-                    <text class='clearfix'>
-                        <text class='pull-left'>工</text>
-                        <text class='pull-left'>作</text>
-                    </text>
-                    <text class="num-big">
-                        <text class=" color2">{{prop.jobTitle}}</text>
-                    </text>
-                </view>
-            </view>
-        </view> -->
-
-
     <view class='survival-txt' style='color:#fff;'>
       <view class='txt-top1'></view>
       <view class='txt-mid1 ' style='font-weight:bold;color:#fff;'>
@@ -251,7 +118,7 @@
           <text>\n</text>
           <text>\n</text>
         </block>
-        <block wx:if='{{prop.jobTitleLevel>=5}}'>
+        <block wx:if='{{prop.jobTitleLevel>5}}'>
           <text>让人羡慕的工作：</text>
           <text class='color1' style='font-size:38rpx;'>{{prop.jobTitle}}</text>
           <text>\n</text>
@@ -264,18 +131,6 @@
           <text>\n</text>
           <text>\n</text>
         </block>
-        <!-- <text>\n</text>
-                  <text class='color5 ' style='font-size:42rpx;'>用钱跟你合作。</text>
-                  <text>\n</text>
-                  <text>你有丰富的社会资源人脉，遇到任何事情以刷脸为主。 </text>
-                  <text class='color4 ' style='font-size:38rpx;'>刷脸为主</text>
-                  
-                  <text>\n</text>
-                  <text class='color4 ' style='font-size:40rpx;'>人人羡慕</text>
-                  <text>的工作 </text>
-                  <text>\n</text>
-                  <text class='color2 ' style='font-size:50rpx;'>温柔贤惠、知冷知热</text>
-                  <text>的伴侣 </text> -->
         <text class='{{(index==prop.commentArray.length-1)?"color4":""}}' style='{{(index==prop.commentArray.length-1)?"font-size:42rpx;":""}}' wx:for='{{prop.commentArray}}' wx:key="*this" for-index="index">{{item}}{{(index<prop.commentArray.length-1)?"，":""}}</text>
       </view>
       <view class='txt-bottom1'></view>
