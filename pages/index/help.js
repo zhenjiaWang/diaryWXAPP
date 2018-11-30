@@ -19,12 +19,7 @@ Page({
    */
   onLoad: function (options) {
     this.loadRankings()
-    app.aldstat.sendEvent('查看说明:init base',
-      {
-        nickName: app.globalData.nickName,
-        gender: app.globalData.gender,
-        'time': Date.now()
-      })
+    
   },
   selected: function (e) {
     const that = this
@@ -32,12 +27,7 @@ Page({
     that.setData({
       activeType: activetype
     })
-    app.aldstat.sendEvent('查看说明:' + activetype,
-      {
-        nickName: app.globalData.nickName,
-        gender: app.globalData.gender,
-        'time': Date.now()
-      })
+    
   },
   loadRankings: function (f) {
     const that = this

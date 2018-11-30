@@ -161,12 +161,6 @@ const options={
           wx.setStorageSync('code', app.globalData.code)
           app.globalData.userId = data.userData.userId
           app.globalData.userData = data.userData
-          app.aldstat.sendOpenid(data.userData.openId)
-          app.aldstat.sendEvent('用户登陆',
-          { nickName: data.userData.nickName,
-            gender: data.userData.gender,
-          'time':Date.now()
-          })
         }
       },null,()=>{
         that.setData({
@@ -214,12 +208,7 @@ const options={
           submitFlag: false
         })
         that.checkError()
-        app.aldstat.sendEvent('用户授权',
-          {
-            nickName: app.globalData.nickName,
-            gender: app.globalData.gender,
-            'time': Date.now()
-          })
+        
       }, 1000)
     }
   },
@@ -257,12 +246,6 @@ const options={
         that.resData()
         
       }
-      app.aldstat.sendEvent('开始游戏',
-        {
-          nickName: app.globalData.nickName,
-          gender: app.globalData.gender,
-          'time': Date.now()
-        })
     }
   },
   resData: function () {
@@ -357,13 +340,6 @@ const options={
           console.info(data)
         }
       )
-
-      app.aldstat.sendEvent('进入下一天',
-        {
-          nickName: that.data.userData.nickName,
-          gender: that.data.userData.gender,
-          'time': Date.now()
-        })
     }
   },
   done: function (e) {
@@ -390,35 +366,17 @@ const options={
           }, 2000)
         }
       })
-      app.aldstat.sendEvent('完成游戏',
-        {
-          nickName: that.data.userData.nickName,
-          gender: that.data.userData.gender,
-          'time': Date.now()
-        })
     }
   },
   viewHelp: function () {
     wx.navigateTo({
       url: './help',
     })
-    app.aldstat.sendEvent('首页查看帮助',
-      {
-        nickName: app.globalData.userData.nickName,
-        gender: app.globalData.userData.gender,
-        'time': Date.now()
-      })
   },
   viewRankingList: function (){
     wx.navigateTo({
       url: './rankingList',
     })
-    app.aldstat.sendEvent('首页查看排行',
-      {
-        nickName: app.globalData.userData.nickName,
-        gender: app.globalData.userData.gender,
-        'time': Date.now()
-      })
   },
   viewMyReport: function () {
     if (this.data.lastComment && this.data.currentDays == 0 && this.data.currentHours == 0){

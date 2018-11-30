@@ -10,6 +10,11 @@ const color2 = '#f6de4b'
 const color3 = '#ed7c7c'
 const color4 = '#eb9bf2'
 const color5 ='#ee7206'
+const qiong = '#959595'
+const lu = '#37b44a'
+const feng = '#ff9900'
+const jing = '#ee7206'
+const hun = '#eb9bf2'
 Page({
   data: {
     canvasWidth: 400,
@@ -52,12 +57,6 @@ Page({
           this.setData({ userInfo: data.userData })
           const { gender, avatarUrl, nickName, lastComment } = data.userData
           this.getImageInfo(avatarUrl, nickName, viewId, lastComment, gender, viewId)
-          app.aldstat.sendEvent('查看结果',
-            {
-              nickName: data.userData.nickName,
-              gender: data.userData.gender,
-              'time': Date.now()
-            })
         }
       })
     }else if(userId){//report 
@@ -66,12 +65,6 @@ Page({
           this.setData({ userInfo: data.userData })
           const { gender, avatarUrl, nickName } = data.userData
           this.getImageInfo(avatarUrl, nickName, userId, data.comment, gender, viewId)
-          app.aldstat.sendEvent('查看结果',
-            {
-              nickName: data.userData.nickName,
-              gender: data.userData.gender,
-              'time': Date.now()
-            })
         }
       })
     }else{
@@ -582,12 +575,6 @@ Page({
           }, 2000)
         }
       })
-      app.aldstat.sendEvent('生成分享图',
-        {
-          nickName: that.data.userInfo.nickName,
-          gender: that.data.userInfo.gender,
-          'time': Date.now()
-        })
     } else {
       wx.showToast({
         title: '数据不完整'
@@ -608,6 +595,7 @@ Page({
           filePath: path,
           success(res) {
             wx.hideLoading()
+            // that.previewImage(path)
             that.setData({
               shareImgShow: true,
               shareImgSrc: path
@@ -633,41 +621,17 @@ Page({
   },
   challenge:function(){
     this.backHome()
-    app.aldstat.sendEvent('我要挑战',
-      {
-        'time': Date.now()
-      })
   },
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    wx.getSetting({
-      success: function (res) {
-        if (res.authSetting["scope.userInfo"]) {
-          wx.getUserInfo({
-            success: function (res) {
-              var userInfo = res;
-              wx.login({
-                success: function (res) {
-                  var jsCode = res.code;
-                  app.aldpush.pushuserinfo(userInfo, jsCode);
-                }
-              })
-            }
-          })
-        }
-      }
-    })
+   
   },
   rankingList:function(){
     wx.redirectTo({
       url: './rankingList'
     })
-    app.aldstat.sendEvent('查看结果跳转排行榜',
-      {
-        'time': Date.now()
-      })
   },
   drawNewShare: function ({
     gender=1,
@@ -703,7 +667,8 @@ Page({
     myLuxuryArray=[],
     myClothesArray = [],
     myHouseArray = [],
-    coupleComment=[],
+    assetGtRate='',
+    assetGtRateComment='',
     commentArray=[],
     jobTitleLevel='',
     jobTitle='',
@@ -722,7 +687,7 @@ Page({
 
     let _h = this.measureDescription(ctx, gender, true, {
       myCarArray, padding, usedHeight, maxTextWidth,
-      myHouseArray, myClothesArray, myLuxuryArray, jobTitleLevel, jobTitle, coupleTitleLevel, coupleTitle, commentArray, coupleComment
+      myHouseArray, myClothesArray, myLuxuryArray, jobTitleLevel, jobTitle, coupleTitleLevel, coupleTitle, commentArray, assetGtRate, assetGtRateComment
     })+20
     this.setData({
       canvasHeight: 295 + _h + 90 //属性+描述+二维码
@@ -870,7 +835,8 @@ Page({
     //draw description
     usedHeight += this.measureDescription(ctx, gender, false, {
       myCarArray, padding, usedHeight, maxTextWidth,
-      myHouseArray, myClothesArray, myLuxuryArray, jobTitleLevel, jobTitle, coupleTitleLevel, coupleTitle, commentArray, coupleComment
+      myHouseArray, myClothesArray, myLuxuryArray, jobTitleLevel, jobTitle, coupleTitleLevel, coupleTitle, commentArray, 
+      assetGtRate, assetGtRateComment
     })
 
     //draw qrcode
@@ -890,7 +856,11 @@ Page({
     ctx.setFontSize(16)
     
     ctx.setFillStyle('#FFFFFF')
-    ctx.fillText('长按图片,体验你的北漂生活', padding + q_d + 15, bottom + 45)
+    let qrCodeTitle ='长按图片,体验你的北漂生活'
+    if (app.globalData.shareObj) {
+      qrCodeTitle = app.globalData.shareObj.qrCodeTitle
+    }
+    ctx.fillText(qrCodeTitle, padding + q_d + 15, bottom + 45)
     //ctx.fillText('你在北京能!', padding + q_d + 15, bottom + 70)
 
     ctx.draw()
@@ -946,12 +916,18 @@ Page({
     return { titleHeight, lineWidth}
   },
   measureDescription: function (ctx, gender, r, { myCarArray, padding, usedHeight, maxTextWidth,
-    myHouseArray, myClothesArray, myLuxuryArray, jobTitleLevel, jobTitle, coupleTitleLevel, coupleTitle, commentArray, coupleComment}){
+    myHouseArray, myClothesArray, myLuxuryArray, jobTitleLevel, jobTitle, coupleTitleLevel, coupleTitle, commentArray, assetGtRate,assetGtRateComment}){
     ctx.setTextAlign('left')
     let temp = usedHeight
+    const { lineWidth } = this.drawTextNew(ctx, '你资产超越了 ', padding, usedHeight, 10, maxTextWidth, r)
+    const { lineWidth: indent } = this.drawTextNew(ctx, assetGtRate + '% 的人，', padding, usedHeight, 10, maxTextWidth, r, lineWidth, 20, color2)
+    const { titleHeight } = this.drawTextNew(ctx, assetGtRateComment, padding, usedHeight, 10, maxTextWidth, r, lineWidth + indent)
+    usedHeight += titleHeight
+    usedHeight += 10
+    
     if (gender === 1) {
       if (myCarArray.length > 0) {
-        const { lineWidth } = this.drawTextNew(ctx, '有车一族，名下拥有：', padding, usedHeight, 10, maxTextWidth, r)
+        const { lineWidth } = this.drawTextNew(ctx, '有车一族，名下' + myCarArray.length +'辆爱车：', padding, usedHeight, 10, maxTextWidth, r)
         let str = ''
         for (let x = 0; x < myCarArray.length; x++) {
           let item = myCarArray[x]
@@ -959,9 +935,12 @@ Page({
         }
         const { titleHeight } = this.drawTextNew(ctx, str, padding, usedHeight, 10, maxTextWidth, r, lineWidth, 20, color3)
         usedHeight += titleHeight
+        if (myCarArray.length == 1) {
+          usedHeight += 10
+        }
       }
       if (myHouseArray.length > 0) {
-        const { lineWidth } = this.drawTextNew(ctx, '北京有房，地处：', padding, usedHeight, 10, maxTextWidth, r)
+        const { lineWidth } = this.drawTextNew(ctx, '北京' + myHouseArray.length +'本房产证：', padding, usedHeight, 10, maxTextWidth, r)
         let str = ''
         for (let x = 0; x < myHouseArray.length; x++) {
           let item = myHouseArray[x]
@@ -969,10 +948,13 @@ Page({
         }
         const { titleHeight } = this.drawTextNew(ctx, str, padding, usedHeight, 10, maxTextWidth, r, lineWidth, 20, color2)
         usedHeight += titleHeight
+        if (myHouseArray.length==1){
+          usedHeight += 10
+        }
       }
     } else {
       if (myClothesArray.length > 0) {
-        const { lineWidth } = this.drawTextNew(ctx, '爱买衣服，衣柜里：', padding, usedHeight, 10, maxTextWidth,r)
+        const { lineWidth } = this.drawTextNew(ctx, '爱买衣服，衣柜里' + myClothesArray.length+'件衣服：', padding, usedHeight, 10, maxTextWidth,r)
         let str = ''
         for (let x = 0; x < myClothesArray.length; x++) {
           let item = myClothesArray[x]
@@ -980,9 +962,12 @@ Page({
         }
         const { titleHeight } = this.drawTextNew(ctx, str, padding, usedHeight, 10, maxTextWidth, r, lineWidth, 20)
         usedHeight += titleHeight
+        if (myClothesArray.length == 1) {
+          usedHeight += 10
+        }
       }
       if (myLuxuryArray.length > 0) {
-        const { lineWidth } = this.drawTextNew(ctx, '讲究排场，出门必备：', padding, usedHeight, 10, maxTextWidth,r)
+        const { lineWidth } = this.drawTextNew(ctx, '讲究排场，'+myLuxuryArray.length+'件装备，出门必备：', padding, usedHeight, 10, maxTextWidth,r)
         let str = ''
         for (let x = 0; x < myLuxuryArray.length; x++) {
           let item = myLuxuryArray[x]
@@ -990,7 +975,9 @@ Page({
         }
         const { titleHeight } = this.drawTextNew(ctx, str, padding, usedHeight, 10, maxTextWidth, r, lineWidth, 20)
         usedHeight += titleHeight
-
+        if (myLuxuryArray.length == 1) {
+          usedHeight += 10
+        }
       }
     }
     
@@ -1000,9 +987,12 @@ Page({
       usedHeight += titleHeight
     }
     if (coupleTitleLevel == 100) {
-      const { lineWidth } = this.drawTextNew(ctx, '拥有一段爱情，', padding, usedHeight, 10, maxTextWidth,r)
-      const { lineWidth: indent } = this.drawTextNew(ctx, coupleTitle + '，', padding, usedHeight, 10, maxTextWidth, r, lineWidth, 20, color5)
-      const { titleHeight } = this.drawTextNew(ctx, coupleComment, padding, usedHeight, 10, maxTextWidth, r, lineWidth + indent)
+      const { lineWidth } = this.drawTextNew(ctx, '拥有一段爱情，你对象是', padding, usedHeight, 10, maxTextWidth,r)
+      const { titleHeight } = this.drawTextNew(ctx, coupleTitle + '，北漂的你不再孤独', padding, usedHeight, 10, maxTextWidth, r, lineWidth, 20, color5)
+      usedHeight += titleHeight
+    } else if (coupleTitleLevel == 0) {
+      const { lineWidth } = this.drawTextNew(ctx, '你感情路很顺，', padding, usedHeight, 10, maxTextWidth, r)
+      const { titleHeight } = this.drawTextNew(ctx, '顺道一路上看不到一个人', padding, usedHeight, 10, maxTextWidth, r, lineWidth, 20, color1)
       usedHeight += titleHeight
     }
     if (commentArray.length > 0) {
@@ -1013,5 +1003,12 @@ Page({
       usedHeight += titleHeight
     }
    return usedHeight - temp
+  },
+  previewImage: function (downloadUrl) {
+    console.info(downloadUrl)
+    wx.previewImage({
+      current: downloadUrl, // 当前显示图片的http链接
+      urls: [downloadUrl]
+    })
   }
 })

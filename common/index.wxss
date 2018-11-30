@@ -589,7 +589,7 @@ text.num-big {
     text-align: center;
 }
 .float-img image{
-    width: 65%;
+    width: 70%;
     height: auto;
 }
 .r-name{

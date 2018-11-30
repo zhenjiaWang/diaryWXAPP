@@ -175,12 +175,6 @@ function storeMixin(options) {
       wx.navigateTo({
         url: './help',
       })
-      app.aldstat.sendEvent('游戏里查看帮助',
-        {
-          nickName: that.data.userData.nickName,
-          gender: that.data.userData.gender,
-          'time': Date.now()
-        })
     },
     resultVoice: function (data,luckWin){
       const that = this
