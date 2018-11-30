@@ -27,22 +27,22 @@
       </view>
     </view>
     <view bindtap="gameStart" style="position:relative"  wx:if='{{hasAuth}}'>
-      <form bindsubmit="pushFormSubmit" report-submit='true'>
+      <form bindsubmit="pushFormSubmit" report-submit='true' data-action="gameStart">
         <button style='-webkit-transform: scale(0.5);transform:scale(1);content:"";height:90rpx; width: 100%;border:1px solid transparent;background-color:transparent; position: absolute; top: 0; left: 0' plain="true" formType="submit"></button>
         <view class='begin-btn'>{{(lastComment&&currentDays==0&&currentHours==0)?"重新混":"开始混"}}</view>
       </form>
     </view>
 
     <view bindtap="viewRankingList" style="position:relative"  wx:if='{{hasAuth}}'>
-      <form bindsubmit="pushFormSubmit" report-submit='true'>
+      <form bindsubmit="pushFormSubmit" report-submit='true' data-action="viewRanking">
         <button style='-webkit-transform: scale(0.5);transform:scale(1);content:"";height:90rpx; width: 100%;border:1px solid transparent;background-color:transparent; position: absolute; top: 0; left: 0' plain="true" formType="submit"></button>
         <view class='begin-btn begin-btn2'>排行榜</view>
       </form>
     </view>
 
     <view bindtap="viewHelp" style="position:relative"  wx:if='{{hasAuth}}'>
-      <form bindsubmit="pushFormSubmit" report-submit='true'>
-        <button style='-webkit-transform: scale(0.5);transform:scale(1);content:"";height:90rpx; width: 100%;border:1px solid transparent;background-color:transparent; position: absolute; top: 0; left: 0' plain="true" formType="submit"></button>
+      <form bindsubmit="pushFormSubmit" report-submit='true' data-action="viewHelp">
+        <button style='-webkit-transform: scale(0.5);transform:scale(1);content:"";height:91rpx; width: 100%;border:1px solid transparent;background-color:transparent; position: absolute; top: 0; left: 0' plain="true" formType="submit"></button>
         <view class='begin-btn begin-btn3'>玩法说明</view>
       </form>
     </view>
@@ -67,10 +67,10 @@
     <image class='icon-1' src='../../img/icon-2.png' mode="widthFix" style='height:auto'></image>
     <text class='num-box'>今日还剩<text class='numFont font60 color1'>{{userState.hours}}</text>小时</text>
     <form report-submit="true" bindsubmit='nextDay' wx:if='{{userState.days>0}}'>
-      <button class='next-day {{userState.hours>0?"disable":""}}' formType="submit"></button>
+      <button class='next-day' formType="submit"></button>
     </form>
     <form report-submit="true" bindsubmit='done' wx:if='{{userState.days==0}}'>
-      <button class='end {{userState.hours>0||userState.score>0?"disable":""}}' formType="submit"></button>
+      <button class='end' formType="submit"></button>
     </form>
 
 
@@ -182,7 +182,7 @@
         </view>
         <view class='right-inner'>
           <view bindtap="actionJob" style="position:relative"  >
-            <form bindsubmit="pushFormSubmit" report-submit='true'>
+            <form bindsubmit="pushFormSubmit" report-submit='true' data-action="ationJob">
               <button style='-webkit-transform: scale(0.5);transform:scale(1);content:"";height:90rpx; width: 100%;border:1px solid transparent;background-color:transparent; position: absolute; top: 0; left: 0' plain="true" formType="submit"></button>
               <view class='btn-box  clearfix {{userState.jobLimit==0?"":"disable"}}'>
                 <image src='../../img/btn-1.png'></image>
@@ -195,7 +195,7 @@
             <text>找份工作</text>
           </view> -->
           <view bindtap="actionPlan" style="position:relative"  >
-            <form bindsubmit="pushFormSubmit" report-submit='true'>
+            <form bindsubmit="pushFormSubmit" report-submit='true' data-action="actionPlan">
               <button style='-webkit-transform: scale(0.5);transform:scale(1);content:"";height:90rpx; width: 100%;border:1px solid transparent;background-color:transparent; position: absolute; top: 0; left: 0' plain="true" formType="submit"></button>
               <view class='btn-box clearfix {{userState.hours>0?"":"disable"}}'>
                 <image src='../../img/btn-2.png'></image>
@@ -208,7 +208,7 @@
             <text>四处逛逛</text>
           </view> -->
           <view bindtap="actionFund" style="position:relative"  >
-            <form bindsubmit="pushFormSubmit" report-submit='true'>
+            <form bindsubmit="pushFormSubmit" report-submit='true' data-action="actionFund">
               <button style='-webkit-transform: scale(0.5);transform:scale(1);content:"";height:90rpx; width: 100%;border:1px solid transparent;background-color:transparent; position: absolute; top: 0; left: 0' plain="true" formType="submit"></button>
               <view class='btn-box clearfix {{userState.fundLimit==0?"":"disable"}}'>
                 <image src='../../img/btn-3.png'></image>
@@ -221,7 +221,7 @@
             <text>理财投资</text>
           </view> -->
           <view bindtap="actionLuck" style="position:relative"  >
-            <form bindsubmit="pushFormSubmit" report-submit='true'>
+            <form bindsubmit="pushFormSubmit" report-submit='true' data-action="actionLuck">
               <button style='-webkit-transform: scale(0.5);transform:scale(1);content:"";height:90rpx; width: 100%;border:1px solid transparent;background-color:transparent; position: absolute; top: 0; left: 0' plain="true" formType="submit"></button>
               <view class='btn-box clearfix {{userState.luckLimit==0?"":"disable"}}'>
                 <image src='../../img/btn-4.png'></image>
@@ -237,7 +237,7 @@
           <!--male prop-->
 
           <view bindtap='actionHouse' wx:if="{{userData.gender==1}}" style="position:relative"  >
-            <form bindsubmit="pushFormSubmit" report-submit='true'>
+            <form bindsubmit="pushFormSubmit" report-submit='true' data-action="actionHouse">
               <button style='-webkit-transform: scale(0.5);transform:scale(1);content:"";height:90rpx; width: 100%;border:1px solid transparent;background-color:transparent; position: absolute; top: 0; left: 0' plain="true" formType="submit"></button>
               <view class='btn-box clearfix {{userState.houseLimit==0?"":"disable"}}' >
                 <image src='../../img/btn-8.png'></image>
@@ -250,7 +250,7 @@
             <text>购房置业</text>
           </view> -->
           <view bindtap='actionCar' wx:if="{{userData.gender==1}}" style="position:relative"  >
-            <form bindsubmit="pushFormSubmit" report-submit='true'>
+            <form bindsubmit="pushFormSubmit" report-submit='true' data-action="actionCar">
               <button style='-webkit-transform: scale(0.5);transform:scale(1);content:"";height:90rpx; width: 100%;border:1px solid transparent;background-color:transparent; position: absolute; top: 0; left: 0' plain="true" formType="submit"></button>
               <view class='btn-box clearfix {{userState.carLimit==0?"":"disable"}}' >
                 <image src='../../img/btn-9.png'></image>
@@ -265,7 +265,7 @@
 
           <!--female prop-->
           <view bindtap='actionClothes' wx:if="{{userData.gender==2}}" style="position:relative"  >
-            <form bindsubmit="pushFormSubmit" report-submit='true'>
+            <form bindsubmit="pushFormSubmit" report-submit='true' data-action="actionClothes">
               <button style='-webkit-transform: scale(0.5);transform:scale(1);content:"";height:90rpx; width: 100%;border:1px solid transparent;background-color:transparent; position: absolute; top: 0; left: 0' plain="true" formType="submit"></button>
               <view class='btn-box clearfix {{userState.clothesLimit==0?"":"disable"}}'>
                 <image src='../../img/btn-10.png'></image>
@@ -279,7 +279,7 @@
           </view> -->
 
           <view bindtap='actionLuxury' wx:if="{{userData.gender==2}}" style="position:relative"  >
-            <form bindsubmit="pushFormSubmit" report-submit='true'>
+            <form bindsubmit="pushFormSubmit" report-submit='true' data-action="actionLuxury">
               <button style='-webkit-transform: scale(0.5);transform:scale(1);content:"";height:90rpx; width: 100%;border:1px solid transparent;background-color:transparent; position: absolute; top: 0; left: 0' plain="true" formType="submit"></button>
               <view class='btn-box clearfix {{userState.luxuryLimit==0?"":"disable"}}' >
                 <image src='../../img/btn-12.png'></image>
@@ -293,7 +293,7 @@
           </view> -->
           <!--common prop-->
           <view bindtap='actionCouple' style="position:relative"  >
-            <form bindsubmit="pushFormSubmit" report-submit='true'>
+            <form bindsubmit="pushFormSubmit" report-submit='true' data-action="actionCouple">
               <button style='-webkit-transform: scale(0.5);transform:scale(1);content:"";height:90rpx; width: 100%;border:1px solid transparent;background-color:transparent; position: absolute; top: 0; left: 0' plain="true" formType="submit"></button>
               <view class='btn-box clearfix {{userState.coupleLimit==0?"":"disable"}}' >
                 <image src='../../img/btn-6.png'></image>

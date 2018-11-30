@@ -125,23 +125,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    wx.getSetting({
-      success: function (res) {
-        if (res.authSetting["scope.userInfo"]) {
-          wx.getUserInfo({
-            success: function (res) {
-              var userInfo = res;
-              wx.login({
-                success: function (res) {
-                  var jsCode = res.code;
-                  app.aldpush.pushuserinfo(userInfo, jsCode);
-                }
-              })
-            }
-          })
-        }
-      }
-    })
+    
   },
   onShareAppMessage(opt){
     let title = '全民混北京，三分靠努力，七分靠打拼，剩下九十分靠天意！'
