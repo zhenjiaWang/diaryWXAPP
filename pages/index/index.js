@@ -20,17 +20,6 @@ const options={
           that.setData({
             hasAuth: app.globalData.hasAuth
           })
-          wx.getUserInfo({
-            success: function (res) {
-              var userInfo = res;
-              wx.login({
-                success: function (res) {
-                  var jsCode = res.code;
-                  app.aldpush.pushuserinfo(userInfo, jsCode);
-                }
-              })
-            }
-          })
         } else {
           app.globalData.hasAuth = false
           that.setData({
@@ -258,9 +247,7 @@ const options={
           })
           that.start()
           that.resData()
-          if (e) {
-            that.submitFormId(e.detail.formId, app.globalData.userData.userId)
-          }
+          
         }
       } else {
         that.setData({
@@ -268,9 +255,7 @@ const options={
         })
         that.start()
         that.resData()
-        if (e) {
-          that.submitFormId(e.detail.formId, app.globalData.userData.userId)
-        }
+        
       }
       app.aldstat.sendEvent('开始游戏',
         {
@@ -340,6 +325,11 @@ const options={
   nextDay:function(e){
     const that = this
     if (that.data.userState.hours >0 || that.data.submitFlag) {
+      wx.showToast({
+        title: '请继续四处逛逛消耗时间，再进入下一天。',
+        icon: 'none',
+        duration: 2000
+      })
       return false
     } else {
       if (e) {
@@ -378,7 +368,12 @@ const options={
   },
   done: function (e) {
     const that = this
-    if (that.data.userState.days == 0&&that.data.userState.hour == 0 && that.data.submitFlag) {
+    if (that.data.userState.hour > 0 || that.data.submitFlag) {
+      wx.showToast({
+        title: '请继续四处逛逛消耗时间，再完成评分。',
+        icon: 'none',
+        duration: 2000
+      })
       return false
     } else {
       that.voiceContext().playClick()
@@ -403,12 +398,7 @@ const options={
         })
     }
   },
-  viewHelp: function (e) {
-    if (e) {
-      if (app.globalData.userData){
-        this.submitFormId(e.detail.formId, app.globalData.userData.userId)
-      }
-    }
+  viewHelp: function () {
     wx.navigateTo({
       url: './help',
     })
@@ -419,10 +409,7 @@ const options={
         'time': Date.now()
       })
   },
-  viewRankingList: function (e){
-    if (e) {
-      this.submitFormId(e.detail.formId, app.globalData.userData.userId)
-    }
+  viewRankingList: function (){
     wx.navigateTo({
       url: './rankingList',
     })
@@ -440,11 +427,19 @@ const options={
       })
     }
   },
-  submitFormId: function (formId, userId){
-    // if(userId && formId)
-    // wxPost('/user/submit',{userId,formId},({data})=>{
-    //   //success callback
-    // })
+  pushFormSubmit: function (e){
+    if (e) {
+      console.info(e)
+      if (app.globalData.userData && e.detail.formId) {
+        e.target.dataset.action
+        wxPost('/user/submit', {
+          'userId': app.globalData.userData.userId,
+          'formId': e.detail.formId,
+          'action': e.target.dataset.action}, ({ data }) => {
+            console.info(data)
+        })
+      }
+    }
   },
   onShareAppMessage(opt) {
     let title ='全民混北京，三分靠努力，七分靠打拼，剩下九十分靠天意！'

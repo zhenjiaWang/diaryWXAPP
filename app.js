@@ -1,6 +1,5 @@
 //app.js
 const ald = require('./utils/ald-stat.js')
-var pushApp = require('./utils/pushsdk.js').pushSdk()
 const { wxPost, wxGet, wxRunAsync} = require('./utils/common.js')
 
 App({
