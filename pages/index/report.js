@@ -12,7 +12,7 @@ const color4 = '#eb9bf2'
 Page({
   data: {
     canvasWidth: 400,
-    canvasHeight: 430,
+    canvasHeight: 300,
     screenHeight: null,
     userInfo: {},
     canvasSaveimg: '',
@@ -103,7 +103,7 @@ Page({
       const avatar = new Promise((resolve, reject) => {
         console.info('avatar url=' + url)
         wx.getImageInfo({
-          src: 'https://img.jinrongzhushou.com/common/body-bg.jpg',
+          src: url,
           success: res => {
             resolve(res)
             console.info('avatar done')
@@ -205,10 +205,12 @@ Page({
             prepareData: Object.assign({
               avatar: avatarResult.path,
               nickName,
-              comment: commentUrl
+              comment: commentUrl,
+              gender
             }, reportResult.data)
           })
           that.drawAttribute(reportResult.data)
+          //that.drawNewShare(reportResult.data,gender)
           //that.draw(, reportResult.data, gender)
         }
       }).catch((error) => {
@@ -555,7 +557,7 @@ Page({
     ctx.setFontSize(12)
     ctx.setTextAlign('left')
     ctx.fillText(prop, x + 10, y + 14)
-    let fontColor=''
+    let fontColor='#fff'
     if (colorIndex==1){
       fontColor=color1
     }else if (colorIndex == 2) {
@@ -708,30 +710,123 @@ Page({
       })
   },
   drawNewShare: function ({
-    attribute:props = [],
-    cvsWidth = 140,
-    cvsHeight = 100,
-    offset = 20,//图片偏移量
+    gender=1,
+    attribute: props = [],
+    cvsWidth = 220,
+    offset = -180,//图片偏移量
     shape = props.length,
     center = cvsWidth / 2,
     redius = center - 50,
     angle = Math.PI * 2 / shape,
-    edgeColor = 'pink',
-    textColor = '#fff',
+    edgeColor = '#fff',
+    textColor = '#f6de4b',
     comment = 'feng',
     avatar = '../../img/feng.png',
     qrCodeImg = '../../img/scjg.png',
     nickName = '张三',
-    commentText=[],
+    commentText = [],
     score = '190000',
+    asset='',
+    money = '',
+    moneyColor='',
+    fundMoney = '',
+    houseAsset='',
+    carAsset='',
+    clothesAsset='',
+    luxuryAsset='',
+    myCarArray=[],
+    myLuxuryArray=[],
+    myClothesArray = [],
+    myHouseArray = [],
+    coupleComment=[],
+    commentArray=[],
+    jobTitleLevel='',
+    jobTitle='',
+    coupleTitleLevel='',
+    coupleTitle = ''
   } = {}) {
     let usedHeight = 10 //已使用的高度
     const padding = 20// 距左宽度
     const rankWidth = 85//评级宽度
     const rankMargin = 25 //距离point宽度
     const pointFontSize = 25
-    let { canvasWidth, canvasHeight } = this.data
+    let { canvasWidth } = this.data
+    const maxTextWidth = canvasWidth - 40//desc文本宽度
     const ctx = wx.createCanvasContext('share')
+    const offsetTop = -15
+
+    let _h = 0
+    if (gender === 1) {
+      if (myCarArray.length > 0) {
+        const { lineWidth } = this.drawTextNew(ctx, '有车一族，名下拥有：', padding, _h, 10, maxTextWidth,true)
+        let str = ''
+        for (let x = 0; x < myCarArray.length; x++) {
+          let item = myCarArray[x]
+          str += item.title + '*' + item.number + (x === myCarArray.length - 1 ? '。' : ' , ')
+        }
+        const { titleHeight } = this.drawTextNew(ctx, str, padding, _h, 10, maxTextWidth, true, lineWidth, 20)
+        _h += titleHeight
+      }
+      if (myHouseArray.length > 0) {
+        const { lineWidth } = this.drawTextNew(ctx, '北京有房，地处：', padding, _h, 10, maxTextWidth,true)
+        let str = ''
+        for (let x = 0; x < myHouseArray.length; x++) {
+          let item = myHouseArray[x]
+          str += item.title + '*' + item.number + (x === myHouseArray.length - 1 ? '。' : ' , ')
+        }
+        const { titleHeight } = this.drawTextNew(ctx, str, padding, _h, 10, maxTextWidth, true, lineWidth, 20)
+        _h += titleHeight
+      }
+    } else {
+      if (myClothesArray.length > 0) {
+        const { lineWidth } = this.drawTextNew(ctx, '爱买衣服，衣柜里：', padding, _h, 10, maxTextWidth,true)
+        let str = ''
+        for (let x = 0; x < myClothesArray.length; x++) {
+          let item = myClothesArray[x]
+          str += item.title + '*' + item.number + (x === myClothesArray.length - 1 ? '。' : ' , ')
+        }
+        const { titleHeight } = this.drawTextNew(ctx, str, padding, _h, 10, maxTextWidth, true, lineWidth, 20)
+        _h += titleHeight
+      }
+      if (myLuxuryArray.length > 0) {
+        const { lineWidth } = this.drawTextNew(ctx, '讲究排场，出门必备：', padding, _h, 10, maxTextWidth,true)
+        let str = ''
+        for (let x = 0; x < myLuxuryArray.length; x++) {
+          let item = myLuxuryArray[x]
+          str += item.title + '*' + item.number + (x === myLuxuryArray.length - 1 ? '。' : ' , ')
+        }
+        const { titleHeight } = this.drawTextNew(ctx, str, padding, _h, 10, maxTextWidth, true, lineWidth, 20)
+        _h += titleHeight
+
+      }
+    }
+    if (jobTitleLevel >= 5) {
+      const { lineWidth } = this.drawTextNew(ctx, '让人羡慕的工作：', padding, _h, 10, maxTextWidth,true)
+      const { titleHeight } = this.drawTextNew(ctx, jobTitle, padding, _h, 10, maxTextWidth, true, lineWidth, 20)
+      _h += titleHeight
+    }
+    if (coupleTitleLevel == 100) {
+      const { lineWidth } = this.drawTextNew(ctx, '拥有一段爱情，', padding, _h, 10, maxTextWidth,true)
+      const { lineWidth: indent } = this.drawTextNew(ctx, coupleTitle + '，', padding, _h, 10, maxTextWidth, true, lineWidth, 20)
+      const { titleHeight } = this.drawTextNew(ctx, coupleComment, padding, _h, 10, maxTextWidth, true, lineWidth + indent)
+      _h += titleHeight
+    }
+
+    if (commentArray.length - 1) {
+      const { lineWidth } = this.drawTextNew(ctx, commentArray[0] + '，', padding, _h, 10, maxTextWidth,true)
+      commentArray = commentArray.slice(1)
+      const str = commentArray.join('，')
+      const { titleHeight } = this.drawTextNew(ctx, str, padding, _h, 10, maxTextWidth, true, lineWidth, 20)
+      _h += titleHeight
+    }
+
+    this.setData({
+      canvasHeight: 340 + _h + 120 //属性+描述+二维码
+    })
+
+    let { canvasHeight } = this.data
+    
+    
 
 
 
@@ -774,6 +869,7 @@ Page({
     //
     ctx.save()
     ctx.strokeStyle = edgeColor
+    const _offsetTop = usedHeight + offsetTop
     var r = redius / shape
     for (var i = 0; i < shape; i++) {
       ctx.beginPath()   //开始路径
@@ -781,8 +877,7 @@ Page({
       for (var j = 0; j < shape; j++) {
         var x = center + currR * Math.cos(angle * j)
         var y = center + currR * Math.sin(angle * j)
-        ctx.lineTo(x - offset, y + usedHeight)
-        //console.info(Math.abs(x), center)
+        ctx.lineTo(x - offset, y + _offsetTop)
       }
       ctx.closePath()  //闭合路径
       ctx.stroke()  // restore to the default state
@@ -796,8 +891,8 @@ Page({
     for (var i = 0; i < shape; i++) {
       var x = center + redius * Math.cos(angle * i)
       var y = center + redius * Math.sin(angle * i)
-      ctx.moveTo(center - offset, center + usedHeight)
-      ctx.lineTo(x - offset, y + usedHeight)
+      ctx.moveTo(center - offset, center + _offsetTop)
+      ctx.lineTo(x - offset, y + _offsetTop)
     }
     ctx.stroke()
     ctx.restore()
@@ -809,7 +904,7 @@ Page({
     for (var i = 0; i < shape; i++) {
       var x = center + redius * Math.cos(angle * i) * props[i][1] / 100;
       var y = center + redius * Math.sin(angle * i) * props[i][1] / 100;
-      ctx.lineTo(x - offset, y + usedHeight)
+      ctx.lineTo(x - offset, y + _offsetTop)
     }
     ctx.closePath()
     ctx.fillStyle = 'rgba(255,0,0,0.2)'
@@ -823,7 +918,7 @@ Page({
     ctx.fillStyle = textColor;
     for (var i = 0; i < shape; i++) {
       var x = center + redius * Math.cos(angle * i) - offset
-      var y = center + redius * Math.sin(angle * i) + usedHeight
+      var y = center + redius * Math.sin(angle * i) + _offsetTop
       //通过不同的位置，调整文本的显示位置
       if (angle * i >= 0 && angle * i <= Math.PI / 2) {
         ctx.fillText(props[i][0], x, y + fontSize)
@@ -837,35 +932,175 @@ Page({
     }
     ctx.restore()
 
+    //draw prop
+    usedHeight += _r //头像直径+padding
+    const itemPd = 10// 属性间距
+    const itemH = 25 //属性高度
+    const itemR = 10 //圆角半径
+    const doubleW = (canvasWidth - padding * 2 - itemPd) / 2
+
+    //line 1
+    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '资产总额', asset, moneyColor)
+    //line 2
+    usedHeight += itemH + 10
+    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '可用现金', money, moneyColor)
+    //line 3
+    usedHeight += itemH + 10
+    this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '金融资产', fundMoney, moneyColor)
+    //line 4
+    usedHeight += itemH + 10
+    if (gender===1) {
+      this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '房屋估值', houseAsset, moneyColor)
+    } else {
+      this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '衣品估值', clothesAsset, moneyColor)
+    }
+
+    //line 5
+    usedHeight += itemH + 10
+    if (gender===1) {
+      this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '车辆估值', carAsset, moneyColor)
+    } else {
+      this.roundRect(ctx, padding, usedHeight, doubleW, itemH, itemR, '妆容估值', luxuryAsset, moneyColor)
+    }
+    usedHeight += itemH + 50
+
+    console.info(usedHeight)
+    
+    //draw description
+    ctx.setTextAlign('left')
+    let temp=usedHeight
+    if(gender===1){
+      if (myCarArray.length > 0){
+        const { lineWidth } = this.drawTextNew(ctx, '有车一族，名下拥有：', padding, usedHeight, 10, maxTextWidth)
+        let str = ''
+        for (let x = 0; x < myCarArray.length; x++) {
+          let item = myCarArray[x]
+          str += item.title + '*' + item.number + (x === myCarArray.length - 1 ? '。' : ' , ')
+        }
+        const { titleHeight } = this.drawTextNew(ctx, str, padding, usedHeight, 10, maxTextWidth, false, lineWidth, 20)
+        usedHeight += titleHeight
+      }
+      if (myHouseArray.length > 0){
+        const { lineWidth } = this.drawTextNew(ctx, '北京有房，地处：', padding, usedHeight, 10, maxTextWidth)
+        let str = ''
+        for (let x = 0; x < myHouseArray.length; x++) {
+          let item = myHouseArray[x]
+          str += item.title + '*' + item.number + (x === myHouseArray.length - 1 ? '。' :' , ')
+        }
+        const { titleHeight } = this.drawTextNew(ctx, str, padding, usedHeight, 10, maxTextWidth, false, lineWidth, 20)
+        usedHeight += titleHeight
+      }
+    }else{
+      if (myClothesArray.length > 0){
+        const { lineWidth } = this.drawTextNew(ctx, '爱买衣服，衣柜里：', padding, usedHeight, 10, maxTextWidth)
+        let str = ''
+        for (let x = 0; x < myClothesArray.length; x++) {
+          let item = myClothesArray[x]
+          str += item.title + '*' + item.number + (x === myClothesArray.length - 1 ? '。' : ' , ')
+        }
+        const { titleHeight } = this.drawTextNew(ctx, str, padding, usedHeight, 10, maxTextWidth, false, lineWidth, 20)
+        usedHeight += titleHeight
+      }
+      if (myLuxuryArray.length > 0){
+        const { lineWidth } = this.drawTextNew(ctx, '讲究排场，出门必备：', padding, usedHeight, 10, maxTextWidth)
+        let str = ''
+        for (let x = 0; x < myLuxuryArray.length; x++) {
+          let item = myLuxuryArray[x]
+          str += item.title + '*' + item.number + (x === myLuxuryArray.length - 1 ? '。' : ' , ')
+        }
+        const { titleHeight } = this.drawTextNew(ctx, str, padding, usedHeight, 10, maxTextWidth, false, lineWidth, 20)
+        usedHeight += titleHeight
+
+      }
+    }
+    if(jobTitleLevel >= 5){
+      const { lineWidth } = this.drawTextNew(ctx, '让人羡慕的工作：', padding, usedHeight, 10, maxTextWidth)
+      const { titleHeight } = this.drawTextNew(ctx, jobTitle, padding, usedHeight, 10, maxTextWidth, false, lineWidth, 20)
+      usedHeight += titleHeight
+    }
+    if (coupleTitleLevel == 100){
+      const { lineWidth } = this.drawTextNew(ctx, '拥有一段爱情，', padding, usedHeight, 10, maxTextWidth)
+      const { lineWidth: indent } = this.drawTextNew(ctx, coupleTitle +'，', padding, usedHeight, 10, maxTextWidth, false, lineWidth,20)
+      const { titleHeight } = this.drawTextNew(ctx, coupleComment, padding, usedHeight, 10, maxTextWidth, false, lineWidth + indent)
+      usedHeight += titleHeight
+    }
+
+    if (commentArray.length - 1){
+      const { lineWidth } = this.drawTextNew(ctx, commentArray[0] + '，', padding, usedHeight, 10, maxTextWidth)
+      commentArray = commentArray.slice(1)
+      const str = commentArray.join('，')
+      const { titleHeight } = this.drawTextNew(ctx, str, padding, usedHeight, 10, maxTextWidth, false, lineWidth, 20)
+      usedHeight += titleHeight
+    }
+    temp=usedHeight-temp
+
+
     //draw qrcode
     ctx.save()
     ctx.beginPath()
     let q_r = 45//二维码圆半径
     let q_d = q_r * 2//二维码尺寸
-    let marginLeft = 280
-    const q_center = marginLeft + q_r
-    const bottom = canvasHeight - 110
+    const q_center = padding + q_r
+    const bottom = canvasHeight - 120
 
     ctx.arc(q_center, bottom + q_r, q_r, 0, 2 * Math.PI);
     ctx.clip()
     ctx.stroke()
-    ctx.drawImage(qrCodeImg, marginLeft, bottom, q_d, q_d)
+    ctx.drawImage(qrCodeImg, padding, bottom, q_d, q_d)
     ctx.restore()
 
     ctx.setFontSize(16)
+    
+    ctx.setFillStyle('#FFFFFF')
+    ctx.fillText('长按图片,扫码来挑战', padding + q_d + 15, bottom + 45)
+    ctx.fillText('马上开始鬼混吧!', padding + q_d + 15, bottom + 70)
 
-    ctx.setFillStyle('#000')
-    ctx.fillText('长按图片,扫码来挑战,开始鬼混吧!', padding, bottom + 65)
-
-    //description
-    ctx.setTextAlign('left')
-    ctx.setFillStyle('#000')
-    const maxTextWidth = 400 - 280//desc文本宽度
-    let textstart=150
-    for (let x = 0; x < commentText.length; x++) {
-      const h = this.drawText(ctx, commentText[x], 260, textstart, 10, maxTextWidth)
-      textstart += h
-    }
     ctx.draw()
+  },
+  drawTextNew(ctx, str, x, y, titleHeight, canvasWidth, r,indent,fontSize) {
+    var lineWidth = 0
+    var lastSubStrIndex = 0; //每次开始截取的字符串的索引
+    indent = indent?indent:0
+    fontSize=fontSize?fontSize:14
+    ctx.setFontSize(fontSize)
+    let newLine=false
+    let lineW = canvasWidth
+    for (let i = 0; i < str.length; i++) {
+      lineWidth += ctx.measureText(str[i]).width
+
+      if (!newLine){
+        lineW = canvasWidth-indent
+      }else{
+        lineW = canvasWidth
+      }
+      if (lineWidth > lineW) {
+        if (!r) {
+          if(!newLine){
+            ctx.fillText(str.substring(lastSubStrIndex, i), x + indent, y)//
+          }else{
+            ctx.fillText(str.substring(lastSubStrIndex, i), x, y)//
+          }
+        }
+        y += 30//字体的高度
+        lineWidth = 0
+        lastSubStrIndex = i
+        titleHeight += 45
+        newLine=true
+      }
+      if (i == str.length - 1) {//绘制剩余部分
+        if (!r) {
+          if (!newLine) {
+            ctx.fillText(str.substring(lastSubStrIndex), x + indent, y)//
+          } else {
+            ctx.fillText(str.substring(lastSubStrIndex), x, y)//
+          }
+        }
+        if (lastSubStrIndex === 0) {
+          titleHeight += 20 // titleHeight -y(字体高度)
+        }
+      }
+    }
+    titleHeight = titleHeight + 4
+    return { titleHeight, lineWidth}
   }
 })
