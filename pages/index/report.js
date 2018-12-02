@@ -31,7 +31,8 @@ Page({
     hideButton:false,
     dataDone:false,
     share:false,
-    prepareData:null
+    prepareData:null,
+    tempPath:null
   },
   onLoad: function (options) {
     wx.showLoading({
@@ -251,8 +252,18 @@ Page({
     }
     ctx.restore()
     ctx.draw()
-
-    console.info('aaa')
+    const that=this
+    setTimeout(() => {
+      wx.canvasToTempFilePath({
+        canvasId: 'attribute',
+        //fileType: 'png',
+        success: function (res) {
+          that.setData({
+            tempPath: res.tempFilePath
+          })
+        }
+      })
+    }, 500)
   },
   draw({
     avatar = '../../img/scjg.png',
