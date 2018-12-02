@@ -20,6 +20,7 @@ Page({
     canvasWidth: 400,
     canvasHeight: 300,
     screenHeight: null,
+    screenWidth:null,
     userInfo: {},
     canvasSaveimg: '',
     Img:null,
@@ -38,14 +39,16 @@ Page({
     wx.showLoading({
       title: '请稍等...',
     })
-    let screenHeight
+    let screenHeight, screenWidth
     const totalHeight = abilityHeight + descriptHeight
     wx.getSystemInfo({
       success: function (res) {
-        screenHeight = res.windowHeight
+        screenHeight = res.windowHeight,
+        screenWidth = res.windowWidth
       }
     })
-    this.setData({ screenHeight })
+    console.info(screenWidth/2)
+    this.setData({ screenHeight, screenWidth })
    
     const userId=wx.getStorageSync('userId')
     const viewId=options.userId
@@ -173,8 +176,7 @@ Page({
   },
   drawAttribute({
     attribute: props = [],
-    cvsWidth = 220,
-    cvsHeight = 200,
+    cvsWidth = 280,
     shape = props.length,
     center = cvsWidth / 2,
     redius = center - 50,
