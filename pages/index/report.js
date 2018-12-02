@@ -992,7 +992,7 @@ Page({
       usedHeight += titleHeight
     } else if (coupleTitleLevel == 0) {
       const { lineWidth } = this.drawTextNew(ctx, '你感情路很顺，', padding, usedHeight, 10, maxTextWidth, r)
-      const { titleHeight } = this.drawTextNew(ctx, '顺道一路上看不到一个人', padding, usedHeight, 10, maxTextWidth, r, lineWidth, 20, color1)
+      const { titleHeight } = this.drawTextNew(ctx, '顺到一路上看不到一个人', padding, usedHeight, 10, maxTextWidth, r, lineWidth, 20, color1)
       usedHeight += titleHeight
     }
     if (commentArray.length > 0) {

@@ -316,7 +316,7 @@ const options={
       return false
     } else {
       if (e) {
-        that.submitFormId(e.detail.formId, app.globalData.userData.userId)
+        that.pushFormSubmit(e)
       }
       that.voiceContext().playClick()
       that.setData({ submitFlag: true,maskShow:true })
@@ -354,7 +354,7 @@ const options={
     } else {
       that.voiceContext().playClick()
       if(e){
-        that.submitFormId(e.detail.formId, app.globalData.userData.userId)
+        that.pushFormSubmit(e)
       }
       that.setData({ submitFlag: true, lastComment:'zhenjia'})
       wx.navigateTo({
