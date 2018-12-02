@@ -20,6 +20,7 @@ Page({
     canvasWidth: 400,
     canvasHeight: 300,
     screenHeight: null,
+    screenWidth:null,
     userInfo: {},
     canvasSaveimg: '',
     Img:null,
@@ -31,20 +32,23 @@ Page({
     hideButton:false,
     dataDone:false,
     share:false,
-    prepareData:null
+    prepareData:null,
+    tempPath:null
   },
   onLoad: function (options) {
     wx.showLoading({
       title: '请稍等...',
     })
-    let screenHeight
+    let screenHeight, screenWidth
     const totalHeight = abilityHeight + descriptHeight
     wx.getSystemInfo({
       success: function (res) {
-        screenHeight = res.windowHeight
+        screenHeight = res.windowHeight,
+        screenWidth = res.windowWidth
       }
     })
-    this.setData({ screenHeight })
+    console.info(screenWidth/2)
+    this.setData({ screenHeight, screenWidth })
    
     const userId=wx.getStorageSync('userId')
     const viewId=options.userId
@@ -172,8 +176,7 @@ Page({
   },
   drawAttribute({
     attribute: props = [],
-    cvsWidth = 220,
-    cvsHeight = 200,
+    cvsWidth = 280,
     shape = props.length,
     center = cvsWidth / 2,
     redius = center - 50,
@@ -251,8 +254,18 @@ Page({
     }
     ctx.restore()
     ctx.draw()
-
-    console.info('aaa')
+    const that=this
+    setTimeout(() => {
+      wx.canvasToTempFilePath({
+        canvasId: 'attribute',
+        //fileType: 'png',
+        success: function (res) {
+          that.setData({
+            tempPath: res.tempFilePath
+          })
+        }
+      })
+    }, 500)
   },
   draw({
     avatar = '../../img/scjg.png',

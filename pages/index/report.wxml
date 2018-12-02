@@ -24,7 +24,8 @@
       </view>
     </view>
     <view class='clearfix' style='width:330rpx;float:right;'>
-      <canvas canvas-id="attribute" style='width:100%px; height:150px;' hidden='{{shareImgShow}}'></canvas>
+    <image src='{{tempPath}}' wx:if="{{tempPath}}" style='width:330rpx;height:{{330/280*200}}rpx;'></image>
+      <canvas canvas-id="attribute" style='width:280px; height:200px;transform: translateX(-2000%);'></canvas>
     </view>
 
     <view class='item-box item-box2 clearfix'>
