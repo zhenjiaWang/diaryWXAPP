@@ -5,10 +5,11 @@ const app = getApp()
 Page({
   data: {
     list:[],
+    coupleArray:null,
     myData: null,
     lastUpdate:'',
     show:false,
-    activeType:'all',
+    activeType:'score',
     ruleShow:false,
     char_lt:'<'
   },
@@ -21,42 +22,20 @@ Page({
     that.setData({
       activeType: activetype
     })
-    if (activetype!='rule'){
+    if (activetype!='couple'){
       that.loadRankings()
-    }else{
-      that.setData({
-        show: false,
-        ruleShow:true
-      })
-      if (app.globalData) {
-        app.aldstat.sendEvent('用户查看评分标准',
-          {
-            nickName: app.globalData.nickName,
-            gender: app.globalData.gender,
-            'time': Date.now()
-          })
-      } else {
-        app.aldstat.sendEvent('新用户查看评分标准',
-          {
-            'time': Date.now()
-          })
-      }
+    } else if (activetype === 'couple') {
+      that.loadCouple()
     }
   },
   loadRankings:function(f){
     const that = this
-    let gender=''
-    if(that.data.activeType==='man'){
-      gender=1
-    } else if (that.data.activeType === 'lady') {
-      gender = 2
-    }
+    
     wx.showLoading({
       title: '请稍等...',
     })
     this.setData({
       show: false,
-      ruleShow:false,
       lastUpdate: formatTime(new Date())
     })
     let userId = app.globalData.userId
@@ -64,7 +43,7 @@ Page({
     if (!userId) {
       userId = 86125
     }
-    wxGet(`/user/rankings/${userId}`, { 'gender': gender}, ({ data }) => {
+    wxGet(`/user/rankings/${userId}`, { 'orderType': that.data.activeType}, ({ data }) => {
       if (data.errorCode >= 0) {
         if (!data.myData){
           data.myData=false
@@ -86,20 +65,35 @@ Page({
         wx.hideLoading()
       }, 500)
     })
-    if (app.globalData){
-      app.aldstat.sendEvent('用户查看排行:gender=' + gender,
-        {
-          nickName: app.globalData.nickName,
-          gender: app.globalData.gender,
-          'time': Date.now()
+  },
+  loadCouple: function () {
+    const that = this
+
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    this.setData({
+      show: false,
+      lastUpdate: formatTime(new Date())
+    })
+    
+    wxGet(`/user/coupleRankings`, {}, ({ data }) => {
+      if (data.errorCode >= 0) {
+        
+        const { coupleArray } = data
+        that.setData({
+          coupleArray
         })
-    }else{
-      app.aldstat.sendEvent('新用户查看排行:gender=' + gender,
-        {
-          'time': Date.now()
+      }
+    }, null, () => {
+      setTimeout(function () {
+        let t = 500
+        that.setData({
+          show: true
         })
-    }
-   
+        wx.hideLoading()
+      }, 500)
+    })
   },
   viewMyReport: function (){
     if(this.data.myData.score>0){
@@ -125,23 +119,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    wx.getSetting({
-      success: function (res) {
-        if (res.authSetting["scope.userInfo"]) {
-          wx.getUserInfo({
-            success: function (res) {
-              var userInfo = res;
-              wx.login({
-                success: function (res) {
-                  var jsCode = res.code;
-                  app.aldpush.pushuserinfo(userInfo, jsCode);
-                }
-              })
-            }
-          })
-        }
-      }
-    })
+    
   },
   onShareAppMessage(opt){
     let title = '全民混北京，三分靠努力，七分靠打拼，剩下九十分靠天意！'

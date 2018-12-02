@@ -368,6 +368,8 @@ page{overflow: hidden;}
 .font72{font-size:72rpx;}
 .font40{font-size:42rpx;}
 .font43{font-size:43rpx;}
+.font36{font-size:36rpx;}
+.font32{font-size:32rpx;}
 .font30{font-size:36rpx;}
 .font26{font-size:26rpx;}
 .font24{font-size:24rpx;}
@@ -376,6 +378,11 @@ page{overflow: hidden;}
 .color3{color:#ed7c7c;}
 .color4{color:#eb9bf2;}
 .color5{color:#ee7206;}
+.qiongColor{color:#959595 }
+.luColor{color:#37b44a }
+.fengColor{color:#ff9900 }
+.jingColor{color:#ee7206 }
+.hunColor{color:#eb9bf2 }
 .top-title .numFont{padding:0 4rpx;}
 
 .text-center{text-align: center!important;}

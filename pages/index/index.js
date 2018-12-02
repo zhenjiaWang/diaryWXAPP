@@ -20,17 +20,6 @@ const options={
           that.setData({
             hasAuth: app.globalData.hasAuth
           })
-          wx.getUserInfo({
-            success: function (res) {
-              var userInfo = res;
-              wx.login({
-                success: function (res) {
-                  var jsCode = res.code;
-                  app.aldpush.pushuserinfo(userInfo, jsCode);
-                }
-              })
-            }
-          })
         } else {
           app.globalData.hasAuth = false
           that.setData({
@@ -172,12 +161,6 @@ const options={
           wx.setStorageSync('code', app.globalData.code)
           app.globalData.userId = data.userData.userId
           app.globalData.userData = data.userData
-          app.aldstat.sendOpenid(data.userData.openId)
-          app.aldstat.sendEvent('用户登陆',
-          { nickName: data.userData.nickName,
-            gender: data.userData.gender,
-          'time':Date.now()
-          })
         }
       },null,()=>{
         that.setData({
@@ -225,12 +208,7 @@ const options={
           submitFlag: false
         })
         that.checkError()
-        app.aldstat.sendEvent('用户授权',
-          {
-            nickName: app.globalData.nickName,
-            gender: app.globalData.gender,
-            'time': Date.now()
-          })
+        
       }, 1000)
     }
   },
@@ -258,9 +236,7 @@ const options={
           })
           that.start()
           that.resData()
-          if (e) {
-            that.submitFormId(e.detail.formId, app.globalData.userData.userId)
-          }
+          
         }
       } else {
         that.setData({
@@ -268,16 +244,8 @@ const options={
         })
         that.start()
         that.resData()
-        if (e) {
-          that.submitFormId(e.detail.formId, app.globalData.userData.userId)
-        }
+        
       }
-      app.aldstat.sendEvent('开始游戏',
-        {
-          nickName: app.globalData.nickName,
-          gender: app.globalData.gender,
-          'time': Date.now()
-        })
     }
   },
   resData: function () {
@@ -340,10 +308,15 @@ const options={
   nextDay:function(e){
     const that = this
     if (that.data.userState.hours >0 || that.data.submitFlag) {
+      wx.showToast({
+        title: '请继续四处逛逛消耗时间，再进入下一天。',
+        icon: 'none',
+        duration: 2000
+      })
       return false
     } else {
       if (e) {
-        that.submitFormId(e.detail.formId, app.globalData.userData.userId)
+        that.pushFormSubmit(e)
       }
       that.voiceContext().playClick()
       that.setData({ submitFlag: true,maskShow:true })
@@ -367,23 +340,21 @@ const options={
           console.info(data)
         }
       )
-
-      app.aldstat.sendEvent('进入下一天',
-        {
-          nickName: that.data.userData.nickName,
-          gender: that.data.userData.gender,
-          'time': Date.now()
-        })
     }
   },
   done: function (e) {
     const that = this
-    if (that.data.userState.days == 0&&that.data.userState.hour == 0 && that.data.submitFlag) {
+    if (that.data.userState.hour > 0 || that.data.submitFlag) {
+      wx.showToast({
+        title: '请继续四处逛逛消耗时间，再完成评分。',
+        icon: 'none',
+        duration: 2000
+      })
       return false
     } else {
       that.voiceContext().playClick()
       if(e){
-        that.submitFormId(e.detail.formId, app.globalData.userData.userId)
+        that.pushFormSubmit(e)
       }
       that.setData({ submitFlag: true, lastComment:'zhenjia'})
       wx.navigateTo({
@@ -395,43 +366,17 @@ const options={
           }, 2000)
         }
       })
-      app.aldstat.sendEvent('完成游戏',
-        {
-          nickName: that.data.userData.nickName,
-          gender: that.data.userData.gender,
-          'time': Date.now()
-        })
     }
   },
-  viewHelp: function (e) {
-    if (e) {
-      if (app.globalData.userData){
-        this.submitFormId(e.detail.formId, app.globalData.userData.userId)
-      }
-    }
+  viewHelp: function () {
     wx.navigateTo({
       url: './help',
     })
-    app.aldstat.sendEvent('首页查看帮助',
-      {
-        nickName: app.globalData.userData.nickName,
-        gender: app.globalData.userData.gender,
-        'time': Date.now()
-      })
   },
-  viewRankingList: function (e){
-    if (e) {
-      this.submitFormId(e.detail.formId, app.globalData.userData.userId)
-    }
+  viewRankingList: function (){
     wx.navigateTo({
       url: './rankingList',
     })
-    app.aldstat.sendEvent('首页查看排行',
-      {
-        nickName: app.globalData.userData.nickName,
-        gender: app.globalData.userData.gender,
-        'time': Date.now()
-      })
   },
   viewMyReport: function () {
     if (this.data.lastComment && this.data.currentDays == 0 && this.data.currentHours == 0){
@@ -440,11 +385,19 @@ const options={
       })
     }
   },
-  submitFormId: function (formId, userId){
-    // if(userId && formId)
-    // wxPost('/user/submit',{userId,formId},({data})=>{
-    //   //success callback
-    // })
+  pushFormSubmit: function (e){
+    if (e) {
+      console.info(e)
+      if (app.globalData.userData && e.detail.formId) {
+        e.target.dataset.action
+        wxPost('/user/submit', {
+          'userId': app.globalData.userData.userId,
+          'formId': e.detail.formId,
+          'action': e.target.dataset.action}, ({ data }) => {
+            console.info(data)
+        })
+      }
+    }
   },
   onShareAppMessage(opt) {
     let title ='全民混北京，三分靠努力，七分靠打拼，剩下九十分靠天意！'

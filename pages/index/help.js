@@ -19,12 +19,7 @@ Page({
    */
   onLoad: function (options) {
     this.loadRankings()
-    app.aldstat.sendEvent('查看说明:init base',
-      {
-        nickName: app.globalData.nickName,
-        gender: app.globalData.gender,
-        'time': Date.now()
-      })
+    
   },
   selected: function (e) {
     const that = this
@@ -32,12 +27,7 @@ Page({
     that.setData({
       activeType: activetype
     })
-    app.aldstat.sendEvent('查看说明:' + activetype,
-      {
-        nickName: app.globalData.nickName,
-        gender: app.globalData.gender,
-        'time': Date.now()
-      })
+    
   },
   loadRankings: function (f) {
     const that = this
@@ -78,23 +68,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    wx.getSetting({
-      success: function (res) {
-        if (res.authSetting["scope.userInfo"]) {
-          wx.getUserInfo({
-            success: function (res) {
-              var userInfo = res;
-              wx.login({
-                success: function (res) {
-                  var jsCode = res.code;
-                  app.aldpush.pushuserinfo(userInfo, jsCode);
-                }
-              })
-            }
-          })
-        }
-      }
-    })
+   
   },
 
   /**
