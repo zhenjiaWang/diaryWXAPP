@@ -145,7 +145,7 @@
         </block>
         <block wx:elif='{{prop.coupleTitleLevel==0}}'>
           <text>你感情路很顺，</text>
-          <text class='color1' style='font-size:38rpx;'>顺道一路上看不到一个人</text>
+          <text class='color1' style='font-size:38rpx;'>顺到一路上看不到一个人</text>
           <text>\n</text>
           <text>\n</text>
         </block>
