@@ -12,9 +12,20 @@ class JobDao {
       data = res.data
     })
 
-    return {
-      data
-    }
+    return data
+  }
+
+  async getRequireListByJobId(jobId) {
+    const db = cloud.database()
+    let data = {}
+
+    await db.collection('res_job_require').where({
+      _jobId: jobId
+    }).get().then(res => {
+      data = res.data
+    })
+
+    return data
   }
 
 

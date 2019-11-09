@@ -12,9 +12,7 @@ class LuxuryDao {
       data = res.data
     })
 
-    return {
-      data
-    }
+    return data
   }
   async init() {
     const db = cloud.database()

@@ -10,9 +10,7 @@ class FundDao {
       data = res.data
     })
 
-    return {
-      data
-    }
+    return data
   }
 
   async getById(id) {

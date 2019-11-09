@@ -10,9 +10,7 @@ class LuckDao {
       data = res.data
     })
 
-    return {
-      data
-    }
+    return data
   }
 }
 module.exports = LuckDao

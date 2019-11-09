@@ -10,9 +10,7 @@ class TipDao {
       data = res.data
     })
 
-    return {
-      data
-    }
+    return data
   }
 }
 module.exports = TipDao

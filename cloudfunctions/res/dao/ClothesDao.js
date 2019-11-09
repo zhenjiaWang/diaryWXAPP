@@ -12,9 +12,7 @@ class ClothesDao {
       data = res.data
     })
 
-    return {
-      data
-    }
+    return data
   }
 
   async init() {
