@@ -435,3 +435,18 @@ exports.getAttrNameLady = (attrKey) => {
   }
   return attrName
 }
+
+exports.useHour = (userObj) => {
+  if (userObj){
+    let days = userObj['days']
+    let hours = userObj['hours']
+    if(days&&hours){
+      days = parseInt(days)
+      hours = parseInt(hours)
+      if (hours>0){
+        hours = hours-1
+        userObj['hours']=hours
+      }
+    }
+  }
+}

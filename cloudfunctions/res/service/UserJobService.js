@@ -107,7 +107,6 @@ async function proccess(userId,
     let effectArray = []
     if (gender == 1) {
       effectArray = diffEffectLady(oldUserObj, userObj)
-      console.info(JSON.stringify(userObj))
       await userManDao.save(userObj, 'update')
     } else {
       effectArray = diffEffectLady(oldUserObj, userObj)
