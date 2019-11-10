@@ -40,7 +40,7 @@ class UserPlanService {
     if (gender == 1) {
       userObj = await userManDao.getByUserId(userId)
     } else {
-      userObj = await userManDao.getByUserId(userId)
+      userObj = await userLadyDao.getByUserId(userId)
     }
 
     let planEffectGet = new Promise((resolve, reject) => {
@@ -48,8 +48,8 @@ class UserPlanService {
       resolve(planEffectList)
     })
     let planGet = new Promise((resolve, reject) => {
-      const planEffect = planDao.getById(planId)
-      resolve(planEffect)
+      const plan = planDao.getById(planId)
+      resolve(plan)
     })
     let planEffectList = [],
       plan = {}
@@ -98,7 +98,9 @@ async function proccess(userId,
       addResultArray(resultArray, '最终:', effectArray)
       data.resultArray = resultArray
     } else {
-
+      let resultArray = []
+      addResultArray(resultArray, '钱包那么瘪，如果不想付出劳动获得金钱，就好好宅着吧！', false)
+      data.resultArray = resultArray
     }
   }
 }
