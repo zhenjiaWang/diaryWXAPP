@@ -4,7 +4,7 @@ class JobDao {
 
   async getList(gender) {
     const db = cloud.database()
-    let data = {}
+    let data = []
    
     await  db.collection('res_job').where({
       gender: gender
@@ -17,7 +17,7 @@ class JobDao {
 
   async getRequireListByJobId(jobId) {
     const db = cloud.database()
-    let data = {}
+    let data = []
 
     await db.collection('res_job_require').where({
       _jobId: jobId
@@ -25,6 +25,18 @@ class JobDao {
       data = res.data
     })
 
+    return data
+  }
+
+  async getEffectListByJobId(jobId) {
+    const db = cloud.database()
+    let data = []
+
+    await db.collection('res_job_effect').where({
+      _jobId: jobId
+    }).get().then(res => {
+      data = res.data
+    })
     return data
   }
 

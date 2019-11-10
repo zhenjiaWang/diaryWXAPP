@@ -4,7 +4,7 @@ class FundDao {
 
   async getList() {
     const db = cloud.database()
-    let data = {}
+    let data = []
 
     await db.collection('res_fund').orderBy('probability', 'desc').get().then(res => {
       data = res.data

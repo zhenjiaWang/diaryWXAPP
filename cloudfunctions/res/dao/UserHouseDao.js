@@ -4,7 +4,7 @@ class UserHouseDao {
 
   async getListByUserId(userId) {
     const db = cloud.database()
-    let data = {}
+    let data = []
     await db.collection('user_house').where({
       _userId: userId
     }).get().then(res => {

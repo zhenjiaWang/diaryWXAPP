@@ -7,6 +7,14 @@ exports.initDays = () => {
 exports.initHours = () => {
   return 6
 }
+exports.toDecimal = (x) => {
+  var f = parseFloat(x)
+  if (isNaN(f)) {
+    return
+  }
+  f = Math.round(x * 100) / 100
+  return f
+}
 
 exports.attrList = (gender, isManage) => {
   var attrArray = []
@@ -237,4 +245,193 @@ exports.requirePass = (requireList, userObj) => {
     }
   }
   return pass
+}
+
+exports.useEffect = (effectList, userObj) => {
+  if (effectList && effectList.length > 0) {
+    for (let effect of effectList) {
+      let attrKey = effect['attrKey'].toLowerCase()
+      let operation = effect['operation'].toUpperCase()
+      let value = effect['value']
+      if (value) {
+        value = parseInt(value)
+        let effectValue = userObj[attrKey]
+        if (effectValue) {
+          effectValue = parseInt(effectValue)
+          let percent = false
+          try {
+            percent = effect[percent]
+            if (percent) {
+              percent = percent.toUpperCase()
+            } else {
+              percent = 'N'
+            }
+          } catch (e) {}
+          if (percent === 'N') {
+            if (operation === 'SUB') {
+              effectValue = effectValue - value
+            } else if (operation === 'ADD') {
+              effectValue = effectValue + value
+            }
+          } else if (percent === 'N') {
+            if (operation === 'SUB') {
+              value = 0 - value
+            }
+            value = 100 + value
+            let dyPrice = exports.toDecimal(effectValue * value)
+            dyPrice = exports.toDecimal(dyPrice / 100)
+            effectValue = parseInt(Math.round(dyPrice))
+          }
+          userObj[attrKey] = effectValue
+        }
+      }
+    }
+  }
+}
+exports.diffEffectMan = (userManBefore, userManAfter) => {
+  let resultEffect = []
+  if (userManBefore && userManAfter) {
+    let healthB = userManBefore['health']
+    let moneyB = userManBefore['money']
+    let abilityB = userManBefore['ability']
+    let experienceB = userManBefore['experience']
+    let happyB = userManBefore['happy']
+    let positiveB = userManBefore['positive']
+    let connectionsB = userManBefore['connections']
+
+    let healthA = userManAfter['health']
+    let moneyA = userManAfter['money']
+    let abilityA = userManAfter['ability']
+    let experienceA = userManAfter['experience']
+    let happyA = userManAfter['happy']
+    let positiveA = userManAfter['positive']
+    let connectionsA = userManAfter['connections']
+    exports.diffValue(resultEffect, healthB, healthA, 1, "health")
+    exports.diffValue(resultEffect, moneyB, moneyA, 1, "money")
+    exports.diffValue(resultEffect, abilityB, abilityA, 1, "ability")
+    exports.diffValue(resultEffect, experienceB, experienceA, 1, "experience")
+    exports.diffValue(resultEffect, happyB, happyA, 1, "happy")
+    exports.diffValue(resultEffect, positiveB, positiveA, 1, "positive")
+    exports.diffValue(resultEffect, connectionsB, connectionsA, 1, "connections")
+    return resultEffect
+  }
+}
+exports.diffEffectLady = (userLadyBefore, userLadyAfter) => {
+  let resultEffect = []
+  if (userLadyBefore && userLadyAfter) {
+    let healthB = userLadyBefore['health']
+    let moneyB = userLadyBefore['money']
+    let abilityB = userLadyBefore['ability']
+    let wisdomB = userLadyBefore['wisdom']
+    let happyB = userLadyBefore['happy']
+    let beautyB = userLadyBefore['beauty']
+    let popularityB = userLadyBefore['popularity']
+
+    let healthA = userLadyAfter['health']
+    let moneyA = userLadyAfter['money']
+    let abilityA = userLadyAfter['ability']
+    let wisdomA = userLadyAfter['wisdom']
+    let happyA = userLadyAfter['happy']
+    let beautyA = userLadyAfter['beauty']
+    let popularityA = userLadyAfter['popularity']
+    exports.diffValue(resultEffect, healthB, healthA, 0, "health")
+    exports.diffValue(resultEffect, moneyB, moneyA, 0, "money")
+    exports.diffValue(resultEffect, abilityB, abilityA, 0, "ability")
+    exports.diffValue(resultEffect, wisdomB, wisdomA, 0, "wisdom")
+    exports.diffValue(resultEffect, happyB, happyA, 0, "happy")
+    exports.diffValue(resultEffect, beautyB, beautyA, 0, "beauty")
+    exports.diffValue(resultEffect, popularityB, popularityA, 0, "popularity")
+    return resultEffect
+  }
+}
+
+exports.diffValue = (resultEffect, value1, value2, gender, key) => {
+  let jsonObject = {}
+  if (value1 && value2) {
+    if (value1 == value2) {
+      return
+    } else if (value1 > value2) {
+      jsonObject.op = 'sub'
+      if (gender == 1) {
+        jsonObject.attrName = exports.getAttrNameMan(key)
+      } else {
+        jsonObject.attrName = exports.getAttrNameLady(key)
+      }
+      jsonObject.value = '-' + (value1 - value2)
+
+      resultEffect.push(jsonObject)
+    } else if (value1 < value2) {
+      jsonObject.op = 'add'
+      if (gender == 1) {
+        jsonObject.attrName = exports.getAttrNameMan(key)
+      } else {
+        jsonObject.attrName = exports.getAttrNameLady(key)
+      }
+      jsonObject.value = '+' + (value2 - value1)
+      resultEffect.push(jsonObject)
+    }
+  }
+}
+exports.getAttrNameMan = (attrKey) => {
+  let attrName = ''
+  attrKey = attrKey.toUpperCase()
+  switch (attrKey) {
+    case "HEALTH":
+      attrName = "健康"
+      break
+    case "MONEY":
+      attrName = "现金"
+      break
+    case "ABILITY":
+      attrName = "工作能力"
+      break
+    case "EXPERIENCE":
+      attrName = "社会经验"
+      break
+    case "HAPPY":
+      attrName = "快乐"
+      break
+    case "POSITIVE":
+      attrName = "正气"
+      break
+    case "CONNECTIONS":
+      attrName = "人脉"
+      break
+    case "CAR":
+      attrName = "座驾"
+      break
+    case "HOUSE":
+      attrName = "房产"
+      break
+  }
+  return attrName
+}
+
+exports.getAttrNameLady = (attrKey) => {
+  let attrName = ''
+  attrKey = attrKey.toUpperCase()
+  switch (attrKey) {
+    case "HEALTH":
+      attrName = "健康"
+      break
+    case "MONEY":
+      attrName = "现金"
+      break
+    case "ABILITY":
+      attrName = "工作能力"
+      break
+    case "WISDOM":
+      attrName = "处世智慧"
+      break
+    case "HAPPY":
+      attrName = "快乐"
+      break
+    case "BEAUTY":
+      attrName = "美貌"
+      break
+    case "POPULARITY":
+      attrName = "知名度"
+      break
+  }
+  return attrName
 }

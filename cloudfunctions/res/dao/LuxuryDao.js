@@ -4,7 +4,7 @@ class LuxuryDao {
 
   async getList(gender) {
     const db = cloud.database()
-    let data = {}
+    let data = []
 
     await db.collection('res_luxury').where({
       gender: gender

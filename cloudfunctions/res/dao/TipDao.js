@@ -4,7 +4,7 @@ class TipDao {
 
   async getList() {
     const db = cloud.database()
-    let data = {}
+    let data = []
 
     await db.collection('res_tip').get().then(res => {
       data = res.data

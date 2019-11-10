@@ -132,7 +132,10 @@ class CommonService {
         const luckGetResult = results[3]
         const fundGetResult = results[4]
         const tipGetResult = results[5]
-        let carGetResult=[], houseGetResult=[], clothesGetResult=[], luxuryGetResult=[]
+        let carGetResult = [],
+          houseGetResult = [],
+          clothesGetResult = [],
+          luxuryGetResult = []
         if (user.gender == 1) {
           carGetResult = results[6]
           houseGetResult = results[7]
@@ -175,14 +178,16 @@ class CommonService {
     let {
       userId
     } = event
-    let data = { newGame:false}
+    let data = {
+      newGame: false
+    }
     let result = CommonResponse(-1, 'fail', data)
     const user = await userDao.getUserById(userId)
     if (user) {
       if (user.gender == 1) {
         let userMan = await userManDao.getByUserId(userId)
         if (!userMan) {
-          data.newGame=true
+          data.newGame = true
           let userManData = {
             _userId: userId,
             health: 100,
@@ -197,7 +202,7 @@ class CommonService {
             score: 0
           }
           console.info(userManData)
-          const addId = await userManDao.add(userManData)
+          const addId = await userManDao.save(userManData, 'add')
           if (addId) {
             userMan = await userManDao.getById(addId)
           }
@@ -209,6 +214,29 @@ class CommonService {
           data.userState = userMan
           await loadUserData(data, userId, user.gender)
 
+          result = CommonResponse(0, 'success', data)
+        }
+      }
+    }
+    ctx.body = result
+  }
+
+  async refresh(ctx, next) {
+    const event = ctx._req.event
+    let {
+      userId
+    } = event
+    let data = {
+      newGame: false
+    }
+    let result = CommonResponse(-1, 'fail', data)
+    const user = await userDao.getUserById(userId)
+    if (user) {
+      if (user.gender == 1) {
+        let userMan = await userManDao.getByUserId(userId)
+        if (userMan) {
+          data.userState = userMan
+          await loadUserData(data, userId, user.gender)
           result = CommonResponse(0, 'success', data)
         }
       }
@@ -251,7 +279,6 @@ class CommonService {
 }
 /* */
 async function loadUserData(data, userId, gender) {
-  console.info('*****=' + JSON.stringify(data))
   data.attrList = attrList(gender, 1)
   let userState = data.userState
 
@@ -418,9 +445,9 @@ async function loadUserData(data, userId, gender) {
 
       data.currentDay = currentDay(userDay)
       data.nightText = '第' + dayText(userDay) + '天'
-      if(data.newGame){
-        let resultArray=[]
-        addResultArray(resultArray,'北京是你的舞台，初到北京，给你8000启动资金。',false)
+      if (data.newGame) {
+        let resultArray = []
+        addResultArray(resultArray, '北京是你的舞台，初到北京，给你8000启动资金。', false)
         addResultArray(resultArray, '你可以先找份最初级工作，这样每天可以获得工资。安顿好后要多四处逛逛见见市面，提高你的个人成长能力。', false)
         addResultArray(resultArray, '看' + gameDays() + '天后你能混出什么样来', false)
         data.resultArray = resultArray
