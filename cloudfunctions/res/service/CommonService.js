@@ -394,12 +394,12 @@ async function loadUserData(data, userId, gender) {
       userState.myHouseArray = myHouseArray
       userState.myHouseNumber = myHouseNumber
       if (userJob) {
-        userState.myJobId = userJob._id
+        userState.myJobId = userJob._jobId
       }else{
         userState.myJobId = ''
       }
       if (userCouple) {
-        userState.myCoupleId = userCouple._id
+        userState.myCoupleId = userCouple._coupleId
       }else{
         userState.myCoupleId = ''
       }
