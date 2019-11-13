@@ -21,7 +21,7 @@ const planDao = new PlanDao()
 
 const userManDao = new UserManDao()
 const userLadyDao = new UserLadyDao()
-const userPlanDao = new UserLadyDao()
+const userPlanDao = new UserPlanDao()
 
 class UserPlanService {
 
@@ -91,12 +91,16 @@ async function proccess(userId,
       let effectArray = []
       if (gender == 1) {
         effectArray = diffEffectMan(oldUserObj, userObj)
+        useHour(userObj)
+        await userManDao.save(userObj, 'update')
       }else{
         effectArray = diffEffectLady(oldUserObj, userObj)
+        useHour(userObj)
+        await userLadyDao.save(userObj, 'update')
       }
-      useHour(userObj)
+     
       await userPlanDao.save(userPlanData, 'add')
-      await userManDao.save(userObj, 'update')
+     
 
       let resultArray = []
       addResultArray(resultArray, plan.result, false)

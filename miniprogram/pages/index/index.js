@@ -420,34 +420,65 @@ const options = {
         submitFlag: true,
         maskShow: true
       })
-      wxPost(
-        '/user/nextDay', {
-          userId: app.globalData.userId
-        },
-        ({
-          data
-        }) => {
-          if (data.errorCode >= 0) {
-            that.voiceContext().playNextDay()
-            that.blackScreen('show', '过了一夜...', function() {
-              that.setData({
-                maskShow: false
-              })
-            }, function() {
-              that.getEventStack().init(false)
-              // that.getEventStack().push({ category: 'random' })
-              that.voiceContext().playResult()
-              that.setData({
-                submitFlag: false,
-                maskShow: true,
-                dialogShow: true,
-                dialogResult: data.resultArray
-              })
-            })
-          }
-          console.info(data)
+      wx.cloud.callFunction({
+        name: 'res',
+        data: {
+          $url: "nextDay",
+          userId: app.globalData.userId,
+          gender: that.data.userData.gender
         }
-      )
+      }).then(res => {
+        console.info(res)
+        const { errorCode, data } = res.result
+        if (errorCode >= 0) {
+          that.voiceContext().playNextDay()
+          that.blackScreen('show', '过了一夜...', function () {
+            that.setData({
+              maskShow: false
+            })
+          }, function () {
+            that.getEventStack().init(false)
+            // that.getEventStack().push({ category: 'random' })
+            that.voiceContext().playResult()
+            that.setData({
+              submitFlag: false,
+              maskShow: true,
+              dialogShow: true,
+              dialogResult: data.resultArray
+            })
+          })
+        }
+      }).catch(err => {
+
+      })
+      // wxPost(
+      //   '/user/nextDay', {
+      //     userId: app.globalData.userId
+      //   },
+      //   ({
+      //     data
+      //   }) => {
+      //     if (data.errorCode >= 0) {
+      //       that.voiceContext().playNextDay()
+      //       that.blackScreen('show', '过了一夜...', function() {
+      //         that.setData({
+      //           maskShow: false
+      //         })
+      //       }, function() {
+      //         that.getEventStack().init(false)
+      //         // that.getEventStack().push({ category: 'random' })
+      //         that.voiceContext().playResult()
+      //         that.setData({
+      //           submitFlag: false,
+      //           maskShow: true,
+      //           dialogShow: true,
+      //           dialogResult: data.resultArray
+      //         })
+      //       })
+      //     }
+      //     console.info(data)
+      //   }
+      // )
     }
   },
   done: function(e) {

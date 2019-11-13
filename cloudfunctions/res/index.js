@@ -52,6 +52,9 @@ exports.main = async (event, context) => {
 
   app.router('start', commonService.start)
 
+  app.router('nextDay', commonService.nextDay)
+
+
   app.router('init', commonService.init)
 
   app.router('applyJob', userJobService.applyJob)
