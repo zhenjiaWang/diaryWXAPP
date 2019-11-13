@@ -153,12 +153,14 @@ export default {
       const { errorCode, data } = res.result
       if (errorCode >= 0) {
         const array = data.market
+        console.info(data)
         console.info(array)
-        dl.drawNewLine(array, cvs, that.data.canvasWidth, that.data.canvasHeight)
         that.setData({
           fundMoney: data.fundMoney,
           diffMoney: data.diffMoney
         })
+        dl.drawNewLine(array, cvs, that.data.canvasWidth, that.data.canvasHeight)
+       
       }
     }).catch(err => {
 

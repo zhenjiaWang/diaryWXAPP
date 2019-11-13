@@ -131,16 +131,28 @@ async function marketProccess(userId,
       doubleList.push(resFund.probability)
       doubleList.push(toDecimal(1 - resFund.probability))
 
-      let marketArray=[]
+     
       let userFundMarketData={}
       userFundMarketData._userId=userId
       userFundMarketData._fundId = resFund._id
 
       let d = gameDays() - userObj.days
       let sum=7+d
-      for (let i = 1; i <= sum; i++) {
-        marketArray.push(fundMarket(doubleList, resFund.minNum, resFund.maxNum))
+      let marketArray = []
+      if (!userFundMarket){
+        for (let i = 1; i <= sum; i++) {
+          marketArray.push(fundMarket(doubleList, resFund.minNum, resFund.maxNum))
+        }
+      }else{
+        marketArray = JSON.parse(userFundMarket.market)
+        if (marketArray.length < sum) {
+          let diff = sum - marketArray.length
+          for (let i = 1; i <= diff; i++) {
+            marketArray.push(fundMarket(doubleList, resFund.minNum, resFund.maxNum))
+          }
+        }
       }
+    
       userFundMarketData.market = JSON.stringify(marketArray)
 
       let persistent='update'
@@ -175,12 +187,13 @@ async function tradeProccess(userId,
       userFundMarketData._id = userFundMarketGet._id
       userFundMarketData.market = JSON.stringify(marketArray)
       await userFundDao.saveMarket(userFundMarketData, 'update')
-      market = JSON.stringify(marketArray)
+      market = marketArray
+    } else {
+      market = JSON.parse(market)
     }
     data.market = market
 
     let userFund = await userFundDao.getByUserFundId(userId, fundResult._id)
-    console.info(userFund)
     let fundMoney=0,buyAll=0
     if (userFund){
       fundMoney = userFund.money
