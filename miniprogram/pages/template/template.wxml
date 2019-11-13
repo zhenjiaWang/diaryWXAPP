@@ -633,11 +633,11 @@
           </view>
           <view class='chart-input clearfix'>
               <input type='digit' placeholder='请输入买入金额' bindinput='bindBuyInput' value='{{buyMoney}}' style="text-indent:10rpx"></input>
-              <button class='begin-btn  {{userState.fundLimit==0?"":"disable"}}' bindtap='applyFundBuy' data-id="{{funditem._id}}">确认买入</button>
+              <button class='begin-btn  {{userState.fundLimit==0?"":"disable"}}' bindtap='applyFundBuy' data-id="{{fundItem._id}}">确认买入</button>
           </view>
           <view class='chart-input clearfix'>
               <input type='digit' placeholder='请输入卖出金额'bindinput='bindSellInput' value='{{sellMoney}}' style="text-indent:10rpx"></input>
-              <button class='begin-btn begin-btn2  {{userState.fundLimit==0?"":"disable"}}' bindtap='applyFundSell' data-id="{{funditem._id}}" data-money='{{fundMoney}}'>确认卖出</button>
+              <button class='begin-btn begin-btn2  {{userState.fundLimit==0?"":"disable"}}' bindtap='applyFundSell' data-id="{{fundItem._id}}" data-money='{{fundMoney}}'>确认卖出</button>
           </view>
       </view>
   </view>

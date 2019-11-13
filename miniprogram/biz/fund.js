@@ -153,8 +153,6 @@ export default {
       const { errorCode, data } = res.result
       if (errorCode >= 0) {
         const array = data.market
-        console.info(data)
-        console.info(array)
         that.setData({
           fundMoney: data.fundMoney,
           diffMoney: data.diffMoney
@@ -209,18 +207,39 @@ export default {
       that.voiceContext().playClick()
       that.setData({ submitFlag: true })
       let fundId = e.currentTarget.dataset.id
-      const userId = that.data.userData.userId
+      const userId = that.data.userData._id
+      console.info(fundId)
+      console.info(userId)
       if (fundId) {
-        wxPost('/user/fund/buy',
-          { userId, fundId, money: amount},
-          ({ data }) => {
-            if (data.errorCode >= 0) {
-              //that.getEventStack().push({ category: 'random-fund-buy' })
-              that.setData({ submitFlag: false, 'fundDetailShow': false, dialogShow: true, dialogResult: data.resultArray })
-              that.voiceContext().playMoney()
-            }
+        wx.cloud.callFunction({
+          name: 'res',
+          data: {
+            $url: "buyFund",
+            userId: userId,
+            gender: that.data.userData.gender,
+            fundId: fundId,
+            money: amount
           }
-        )
+        }).then(res => {
+          console.info(res)
+          const { errorCode, data } = res.result
+          if (errorCode >= 0) {
+            that.setData({ submitFlag: false, 'fundDetailShow': false, dialogShow: true, dialogResult: data.resultArray })
+            that.voiceContext().playMoney()
+          }
+        }).catch(err => {
+
+        })
+        // wxPost('/user/fund/buy',
+        //   { userId, fundId, money: amount},
+        //   ({ data }) => {
+        //     if (data.errorCode >= 0) {
+        //       //that.getEventStack().push({ category: 'random-fund-buy' })
+        //       that.setData({ submitFlag: false, 'fundDetailShow': false, dialogShow: true, dialogResult: data.resultArray })
+        //       that.voiceContext().playMoney()
+        //     }
+        //   }
+        // )
       }
     }
   },
@@ -250,18 +269,37 @@ export default {
       that.voiceContext().playClick()
       that.setData({ submitFlag: true })
       let fundId = e.currentTarget.dataset.id
-      const userId = that.data.userData.userId
+      const userId = that.data.userData._id
       if (fundId) {
-        wxPost('/user/fund/sell',
-          { userId, fundId, money: amount },
-          ({ data }) => {
-            if (data.errorCode >= 0) {
-             // that.getEventStack().push({ category: 'random-fund-sell' })
-              that.setData({ submitFlag: false, 'fundDetailShow': false, dialogShow: true, dialogResult: data.resultArray })
-              that.voiceContext().playMoney()
-            }
+        wx.cloud.callFunction({
+          name: 'res',
+          data: {
+            $url: "sellFund",
+            userId: userId,
+            gender: that.data.userData.gender,
+            fundId: fundId,
+            money: amount
           }
-        )
+        }).then(res => {
+          console.info(res)
+          const { errorCode, data } = res.result
+          if (errorCode >= 0) {
+            that.setData({ submitFlag: false, 'fundDetailShow': false, dialogShow: true, dialogResult: data.resultArray })
+            that.voiceContext().playMoney()
+          }
+        }).catch(err => {
+
+        })
+        // wxPost('/user/fund/sell',
+        //   { userId, fundId, money: amount },
+        //   ({ data }) => {
+        //     if (data.errorCode >= 0) {
+        //      // that.getEventStack().push({ category: 'random-fund-sell' })
+        //       that.setData({ submitFlag: false, 'fundDetailShow': false, dialogShow: true, dialogResult: data.resultArray })
+        //       that.voiceContext().playMoney()
+        //     }
+        //   }
+        // )
       }
     }
   }

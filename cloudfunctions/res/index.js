@@ -75,9 +75,9 @@ exports.main = async (event, context) => {
   app.router('applyLuck', userLuckService.applyLuck)
 
   app.router('fundMarket', userFundService.market)
-
   app.router('fundTrade', userFundService.trade)
-
+  app.router('buyFund', userFundService.buyFund)
+  app.router('sellFund', userFundService.sellFund)
 
   app.router('refresh', commonService.refresh)
   // app.router('data', async (ctx, next) => {

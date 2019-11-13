@@ -19,9 +19,7 @@ class FundDao {
     await db.collection('res_fund').doc(id).get().then(res => {
       data = res.data
     })
-    return {
-      data
-    }
+    return data
   }
 }
 module.exports = FundDao

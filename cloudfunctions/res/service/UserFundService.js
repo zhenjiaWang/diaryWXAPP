@@ -117,7 +117,114 @@ class UserFundService {
     result = CommonResponse(0, 'success', data)
     ctx.body = result
   }
+
   
+  async buyFund(ctx, next) {
+    const event = ctx._req.event
+    let {
+      userId,
+      gender,
+      fundId,
+      money
+    } = event
+    let data = {}
+    let result = CommonResponse(-1, 'fail', data)
+
+
+
+    let fundGet = new Promise((resolve, reject) => {
+      const fund = fundDao.getById(fundId)
+      resolve(fund)
+    })
+
+    let userObj
+    if (gender == 1) {
+      userObj = await userManDao.getByUserId(userId)
+    } else {
+      userObj = await userLadyDao.getByUserId(userId)
+    }
+
+    let userFundMarketGet = new Promise((resolve, reject) => {
+      const userFundMarket = userFundDao.getMarketByUserFundId(userId, fundId)
+      resolve(userFundMarket)
+    })
+
+    let userFundLimitGet = new Promise((resolve, reject) => {
+      const fundLimit = userLimitDao.getCountByUserIdDayAction(userId, userObj.days, 'FUND')
+      resolve(fundLimit)
+    })
+
+
+    let  fundResult = {}, userFundMarketResult = {}, userFundLimitGetResult={}
+    await Promise.all([fundGet, userFundMarketGet, userFundLimitGet]).then((results) => {
+      fundResult = results[0]
+      userFundMarketResult = results[1]
+      userFundLimitGetResult = results[2]
+    }).catch((error) => {
+      console.log(error)
+    })
+    await buyProccess(userId,
+      gender, money, fundResult, userFundMarketResult, userFundLimitGetResult, userObj, data)
+
+    result = CommonResponse(0, 'success', data)
+    ctx.body = result
+  }
+
+  async sellFund(ctx, next) {
+    const event = ctx._req.event
+    let {
+      userId,
+      gender,
+      fundId,
+      money
+    } = event
+    let data = {}
+    let result = CommonResponse(-1, 'fail', data)
+
+
+
+    let fundGet = new Promise((resolve, reject) => {
+      const fund = fundDao.getById(fundId)
+      resolve(fund)
+    })
+
+    let userObj
+    if (gender == 1) {
+      userObj = await userManDao.getByUserId(userId)
+    } else {
+      userObj = await userLadyDao.getByUserId(userId)
+    }
+
+    let userFundMarketGet = new Promise((resolve, reject) => {
+      const userFundMarket = userFundDao.getMarketByUserFundId(userId, fundId)
+      resolve(userFundMarket)
+    })
+
+    let userFundLimitGet = new Promise((resolve, reject) => {
+      const fundLimit = userLimitDao.getCountByUserIdDayAction(userId, userObj.days, 'FUND')
+      resolve(fundLimit)
+    })
+
+    let userFundGet = new Promise((resolve, reject) => {
+      const userFund = userFundDao.getByUserFundId(userId, fundId)
+      resolve(userFund)
+    })
+
+    let fundResult = {}, userFundMarketResult = {}, userFundLimitGetResult = {}, userFundResult = {}
+    await Promise.all([fundGet, userFundMarketGet, userFundLimitGet, userFundGet]).then((results) => {
+      fundResult = results[0]
+      userFundMarketResult = results[1]
+      userFundLimitGetResult = results[2]
+      userFundResult = results[3]
+    }).catch((error) => {
+      console.log(error)
+    })
+    await sellProccess(userId,
+      gender, money, fundResult, userFundResult, userFundMarketResult, userFundLimitGetResult, userObj, data)
+
+    result = CommonResponse(0, 'success', data)
+    ctx.body = result
+  }
 }
 async function marketProccess(userId,
   gender, fundListResult, userObj, data) {
@@ -202,6 +309,115 @@ async function tradeProccess(userId,
     let diffMoney = fundMoney - buyAll
     data.diffMoney = diffMoney
     data.fundMoney = fundMoney
+  }
+}
+
+async function buyProccess(userId,
+  gender, money, fundResult, userFundMarketResult, userFundLimitGetResult, userObj, data) {
+
+  let day = userObj.days
+  let userMoney = userObj.money
+  if (userFundLimitGetResult == 0 && userFundMarketResult){
+    userMoney = parseInt(userMoney)
+    money = parseInt(money)
+    if(userMoney>=money){
+      let userFund = await userFundDao.getByUserFundId(userId, fundResult._id)
+      let persistent='update'
+      let userFundData = {}
+     
+      if(!userFund){
+        persistent='add'
+        userFundData._userId = userId
+        userFundData._fundId = fundResult._id
+        userFundData.buy=0
+        userFundData.money=0
+        userFundData.day = day
+      }
+      let market = userFundMarketResult.market
+      if (market){
+        let marketArray = JSON.parse(market)
+        if (marketArray&&marketArray.length>0){
+          let lastIndex = marketArray[marketArray.length-1]
+          if (lastIndex){
+            let fundLimitData = {}
+            fundLimitData._userId = userId
+            fundLimitData.action = 'FUND'
+            fundLimitData.day = userObj.days
+            userFundData.market = lastIndex
+            userFundData.money = (userFundData.money+money)
+            userFundData.buy = (userFundData.buy + money)
+            userMoney = userMoney-money
+
+            userObj.money=userMoney
+            if (gender == 1) {
+              await userManDao.save(userObj, 'update')
+            } else {
+              await userLadyDao.save(userObj, 'update')
+            }
+            await userFundDao.save(userFundData, persistent)
+            await userLimitDao.save(fundLimitData, 'add')
+            let resultArray = []
+            console.info(fundResult)
+            addResultArray(resultArray, '你已经成功买入:' + fundResult.title + '，投资有风险，见好就收，及时止损。', false)
+            data.resultArray = resultArray
+          }
+        }
+      }
+    }
+  }else{
+    let resultArray = []
+    addResultArray(resultArray, '抱歉，每日只能进行一次理财操作', false)
+    data.resultArray = resultArray
+  }
+}
+
+async function sellProccess(userId,
+  gender, money, fundResult, userFundResult, userFundMarketResult, userFundLimitGetResult, userObj, data) {
+
+  let day = userObj.days
+  let userMoney = userObj.money
+  if (userFundLimitGetResult == 0) {
+    userMoney = parseInt(userMoney)
+    money = parseInt(money)
+
+    let fundLimitData = {}
+    fundLimitData._userId = userId
+    fundLimitData.action = 'FUND'
+    fundLimitData.day = userObj.days
+
+    let diffMoney = userMoney-money
+    userMoney = userMoney + money
+    userObj.money = userMoney
+    if (diffMoney==0){
+      if (gender == 1) {
+        await userManDao.save(userObj, 'update')
+      } else {
+        await userLadyDao.save(userObj, 'update')
+      }
+      await userFundDao.deleteFundById(userFundResult._id)
+      await userFundDao.deleteDetailByUserFundId(userFundResult._id)
+      await userFundDao.deleteMarketById(userFundMarketResult._id)
+      await userLimitDao.save(fundLimitData, 'add')
+    }else{
+      let userFundData = {}
+      userFundData._id = userFundResult._id
+      userFundData.money = diffMoney
+      userFundData.buy = (userFundResult.buy-money)
+      if (gender == 1) {
+        await userManDao.save(userObj, 'update')
+      } else {
+        await userLadyDao.save(userObj, 'update')
+      }
+      await userFundDao.save(userFundData,'update')
+      await userLimitDao.save(fundLimitData, 'add')
+    }
+    let resultArray = []
+    addResultArray(resultArray, '你已经成功买入:' + fundResult.title + '，投资有风险，见好就收，及时止损。', false)
+    data.resultArray = resultArray
+  } else {
+    let resultArray = []
+    addResultArray(resultArray, '抱歉，每日只能进行一次理财操作', false)
+    data.resultArray = resultArray
   }
 }
 module.exports = UserFundService

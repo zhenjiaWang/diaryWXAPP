@@ -2,6 +2,35 @@ const cloud = require('wx-server-sdk')
 
 class UserFundDao {
 
+  async deleteDetailByUserFundId(userFundId) {
+    const db = cloud.database()
+    let data = {}
+    await db.collection('user_fund_detail').where({
+      _userFundId: userFundId
+    }).remove().then(res => {
+      
+    })
+    return data
+  }
+
+  async deleteMarketById(marketId) {
+    const db = cloud.database()
+    let data = {}
+    await db.collection('user_fund_market').doc(marketId).remove().then(res => {
+
+    })
+    return data
+  }
+
+  async deleteFundById(userFundId) {
+    const db = cloud.database()
+    let data = {}
+    await db.collection('user_fund').doc(userFundId).remove().then(res => {
+
+    })
+    return data
+  }
+
   async getListByUserId(userId) {
     const db = cloud.database()
     let data = []
