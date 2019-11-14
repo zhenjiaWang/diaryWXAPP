@@ -5,11 +5,16 @@ class UserLuxuryDao {
   async getListByUserId(userId) {
     const db = cloud.database()
     let data = []
-    await db.collection('user_luxury').where({
+    await db.collection('user_luxury').aggregate().match({
       _userId: userId
-    }).get().then(res => {
-      if (res.data.length > 0) {
-        data = res.data
+    }).lookup({
+      from: 'res_luxury',
+      localField: '_luxuryId',
+      foreignField: '_id',
+      as: 'luxury',
+    }).end().then(res => {
+      if (res.list.length > 0) {
+        data = res.list
       } else {
         data = false
       }

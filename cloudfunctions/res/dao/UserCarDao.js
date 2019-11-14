@@ -6,18 +6,25 @@ class UserCarDao {
     const db = cloud.database()
     let data = []
     console.info(userId)
-    await db.collection('user_car').where({
+    await db.collection('user_car').aggregate().match({
       _userId: userId
-    }).get().then(res => {
+    }).lookup({
+      from: 'res_car',
+      localField: '_carId',
+      foreignField: '_id',
+      as: 'car',
+    }).end().then(res => {
       console.info(JSON.stringify(res))
-      if (res.data.length > 0) {
-        data = res.data
+      if (res.list.length > 0) {
+        data = res.list
       } else {
         data = false
       }
     })
     return data
   }
+
+  
 
   async getListByUserIdCarId(userId,carId) {
     const db = cloud.database()

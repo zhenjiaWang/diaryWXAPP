@@ -29,6 +29,7 @@ class UserCarService {
 
   constructor() {}
 
+
   async buyCar(ctx, next) {
     const event = ctx._req.event
     let {

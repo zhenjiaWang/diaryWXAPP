@@ -17,13 +17,45 @@ class UserCoupleDao {
     return data
   }
 
-  async add(data) {
+  async getByCoupleId(coupleId) {
     const db = cloud.database()
     let data = {}
-    await db.collection('user_couple').add({
-      data
-    }).then(res => {
-      data = res._id
+    await db.collection('user_couple').where({
+      _coupleId: coupleId
+    }).get().then(res => {
+      if (res.data.length > 0) {
+        data = res.data[0]
+      } else {
+        data = false
+      }
+    })
+    return data
+  }
+
+  async save(saveData, persistent) {
+    const db = cloud.database()
+    let data = {}
+    if (persistent === 'add') {
+      await db.collection('user_couple').add({
+        data: saveData
+      }).then(res => {
+        data = res._id
+      })
+    } else if (persistent === 'update') {
+      const id = saveData['_id']
+      delete saveData['_id']
+      await db.collection('user_couple').doc(id).update({
+        data: saveData
+      }).then(res => {
+      })
+    }
+    return data
+  }
+
+  async deleteById(id) {
+    const db = cloud.database()
+    let data = {}
+    await db.collection('user_couple').doc(id).remove().then(res => {
     })
     return data
   }

@@ -5,11 +5,16 @@ class UserClothesDao {
   async getListByUserId(userId) {
     const db = cloud.database()
     let data = []
-    await db.collection('user_clothes').where({
+    await db.collection('user_clothes').aggregate().match({
       _userId: userId
-    }).get().then(res => {
-      if (res.data.length > 0) {
-        data = res.data
+    }).lookup({
+      from: 'res_clothes',
+      localField: '_clothesId',
+      foreignField: '_id',
+      as: 'clothes',
+    }).end().then(res => {
+      if (res.list.length > 0) {
+        data = res.list
       } else {
         data = false
       }
@@ -17,7 +22,7 @@ class UserClothesDao {
     return data
   }
 
-  async getListByUserIdCarId(userId, clothesId) {
+  async getListByUserIdClothesId(userId, clothesId) {
     const db = cloud.database()
     let data = []
     await db.collection('user_clothes').where({

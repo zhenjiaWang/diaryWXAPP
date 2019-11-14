@@ -67,6 +67,7 @@ class UserClothesService {
       clothesGetResult = results[0]
       clothesEffectGetResult = results[1]
       userClothesLimitGetResult = results[2]
+      console.info(userClothesLimitGetResult)
     }).catch((error) => {
       console.log(error)
     })

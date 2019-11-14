@@ -25,7 +25,7 @@ class ClothesDao {
     return data
   }
 
-  async getEffectListByCarId(clothesId) {
+  async getEffectListByClothesId(clothesId) {
     const db = cloud.database()
     let data = []
 

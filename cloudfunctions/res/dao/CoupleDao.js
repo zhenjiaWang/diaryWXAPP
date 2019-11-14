@@ -15,6 +15,29 @@ class CoupleDao {
     return data
   }
 
+  async getById(coupleId) {
+    const db = cloud.database()
+    let data = {}
+
+    await db.collection('res_couple').doc(coupleId).get().then(res => {
+      data = res.data
+    })
+    return data
+  }
+
+  async getRequireListByCoupleId(coupleId) {
+    const db = cloud.database()
+    let data = []
+
+    await db.collection('res_couple_require').where({
+      _coupleId: coupleId
+    }).get().then(res => {
+      data = res.data
+    })
+
+    return data
+  }
+
   async init() {
     const db = cloud.database()
     let jobDataArray = []

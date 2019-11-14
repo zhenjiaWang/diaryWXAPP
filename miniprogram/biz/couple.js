@@ -26,15 +26,31 @@ export default {
     if (this.data.hangOn && this.data.eventShow) return 
     const that = this
     that.voiceContext().playClick()
-    wxGet('/couple/state',
-      {gender: that.data.userData.gender},
-      ({ data }) => {
-        console.info(data)
-        if (data.errorCode === 0) {
-          showMaskNavigationBarColor()
-          that.setData({ [show]: true, maskShow: true, coupleState: data.state })
-        }
-      })
+    wx.cloud.callFunction({
+      name: 'res',
+      data: {
+        $url: "coupleState",
+        gender: that.data.userData.gender
+      }
+    }).then(res => {
+      console.info(res)
+      const { errorCode, data } = res.result
+      if (errorCode >= 0) {
+        showMaskNavigationBarColor()
+        that.setData({ [show]: true, maskShow: true, coupleState: data.state })
+      }
+    }).catch(err => {
+
+    })
+    // wxGet('/couple/state',
+    //   {gender: that.data.userData.gender},
+    //   ({ data }) => {
+    //     console.info(data)
+    //     if (data.errorCode === 0) {
+    //       showMaskNavigationBarColor()
+    //       that.setData({ [show]: true, maskShow: true, coupleState: data.state })
+    //     }
+    //   })
   },
   closeCouple: function () {
     closeMaskNavigationBarColor()
@@ -68,19 +84,37 @@ export default {
       that.setData({ submitFlag: true })
       let coupleId = e.currentTarget.dataset.id
       if (coupleId) {
-        wxPost(
-          '/user/relationship',
-          {
-            userId: that.data.userData.userId,
+        wx.cloud.callFunction({
+          name: 'res',
+          data: {
+            $url: "relationship",
+            userId: that.data.userData._id,
+            gender: that.data.userData.gender,
             coupleId: coupleId
-          },
-          ({ data }) => {
-            if (data.errorCode >= 0) {
-              that.setData({ submitFlag: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
-              that.resultVoice(data)
-            }
           }
-        )
+        }).then(res => {
+          console.info(res)
+          const { errorCode, data } = res.result
+          if (errorCode >= 0) {
+            that.setData({ submitFlag: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
+            that.resultVoice(data)
+          }
+        }).catch(err => {
+
+        })
+        // wxPost(
+        //   '/user/relationship',
+        //   {
+        //     userId: that.data.userData.userId,
+        //     coupleId: coupleId
+        //   },
+        //   ({ data }) => {
+        //     if (data.errorCode >= 0) {
+        //       that.setData({ submitFlag: false, [show]: false, dialogShow: true, dialogResult: data.resultArray })
+        //       that.resultVoice(data)
+        //     }
+        //   }
+        // )
       }
     }
   },
