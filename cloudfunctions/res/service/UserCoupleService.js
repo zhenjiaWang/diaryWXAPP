@@ -149,6 +149,53 @@ class UserCoupleService {
     ctx.body = result
   }
 
+  async breakUp(ctx, next) {
+    const event = ctx._req.event
+    let {
+      userId,
+      coupleId,
+      gender
+    } = event
+    let data = {}
+    let result = CommonResponse(-1, 'fail', data)
+   
+    let userObj
+    if (gender == 1) {
+      userObj = await userManDao.getByUserId(userId)
+    } else {
+      userObj = await userLadyDao.getByUserId(userId)
+    }
+
+    let userCoupleLimitGet = new Promise((resolve, reject) => {
+      const coupleLimit = userLimitDao.getCountByUserIdDayAction(userId, userObj.days, 'COUPLE')
+      resolve(coupleLimit)
+    })
+
+    let userCoupleGet = new Promise((resolve, reject) => {
+      const userCouple = userCoupleDao.getByUserId(userId)
+      resolve(userCouple)
+    })
+
+
+
+
+    let 
+      userCoupleLimitResult = {},
+      userCoupleResult = {}
+    await Promise.all([userCoupleLimitGet, userCoupleGet]).then((results) => {
+      userCoupleLimitResult = results[0]
+      userCoupleResult = results[1]
+    }).catch((error) => {
+      console.log(error)
+    })
+    await breakUpProccess(userId,
+      coupleId,
+      gender, userCoupleLimitResult, userCoupleResult, userObj, data)
+
+    result = CommonResponse(0, 'success', data)
+    ctx.body = result
+  }
+
 
 }
 async function relationshipProccess(userId,
@@ -296,6 +343,32 @@ async function relationshipProccess(userId,
     }
     data.resultArray = resultArray
   }
+}
+
+async function breakUpProccess(userId,
+  coupleId,
+  gender, userCoupleLimitResult, userCoupleResult, userObj, data) {
+  let effectArray = []
+  let resultArray = []
+  if (userCoupleLimitResult==0){
+    if (userCoupleResult){
+      let coupleLimitData = {}
+      coupleLimitData._userId = userId
+      coupleLimitData.action = 'COUPLE'
+      coupleLimitData.day = userObj.days
+      if (userCoupleResult._id == coupleId){
+        await userCoupleDao.deleteById(userCoupleResult._id)
+        await userLimitDao.save(coupleLimitData, 'add')
+        addResultArray(resultArray, '天下没有不散的宴席，祝好！', false)
+      }
+    }else{
+      addResultArray(resultArray, '没有对象你来瞎凑什么热闹！', false)
+    }
+  }else{
+    addResultArray(resultArray, '移情别恋也好，三观不和也好，改日再来！', false)
+  }
+  data.resultArray = resultArray
+
 }
 
 

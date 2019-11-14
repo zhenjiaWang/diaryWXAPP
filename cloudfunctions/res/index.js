@@ -89,6 +89,7 @@ exports.main = async (event, context) => {
 
   app.router('relationship', userCoupleService.relationship)
   app.router('coupleState', userCoupleService.state)
+  app.router('breakUp', userCoupleService.breakUp)
   
 
   app.router('refresh', commonService.refresh)
